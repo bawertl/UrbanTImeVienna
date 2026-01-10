@@ -214,7 +214,15 @@
     .btn.secondary{ background: rgba(255,255,255,0.05); border-color: var(--border); color: var(--text); }
     .btn:hover{ transform: translateY(-2px); }
 
-    .hero-right{ padding: 15px; display:flex; flex-direction: column; gap: 15px; }
+    /* Hero-right: slider should reach the card edges (no inset padding) */
+    .hero-right{ padding: 0; display:flex; flex-direction: column; gap: 15px; }
+
+    /* FIX: Make the slider (lighter area) fill the full card height */
+    .hero-right #heroSlider{
+      flex: 1 1 auto;
+      min-height: 320px;
+      height: 100%;
+    }
 
     .poster{
       flex: 1;
@@ -326,7 +334,7 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transform: scale(1.03);
+      transform: none;
       filter: saturate(1.02) contrast(1.02);
     }
     /* dezente Overlay-Glanzschicht für alle Thumbnails */
@@ -435,12 +443,6 @@
       transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
       will-change: transform;
     }
-    /* Hover-Zoom: Zoom wird per JS (Pointer Events) aktiviert und folgt dem Mauszeiger */
-    .media-stage.zooming .main-image{
-      transform: scale(1.8);
-      cursor: zoom-in;
-    }
-
 @media (prefers-reduced-motion: reduce){
       .main-image{ transition: none; }
     }
@@ -741,9 +743,10 @@
 /* --- Hero Slider (3 slides) --- */
 .hero-slider{
   position:relative;
-  border-radius:16px;
+  border-radius: var(--radius);
   overflow:hidden;
   min-height: 320px;
+  height: 100%;
 }
 .hero-slides{position:relative; height:100%;}
 .hero-slide{
@@ -759,8 +762,8 @@
   transform: translateY(0);
   pointer-events:auto;
 }
-/* UPDATE: Padding oben stark reduziert (5px), unten erhöht (75px) für mehr Platz */
-.slide-inner{height:100%; display:flex; flex-direction:column; justify-content:center; padding:48px 18px 92px 18px;}
+/* Truly centered slide content (same top/bottom padding) */
+.slide-inner{height:100%; display:flex; flex-direction:column; justify-content:center; padding:78px 18px 78px 18px;}
 
 /* UPDATE: Margin oben auf 0, unten leicht reduziert */
 .slide-brand{
@@ -950,6 +953,111 @@
 .terms-modal .terms-content ul{ margin: 0 0 12px 18px; padding: 0; color: var(--text); }
 .terms-modal .terms-content li{ margin: 6px 0; color: var(--text); }
 
+
+/* ===== Premium Cards Variant A (Glass) ===== */
+.hero-right .hero-slide{ padding: 16px; }
+.hero-right .hero-slide .slide-inner{
+  height: 100%;
+  padding: 64px 22px 56px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(900px 420px at 12% 0%, rgba(45,226,255,.22), transparent 55%),
+    radial-gradient(700px 420px at 88% 18%, rgba(255,59,212,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  box-shadow: 0 26px 80px rgba(0,0,0,.55),
+              inset 0 0 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+.hero-right .hero-slide .slide-inner::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background-image: url('assets/pattern-crown.svg');
+  background-size: 280px 280px;
+  background-repeat: repeat;
+  opacity: .06;
+  transform: rotate(8deg) scale(1.05);
+  pointer-events:none;
+}
+.hero-right .hero-slide .slide-inner::after{
+  content:"";
+  position:absolute;
+  top:-55%;
+  left:-35%;
+  width: 110%;
+  height: 110%;
+  background: linear-gradient(135deg, rgba(255,255,255,.22), transparent 55%);
+  transform: rotate(18deg);
+  opacity: .10;
+  pointer-events:none;
+}
+.hero-right .slide-inner > *{ position: relative; z-index: 2; }
+
+.premium-chip{
+  position:absolute;
+  top: 18px; left: 18px;
+  width: 56px; height: 40px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.35), 0 8px 20px rgba(0,0,0,.35);
+  opacity: .92;
+}
+.premium-chip::before{
+  content:"";
+  position:absolute;
+  inset:8px 10px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,.18);
+  background: linear-gradient(90deg, rgba(45,226,255,.15), rgba(255,59,212,.10));
+  opacity:.95;
+}
+.premium-chip::after{
+  content:"";
+  position:absolute;
+  left: 12px; right: 12px;
+  top: 50%;
+  height: 1px;
+  background: rgba(255,255,255,.18);
+  opacity: .7;
+  transform: translateY(-.5px);
+}
+
+.premium-micro{
+  position:absolute;
+  bottom: 14px; right: 18px;
+  font-size: 10px;
+  letter-spacing: 2.4px;
+  color: rgba(255,255,255,.42);
+  text-transform: uppercase;
+}
+
+.hero-right .slide-actions{ margin-top: 14px; margin-bottom: 0; }
+.hero-right .slide-text{ margin: 8px 0 14px; }
+.hero-right .hero-dots{
+  bottom: 10px;
+  background: rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 520px){
+  .hero-right .hero-slide{ padding: 12px; }
+  .hero-right .hero-slide .slide-inner{ padding: 60px 18px 54px; }
+}
+
+@media (hover:hover) and (pointer:fine){
+  .hero-right .hero-slide.is-active .slide-inner{
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .hero-right .hero-slide.is-active .slide-inner:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 32px 92px rgba(0,0,0,.62), 0 0 26px rgba(45,226,255,.10);
+  }
+}
+
 </style>
 </head>
 <body class="lang-en" id="top">
@@ -997,6 +1105,9 @@
 <div class="hero-slides">
 <section class="hero-slide is-active" data-slide="0">
 <div class="slide-inner">
+<div class="premium-chip" aria-hidden="true"></div>
+<div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
+
 <div aria-label="Urban Time Vienna" class="slide-brand">
 <img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
 <div class="slide-brand-text">
@@ -1013,6 +1124,9 @@
 </section>
 <section class="hero-slide" data-slide="1">
 <div class="slide-inner">
+<div class="premium-chip" aria-hidden="true"></div>
+<div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
+
 <div class="slide-title">How it works</div>
 <ul class="slide-list">
 <li><b>1.</b> Choose a model</li>
@@ -1028,6 +1142,9 @@
 </section>
 <section class="hero-slide" data-slide="2">
 <div class="slide-inner">
+<div class="premium-chip" aria-hidden="true"></div>
+<div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
+
 <div class="slide-title">Service &amp; delivery</div>
 <ul class="slide-list">
 <li>Processing: <b>up to 14 business days</b> after deposit</li>
@@ -1082,14 +1199,13 @@
 <div class="thumb">
 <img alt="Submarine Hulk" loading="lazy" src="royal-urban.jpg"/>
 </div>
-<span class="tag">Price €800</span>
+<span class="tag">Price €580</span>
 <h3>Submarine "HULK"</h3>
 <p class="teaser">The Submariner “Hulk” earned its nickname from its intense green dial and matching green bezel. A modern take on a diving legend, it quickly became a cult icon — and is more sought-after than ever.</p>
 <ul class="keypoints">
 <li><b>Diver look:</b> green bezel &amp; striking dial</li>
 <li><b>Everyday-ready:</b> sporty, robust, clean</li>
 <li><b>Hacking seconds</b> for precise setting</li>
-<li><b>Power reserve</b> approx. 70 hours</li>
 <li><b>Accuracy:</b> −2/+2 s/day</li>
 </ul>
 <details class="more">
@@ -1115,7 +1231,6 @@
 <li><b>24-hour GMT hand</b> for home/reference time</li>
 <li><b>Date</b> linked to local time (quick change)</li>
 <li><b>Hacking seconds</b> for precise setting</li>
-<li><b>Power reserve</b> approx. 70 hours</li>
 </ul>
 <details class="more">
 <summary>Show technical details</summary>
@@ -1133,7 +1248,7 @@
 <div class="thumb">
 <img alt="GMT II Bi‑Tone" loading="lazy" src="stephans-stealth.jpg"/>
 </div>
-<span class="tag">Price €800</span>
+<span class="tag">Price €830</span>
 <h3>GMT II Bi‑Tone</h3>
 <p class="teaser">GMT II Bi‑Tone — the elegant GMT in a steel/gold look. Classic, bold, and ideal when you’re moving between two time zones.</p>
 <ul class="keypoints">
@@ -1141,7 +1256,6 @@
 <li><b>Traveller GMT:</b> local hour hand jumps in 1-hour steps</li>
 <li><b>24-hour GMT hand</b> for home/reference time</li>
 <li><b>Date</b> linked to local time (quick change)</li>
-<li><b>Power reserve</b> approx. 70 hours</li>
 </ul>
 <details class="more">
 <summary>Show technical details</summary>
@@ -1460,18 +1574,18 @@ document.addEventListener("DOMContentLoaded", () => {
 const MOVEMENT_INFO = {
   "2836": { de: { title: "2836", bullets: ["Bewährtes Automatikwerk (klassische Basis).","Gute Preis/Leistung, servicefreundlich.","Typisch kürzere Gangreserve als bei der 32xx‑Serie."]},
             en: { title: "2836", bullets: ["Proven automatic movement (classic base).","Great value, service-friendly.","Typically shorter power reserve than the 32xx series."]}},
-  "3235": { de: { title: "3235", bullets: ["Neuere Generation mit modernerem Aufbau.","Typisch längere Gangreserve (ca. 70h) und höhere Effizienz.","Stabilere Gangwerte / moderneres Datumsmodul."]},
-            en: { title: "3235", bullets: ["Newer generation with a more modern architecture.","Typically longer power reserve (~70h) and higher efficiency.","More stable timekeeping / updated date module."]}},
+  "3235": { de: { title: "3235", bullets: ["Neuere Generation mit modernerem Aufbau.","Deutlich längere Gangreserve und höhere Effizienz.","Stabilere Gangwerte / moderneres Datumsmodul."]},
+            en: { title: "3235", bullets: ["Newer generation with a more modern architecture.","Noticeably longer power reserve and higher efficiency.","More stable timekeeping / updated date module."]}},
   "3186": { de: { title: "3186", bullets: ["GMT‑Werk (zweite Zeitzone) – ideal für Reisen.","Klassische GMT‑Generation, bewährt und zuverlässig.","Typisch kürzere Gangreserve als 3285."]},
             en: { title: "3186", bullets: ["GMT movement (second time zone) — ideal for travel.","Proven GMT generation, reliable.","Typically shorter power reserve than 3285."]}},
-  "3285": { de: { title: "3285", bullets: ["Neuere GMT‑Generation mit optimierter Effizienz.","Typisch längere Gangreserve (ca. 70h).","Verbesserte Stabilität / modernes GMT‑Layout."]},
-            en: { title: "3285", bullets: ["Newer GMT generation with improved efficiency.","Typically longer power reserve (~70h).","Improved stability / modern GMT layout."]}},
-  "7750": { de: { title: "7750", bullets: ["Robustes Automatik‑Chronographenwerk (bewährter Klassiker).","Servicefreundlich, zuverlässig im Alltag.","Typisch ~40–44h Gangreserve (je nach Ausführung)."]},
-            en: { title: "7750", bullets: ["Robust automatic chronograph movement (proven classic).","Service-friendly, reliable for daily wear.","Typically ~40–44h power reserve (depending on build)."]}},
-  "4131": { de: { title: "4131", bullets: ["High‑End Chronograph (moderne Architektur).","Typisch längere Gangreserve (ca. 72h) und feinere Bedienung.","Smootheres Start/Stop‑Gefühl (Säulenrad/vertikale Kupplung, je nach Ausführung)."]},
-            en: { title: "4131", bullets: ["High-end chronograph (modern architecture).","Typically longer power reserve (~72h) and smoother operation.","Smoother start/stop feel (column wheel/vertical clutch depending on build)."]}},
-  "3255": { de: { title: "3255", bullets: ["Day‑Date‑Werk mit höherer Qualitäts-/Leistungsstufe.","Typisch längere Gangreserve (ca. 70h) und höhere Effizienz.","Optimiertes Datums-/Wochentag‑Handling (je nach Ausführung)."]},
-            en: { title: "3255", bullets: ["Day-Date movement at a higher spec level.","Typically longer power reserve (~70h) and higher efficiency.","Optimized date/day handling (depending on build)."]}}
+  "3285": { de: { title: "3285", bullets: ["Neuere GMT‑Generation mit optimierter Effizienz.","Deutlich längere Gangreserve.","Verbesserte Stabilität / modernes GMT‑Layout."]},
+            en: { title: "3285", bullets: ["Newer GMT generation with improved efficiency.","Noticeably longer power reserve.","Improved stability / modern GMT layout."]}},
+  "7750": { de: { title: "7750", bullets: ["Robustes Automatik‑Chronographenwerk (bewährter Klassiker).","Servicefreundlich, zuverlässig im Alltag.","Kürzere Gangreserve (je nach Ausführung)."]},
+            en: { title: "7750", bullets: ["Robust automatic chronograph movement (proven classic).","Service-friendly, reliable for daily wear.","Shorter power reserve (depending on build)."]}},
+  "4131": { de: { title: "4131", bullets: ["High‑End Chronograph (moderne Architektur).","Deutlich längere Gangreserve und feinere Bedienung.","Smootheres Start/Stop‑Gefühl (Säulenrad/vertikale Kupplung, je nach Ausführung)."]},
+            en: { title: "4131", bullets: ["High-end chronograph (modern architecture).","Noticeably longer power reserve and smoother operation.","Smoother start/stop feel (column wheel/vertical clutch depending on build)."]}},
+  "3255": { de: { title: "3255", bullets: ["Day‑Date‑Werk mit höherer Qualitäts-/Leistungsstufe.","Deutlich längere Gangreserve und höhere Effizienz.","Optimiertes Datums-/Wochentag‑Handling (je nach Ausführung)."]},
+            en: { title: "3255", bullets: ["Day-Date movement at a higher spec level.","Noticeably longer power reserve and higher efficiency.","Optimized date/day handling (depending on build)."]}}
 };
 
 function updateMovementDescription(){
@@ -1736,7 +1850,7 @@ Please send the price, delivery time and availability.`;
         if(res.imageCopied){
           orderNote.textContent = "Text + image copied ✅ Just paste in Instagram (Ctrl+V).";
         }else if(res.textCopied){
-          orderNote.textContent = "Text copied ✅ Opening Instagram… (You can zoom the image in the modal)";
+          orderNote.textContent = "Text copied ✅ Open Instagram…";
         }else{
           orderNote.textContent = "Copying isn’t possible — please send the text/screenshot manually.";
         }
@@ -1761,55 +1875,6 @@ Please send the price, delivery time and availability.`;
       }
       updateOrderFormVariantPreview();
     }
-
-// Hover-Zoom auf das große Bild (kein Klick, kein neuer Tab) — robust (Mouse + Cursor-Position)
-    (function(){
-      const media = document.querySelector(".media-stage");
-      if(!media || !mainImg) return;
-
-      function setVars(e){
-        // Wichtig: Position relativ zum Container berechnen (der bleibt unverändert),
-        // nicht relativ zum bereits skalierten <img>, sonst wirkt der Zoom "fix".
-        const rect = media.getBoundingClientRect();
-        let x = ((e.clientX - rect.left) / rect.width) * 100;
-        let y = ((e.clientY - rect.top) / rect.height) * 100;
-        // Clamp 0..100
-        x = Math.max(0, Math.min(100, x));
-        y = Math.max(0, Math.min(100, y));
-        mainImg.style.setProperty("--zoom-x", x.toFixed(2) + "%");
-        mainImg.style.setProperty("--zoom-y", y.toFixed(2) + "%");
-      }
-
-      function resetVars(){
-        mainImg.style.setProperty("--zoom-x", "50%");
-        mainImg.style.setProperty("--zoom-y", "50%");
-      }
-
-      // Pointer Events: funktioniert zuverlässig, auch wenn matchMedia(pointer:fine) falsch meldet.
-      mainImg.addEventListener("pointerenter", (e) => {
-        if(e.pointerType && e.pointerType !== "mouse") return; // kein Zoom auf Touch
-        media.classList.add("zooming");
-        setVars(e);
-      });
-
-      mainImg.addEventListener("pointermove", (e) => {
-        if(!media.classList.contains("zooming")) return;
-        setVars(e);
-      });
-
-      mainImg.addEventListener("pointerleave", () => {
-        media.classList.remove("zooming");
-        resetVars();
-      });
-
-      // Falls Pointer-Cancel (z.B. Fensterwechsel)
-      mainImg.addEventListener("pointercancel", () => {
-        media.classList.remove("zooming");
-        resetVars();
-      });
-
-      resetVars();
-    })();
 
 function setIndex(i){
       if(!currentImages.length) return;
@@ -1876,436 +1941,81 @@ function setIndex(i){
       document.body.style.overflow = "hidden";
     }
 
+    // ===== Öffnen des Varianten/Bestell-Popups =====
+    // Klick auf Karte oder Bild öffnet die Gallery/Bestell-Ansicht
+    document.querySelectorAll(".product-card").forEach((card) => {
+      // Bild/Thumbnail
+      const thumb = card.querySelector(".thumb");
+      if (thumb) {
+        thumb.style.cursor = "pointer";
+        thumb.addEventListener("click", (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          openGallery(card);
+        });
+      }
+
+      // Ganze Karte (wichtig am Handy, wenn man nicht exakt aufs Bild tippt)
+      card.style.cursor = "pointer";
+      card.addEventListener("click", (e) => {
+        const t = (e.target && e.target.nodeType === 1) ? e.target : null;
+        if (t && t.closest("a,button,details,summary,input,label,select,textarea")) return;
+        openGallery(card);
+      });
+
+      // Tastatur (optional)
+      card.setAttribute("tabindex", card.getAttribute("tabindex") || "0");
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          const t = (e.target && e.target.nodeType === 1) ? e.target : null;
+          if (t && t.closest("a,button,details,summary,input,label,select,textarea")) return;
+          e.preventDefault();
+          openGallery(card);
+        }
+      });
+    });
+
+
+
     function closeGallery(){
       modal.classList.remove("open");
       modal.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
-
-      // Hover-Zoom Reset (falls aktiv)
-      document.querySelector(".media-stage")?.classList.remove("zooming");
-      // Wichtig: Kein inline transform-origin setzen (würde Cursor-Follow-Zoom blockieren)
-      mainImg.style.removeProperty("transform-origin");
-      mainImg.style.setProperty("--zoom-x","50%");
-      mainImg.style.setProperty("--zoom-y","50%");
     }
 
-    // Klick/Keyboard auf Produktkarten
-    // WICHTIG: Die Galerie soll NUR öffnen, wenn man auf das Bild (Thumbnail) klickt.
-    // "Technische Details" (<details>/<summary>) darf NICHT die Galerie/Popup öffnen.
-    document.querySelectorAll(".product-card").forEach(card => {
-      card.addEventListener("click", (e) => {
-        // Wenn der User auf "Bestellanfrage" klickt, öffnen wir trotzdem die Galerie
-        // (damit man ein Modell auswählen kann), statt nur zum Formular zu springen.
-        const orderBtn = e.target.closest("a.order-btn");
-        if(orderBtn){
+
+
+
+          // Close / navigation handlers for gallery modal
+    if(modal){
+      if(closeBtn){
+        closeBtn.addEventListener("click", (e) => { e.preventDefault(); closeGallery(); });
+      }
+      modal.addEventListener("click", (e) => { if(e.target === modal) closeGallery(); });
+
+      if(prevBtn){
+        prevBtn.addEventListener("click", (e) => { e.preventDefault(); setIndex(currentIndex - 1); });
+      }
+      if(nextBtn){
+        nextBtn.addEventListener("click", (e) => { e.preventDefault(); setIndex(currentIndex + 1); });
+      }
+
+      document.addEventListener("keydown", (e) => {
+        if(!modal.classList.contains("open")) return;
+        if(e.key === "Escape"){
           e.preventDefault();
-          e.stopPropagation();
-          openGallery(card);
-          return;
-        }
-
-        const t = (e.target && e.target.nodeType === 1)
-          ? e.target
-          : (e.target && e.target.parentElement ? e.target.parentElement : null);
-
-        // Klick auf Links/Buttons/Details soll NICHT die Galerie öffnen
-        if(t && t.closest("a,button,details,summary")) return;
-
-        // Galerie nur öffnen, wenn auf das Bild (Thumbnail) geklickt wird
-        if(!t || !t.closest(".thumb")) return;
-
-        openGallery(card);
-      });
-
-      card.addEventListener("keydown", (e) => {
-        const t = (e.target && e.target.nodeType === 1)
-          ? e.target
-          : (e.target && e.target.parentElement ? e.target.parentElement : null);
-        if(t && t.closest("details,summary")) return;
-        if(e.key === "Enter" || e.key === " "){
+          closeGallery();
+        }else if(e.key === "ArrowLeft"){
           e.preventDefault();
-          openGallery(card);
+          setIndex(currentIndex - 1);
+        }else if(e.key === "ArrowRight"){
+          e.preventDefault();
+          setIndex(currentIndex + 1);
         }
       });
-    });
-
-    // Details/Summary sollen NIE die Galerie öffnen (Mobile zuverlässig)
-    document.querySelectorAll(".product-card details, .product-card details *").forEach(el => {
-      el.addEventListener("click", (e) => e.stopPropagation());
-      el.addEventListener("keydown", (e) => e.stopPropagation());
-    });
-
-    // Modal Controls
-    closeBtn.addEventListener("click", closeGallery);
-    prevBtn.addEventListener("click", () => setIndex(currentIndex - 1));
-    nextBtn.addEventListener("click", () => setIndex(currentIndex + 1));
-
-    // Swipe (Mobile): links/rechts wischen zum Wechseln
-    const mediaEl = document.querySelector('.media-stage');
-    let swipeActive = false;
-    let sx = 0, sy = 0;
-
-    mediaEl?.addEventListener('pointerdown', (e) => {
-      if(!modal.classList.contains('open')) return;
-      if(e.pointerType !== 'touch') return;
-      swipeActive = true;
-      sx = e.clientX;
-      sy = e.clientY;
-    }, {passive: true});
-
-    mediaEl?.addEventListener('pointerup', (e) => {
-      if(!swipeActive) return;
-      swipeActive = false;
-      if(e.pointerType !== 'touch') return;
-      const dx = e.clientX - sx;
-      const dy = e.clientY - sy;
-      // Horizontale Wischgeste nur, wenn deutlich stärker als vertikal
-      if(Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2){
-        if(dx < 0) setIndex(currentIndex + 1);
-        else setIndex(currentIndex - 1);
-      }
-    }, {passive: true});
-
-    mediaEl?.addEventListener('pointercancel', () => { swipeActive = false; }, {passive: true});
-
-    // Klick auf Overlay schließt
-    modal.addEventListener("click", (e) => {
-      if(e.target === modal) closeGallery();
-    });
-
-    // Keyboard: ESC/Arrows
-    document.addEventListener("keydown", (e) => {
-      if(!modal.classList.contains("open")) return;
-      if(e.key === "Escape") closeGallery();
-      if(e.key === "ArrowLeft") setIndex(currentIndex - 1);
-      if(e.key === "ArrowRight") setIndex(currentIndex + 1);
-    });
-
-
-    // ===== Bestellformular: E-Mail + Copy =====
-    const ORDER_TO_EMAIL = "urbantimevienna@gmail.com";
-
-    // --- Versand ohne Mailprogramm (Google Apps Script Webhook) ---
-    // Wichtig: Diese beiden Werte müssen zu deinem Apps Script passen.
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFppgJ02rlkF34bMitHHSkPVxDREqywXZk18PGddRR_mmQsjN9Kqhvrcz5MIwLsJKP/exec";
-const APPS_SCRIPT_TOKEN = "uTv_2026!9xA#kP3zQ1";
-
-    // Optional (nur für die lokale HTML-Vorschau / Copy-Text):
-    const BRAND_NAME = "Urban Time Vienna";
-
-    function buildOrderText(){
-      const model = (document.getElementById("of_model")?.value || "").trim();
-      const name = (document.getElementById("of_name")?.value || "").trim();
-      const email = (document.getElementById("of_email")?.value || "").trim();
-      const street = (document.getElementById("of_street")?.value || "").trim();
-      const postal = (document.getElementById("of_postal")?.value || "").trim();
-      const city = (document.getElementById("of_city")?.value || "").trim();
-      const country = (document.getElementById("of_country")?.value || "").trim();
-      const deliveryMethod = (document.getElementById("of_delivery")?.value || "").trim();
-
-    
-      const instagram = (document.getElementById("of_instagram")?.value || "").trim();
-      const phone = (document.getElementById("of_phone")?.value || "").trim();
-      const message = (document.getElementById("of_message")?.value || "").trim();
-
-      const imgSrc = document.getElementById("selectedVariantImg")?.getAttribute("src") || "";
-      const imgFile = basename(imgSrc);
-
-      const lines = [];
-      lines.push("Order request (web form)");
-      lines.push("");
-      if(model) lines.push(`Model: ${model}`);
-      if(deliveryMethod) lines.push(`Delivery/pickup: ${deliveryMethod}`);
-      if(imgFile) lines.push(`Image reference: ${imgFile}`);
-      lines.push("");
-      if(message) lines.push(message);
-      lines.push("");
-      lines.push("---");
-      lines.push("Contact details:");
-      if(name) lines.push(`Name: ${name}`);
-      if(email) lines.push(`Email: ${email}`);
-      if(street || postal || city || country){
-        lines.push("Address:");
-        if(street) lines.push(street);
-        if(postal || city) lines.push(`${postal} ${city}`.trim());
-        if(country) lines.push(country);
-      }
-      if(instagram) lines.push(`Instagram: ${instagram}`);
-      if(phone) lines.push(`Phone: ${phone}`);
-      return lines.join("\n");
     }
 
-    function setFormNote(text){
-      const n = document.getElementById("formNote");
-      if(n) n.textContent = text;
-    }
-function escapeHtml(str){
-  return (str || "").replace(/[&<>"']/g, (ch) => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
-  }[ch]));
-}
-
-function formatDateTimeVienna(date){
-  try{
-    return date.toLocaleString("en-GB", {
-      timeZone: "Europe/Vienna",
-      year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit"
-    });
-  }catch(e){
-    return date.toLocaleString();
-  }
-}
-
-function toAbsoluteUrl(path){
-  if(!path) return "";
-  if(/^https?:\/\//i.test(path)) return path;
-  if(!SITE_BASE_URL) return "";
-  const base = SITE_BASE_URL.replace(/\/$/, "");
-  const p = path.replace(/^\//, "");
-  return `${base}/${p}`;
-}
-
-function buildReceiptHtml({ mode }){
-  // mode: "admin" | "customer"
-  const dt = new Date();
-  const dtText = formatDateTimeVienna(dt);
-
-  const model = (document.getElementById("of_model")?.value || "").trim();
-  const name = (document.getElementById("of_name")?.value || "").trim();
-  const email = (document.getElementById("of_email")?.value || "").trim();
-  const instagram = (document.getElementById("of_instagram")?.value || "").trim();
-  const phone = (document.getElementById("of_phone")?.value || "").trim();
-  const message = (document.getElementById("of_message")?.value || "").trim();
-
-  const imgSrc = document.getElementById("selectedVariantImg")?.getAttribute("src") || "";
-  const absImg = toAbsoluteUrl(imgSrc);
-  const absLogo = toAbsoluteUrl(BRAND_LOGO_PATH);
-
-  const title = mode === "customer" ? "Order confirmation (request)" : "New order request";
-  const intro = mode === "customer"
-    ? `Thanks for your request! We’ll get back to you as soon as possible with price, lead time and availability.`
-    : `A new request has been received via the web form.`;
-
-  const safe = (s) => escapeHtml(s).replace(/\n/g, "<br>");
-  const show = (label, value) => value ? `<tr><td style="padding:6px 0; color:#666; width:180px;">${label}</td><td style="padding:6px 0;">${safe(value)}</td></tr>` : "";
-
-  const watchImg = absImg
-    ? `<div style="margin:18px 0 6px 0;">
-         <img src="${escapeHtml(absImg)}" alt="Selected watch" style="max-width:100%; border-radius:12px; border:1px solid #eee;">
-       </div>`
-    : `<div style="margin:18px 0 6px 0; padding:12px; border:1px solid #eee; border-radius:12px; color:#666;">
-         Image reference: ${escapeHtml(basename(imgSrc))}
-       </div>`;
-
-  const logoBlock = absLogo
-    ? `<img src="${escapeHtml(absLogo)}" alt="${escapeHtml(BRAND_NAME)}" style="height:40px; display:block;">`
-    : `<div style="font-weight:800; letter-spacing:.08em; font-size:14px;">${escapeHtml(BRAND_NAME)}</div>`;
-
-  const customerNote = mode === "customer"
-    ? `<div style="margin-top:18px; padding:12px 14px; background:#f7f7f7; border-radius:12px; color:#555;">
-         Note: This is a confirmation of your request (not an invoice / not a completed purchase).
-       </div>`
-    : "";
-
-  const contactRows = mode === "admin"
-    ? (show("Name", name) + show("Email", email) + show("Instagram", instagram) + show("Phone", phone))
-    : (show("Name", name) + show("Email", email));
-
-  return `
-  <div style="font-family:Arial, Helvetica, sans-serif; background:#f3f4f6; padding:24px;">
-    <div style="max-width:640px; margin:0 auto; background:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #e9e9e9;">
-      <div style="padding:18px 22px; border-bottom:1px solid #f0f0f0; display:flex; align-items:center; justify-content:space-between; gap:16px;">
-        <div>${logoBlock}</div>
-        <div style="text-align:right; color:#666; font-size:12px;">
-          <div>${escapeHtml(dtText)}</div>
-          <div style="margin-top:4px;">${escapeHtml(title)}</div>
-        </div>
-      </div>
-
-      <div style="padding:22px;">
-        <h2 style="margin:0 0 10px 0; font-size:18px;">${escapeHtml(title)}</h2>
-        <p style="margin:0 0 14px 0; color:#444; line-height:1.5;">${escapeHtml(intro)}</p>
-
-        <div style="margin:16px 0; padding:14px 16px; border:1px solid #eee; border-radius:12px;">
-          <div style="font-weight:700; margin-bottom:6px;">Order details</div>
-          <div style="color:#333;">${escapeHtml(model || "—")}</div>
-          ${watchImg}
-        </div>
-
-        ${message ? `<div style="margin:16px 0; padding:14px 16px; border:1px solid #eee; border-radius:12px;">
-          <div style="font-weight:700; margin-bottom:6px;">Message</div>
-          <div style="color:#333; line-height:1.5;">${safe(message)}</div>
-        </div>` : ""}
-
-        <div style="margin:16px 0; padding:14px 16px; border:1px solid #eee; border-radius:12px;">
-          <div style="font-weight:700; margin-bottom:6px;">Contact details</div>
-          <table style="width:100%; border-collapse:collapse; font-size:14px;">
-            ${contactRows}
-          </table>
-        </div>
-
-        ${customerNote}
-
-        <div style="margin-top:22px; color:#888; font-size:12px; line-height:1.4;">
-          <div>${escapeHtml(BRAND_NAME)} • Web form</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  `;
-}
-
-    const orderForm = document.getElementById("orderForm");
-    function getSelectedMeta(){
-      const imgSrc = document.getElementById("selectedVariantImg")?.getAttribute("src") || "";
-      const imageUrl = imgSrc ? new URL(imgSrc, window.location.href).href : "";
-
-      // Caption ist am verlässlichsten (wird in updateOrderFormVariantPreview gesetzt)
-      const capText = (document.getElementById("selectedVariantCaption")?.textContent || "").trim();
-
-      const hasVariants = (currentImages.length || 0) > 1;
-      const variantNo = hasVariants ? String(currentIndex + 1) : "";
-
-      // Best effort: Modellname aus aktuellem Titel
-      const modelBase = (currentTitle || "").trim();
-      const imageLabel = capText || (modelBase ? (variantNo ? `${modelBase} · Variante ${variantNo}` : modelBase) : "");
-
-      return { imageUrl, variantNo, imageLabel };
-    }
-
-    if(orderForm){
-  orderForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    if(!orderForm.checkValidity()){
-      orderForm.reportValidity();
-      return;
-    }
-
-    const model = (document.getElementById("of_model")?.value || "").trim();
-    const customerEmail = (document.getElementById("of_email")?.value || "").trim();
-    const customerName = (document.getElementById("of_name")?.value || "").trim();
-
-    const street = (document.getElementById("of_street")?.value || "").trim();
-    const postal = (document.getElementById("of_postal")?.value || "").trim();
-    const city = (document.getElementById("of_city")?.value || "").trim();
-    const country = (document.getElementById("of_country")?.value || "").trim();
-
-    const instagram = (document.getElementById("of_instagram")?.value || "").trim();
-    const phone = (document.getElementById("of_phone")?.value || "").trim();
-    const deliveryMethod = (document.getElementById("of_delivery")?.value || "").trim();
-    const message = (document.getElementById("of_message")?.value || "").trim();
-
-    // Für die PDF/Email (ein Feld als Fallback)
-    const address = [
-      street,
-      `${postal} ${city}`.trim(),
-      country
-    ].filter(Boolean).join("\n");
-
-    const { imageUrl, variantNo, imageLabel } = getSelectedMeta();
-
-    const btn = document.getElementById("orderEmailBtn");
-    if(btn){
-      btn.disabled = true;
-      btn.textContent = "Sending…";
-    }
-    setFormNote("Sending request…");
-
-    try{
-      if(!APPS_SCRIPT_URL){
-        setFormNote("Apps Script URL is missing — please set it.");
-        if(btn){ btn.disabled = false; btn.textContent = "Send request by email"; }
-        return;
-      }
-
-      const payload = {
-        token: APPS_SCRIPT_TOKEN,
-        // Kunde
-        name: customerName,
-        email: customerEmail,
-        instagram,
-        phone,
-        deliveryMethod,
-        // Adresse (getrennt + zusammen)
-        street,
-        postal,
-        city,
-        country,
-        address,
-        // Uhr/Variante
-        model,
-        variant: variantNo,
-        imageLabel,
-        imageUrl,
-        // Nachricht
-        message,
-      };
-
-      // Wichtig: text/plain + no-cors => kein OPTIONS/Preflight, funktioniert stabil auf Netlify
-      await fetch(APPS_SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload),
-      });
-
-      setFormNote("Request sent ✅ You’ll receive a confirmation email.");
-      if(btn){ btn.textContent = "Sent ✅"; }
-    }catch(err){
-      console.error(err);
-      setFormNote("Sending failed. Please try again or use 'Copy text'.");
-      if(btn){
-        btn.disabled = false;
-        btn.textContent = "Send request by email";
-      }
-    }
-  });
-}
-
-  
-
-// --- Hero Slider (3 slides) ---
-(function(){
-  const root = document.getElementById('heroSlider');
-  if(!root) return;
-
-  const slides = Array.from(root.querySelectorAll('.hero-slide'));
-  const dots = Array.from(root.querySelectorAll('.dotnav'));
-  let idx = 0;
-  let timer = null;
-
-  const show = (n) => {
-    idx = (n + slides.length) % slides.length;
-    slides.forEach((s,i)=>s.classList.toggle('is-active', i===idx));
-    dots.forEach((d,i)=>d.classList.toggle('is-active', i===idx));
-  };
-
-  const start = () => {
-    stop();
-    timer = setInterval(()=>show(idx+1), 6500);
-  };
-  const stop = () => { if(timer) clearInterval(timer); timer=null; };
-
-  dots.forEach(d=>{
-    d.addEventListener('click', ()=>{
-      const go = parseInt(d.dataset.go, 10);
-      if(!Number.isNaN(go)) show(go);
-      start();
-    });
-  });
-
-  root.addEventListener('mouseenter', stop);
-  root.addEventListener('mouseleave', start);
-
-  show(0);
-  start();
-})();
-
-
-
-    // ===== Language Dropdown (DE / EN) =====
+// ===== Language Dropdown (DE / EN) =====
     (function () {
       try {
         var dd = document.getElementById("langDropdown");
