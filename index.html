@@ -701,63 +701,24 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
+}
 
-  /* Modal am Handy wie ein Fullscreen-Sheet */
-  .modal{ align-items: flex-end; padding: 0; }  .modal-card{
-    width: 100%;
-    height: 100dvh;
-    max-height: none;
-    border-radius: 0;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  .modal-top{
-    position: sticky;
-    top: 0;
-    z-index: 2;
-    background: rgba(7,7,10,0.88);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 14px;
-  }
+/* ===== Mobile Modal Scroll Fix (ohne Layout zu verschieben) ===== */
+@media (max-width: 850px){
   .modal-body{
-    padding: 12px 14px 18px;
-    gap: 12px;
-    flex: 1;
+    grid-template-columns: 1fr;
+    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
-  .modal-side{ max-height: none; overflow: visible; padding-right: 0; }
-  .media-stage{
-    height: 46vh;
-    min-height: 260px;
-    touch-action: pan-y; /* Vertical scroll ok – horizontal swipe switches */
+  .modal-side{
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
-
-  /* Hover-Zoom auf Touch-Geräten deaktivieren (wir nutzen Swipe) */
-  .media-stage.zooming .main-image{ transform: none; cursor: default; }
-
-  /* Thumbnails als horizontale Scroll-Leiste (statt Wrap) */
-  .thumbs{
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 6px;
-    gap: 10px;
-    scroll-snap-type: x mandatory;
-  }
-  .thumb-btn{
-    flex: 0 0 auto;
-    width: 64px;
-    height: 64px;
-    scroll-snap-align: start;
-  }
-
-  /* Pfeile etwas kompakter */
-  .nav-btn{ width: 42px; height: 42px; }
 }
+
 
 @media (max-width: 760px){
   /* iOS Safari: verhindert das automatische "Reinzoomen" bei Formular-Fokus */
