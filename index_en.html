@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>UrbanTimeVienna</title>
+<meta content="UrbanTimeVienna – elegant watch culture with a hint of Pop Art." name="description"/>
+<script>
+  // Language preference (DE default). Redirect based on stored choice.
+  (function () {
+    try {
+      var preferred = localStorage.getItem("utv_lang"); // "de" | "en" | null
+      var onEN = /index_en\.html$/i.test(location.pathname);
+      if (preferred === "en" && !onEN) { location.replace("index_en.html"); return; }
+      if (preferred === "de" && onEN) { location.replace("index.html"); return; }
+    } catch (e) {}
+  })();
+</script>
+<style>
+    :root{
+      --bg: #07070a;
+      --panel: rgba(255,255,255,.06);
+      --border: rgba(255,255,255,.14);
+      --text: rgba(255,255,255,.88);
+      --muted: rgba(255,255,255,.62);
+
+      /* Accent (Logo-Cyan) */
+      --pop-cyan: #2de2ff;
+
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+
+    *{ box-sizing: border-box; }
+    html{ scroll-behavior: smooth; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(45,226,255,0.12), transparent 60%),
+        radial-gradient(900px 500px at 80% 20%, rgba(255,59,212,0.08), transparent 60%),
+        linear-gradient(180deg, #060608 0%, #07070a 40%, #050507 100%);
+      overflow-x:hidden;
+    }
+
+    a{ text-decoration: none; color: inherit; transition: all 0.2s ease; }
+    img{ max-width: 100%; display:block; }
+
+    /* ===== Header ===== */
+    .header{
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(7,7,10,0.75);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner{
+      max-width: 1100px; margin: 0 auto; padding: 12px 18px;
+      display:flex; align-items:center; justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand{ display:flex; align-items:center; gap: 12px; }
+    .brand-badge{
+      width: 44px; height: 44px; border-radius: 12px;
+      background-color: #000;
+      background-image: url('logo.png');
+      background-position: center;
+      background-size: cover;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: transform 0.3s ease;
+      flex: 0 0 auto;
+    }
+    .brand:hover .brand-badge{ transform: scale(1.05) rotate(-3deg); }
+
+    .brand-text{
+      font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 16px;
+      line-height: 1.2;
+    }
+    .brand-text span{ color: var(--pop-cyan); display:block; font-size: .82em; letter-spacing: 2px; font-weight: 700; }
+
+    .nav{ display:flex; gap: 10px; align-items:center; flex-wrap: wrap; justify-content: flex-end; }
+    .nav a{
+      font-size: 14px; color: var(--muted);
+      padding: 8px 14px; border-radius: 999px;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .nav a:hover{ color: var(--text); background: rgba(255,255,255,0.08); }
+
+    .nav .reels{
+      background: rgba(45,226,255,0.10);
+      border: 1px solid rgba(45,226,255,0.30);
+      color: #fff;
+    }
+    .nav .reels:hover{
+      background: var(--pop-cyan);
+      color: #000;
+      box-shadow: 0 0 15px rgba(45,226,255,0.4);
+    }
+
+
+    /* ===== Language Switch (Flag dropdown) ===== */
+    .lang-dropdown{
+      position: relative;
+      display:flex;
+      align-items:center;
+      margin-left: 10px; /* gap after Reels */
+    }
+    .lang-current{
+      width: 38px;
+      height: 38px;
+      display:grid;
+      place-items:center;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      padding: 0;
+      cursor: pointer;
+      line-height: 0;
+    }
+    .lang-current:hover{
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(45,226,255,0.35);
+    }
+    .lang-current img{
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      display:block;
+    }
+    .lang-menu{
+      position:absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      padding: 8px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(7,7,10,0.92);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      display: none;
+      z-index: 200;
+    }
+    .lang-dropdown.is-open .lang-menu{ display:block; }
+    .lang-option{
+      width: 38px;
+      height: 38px;
+      display:grid;
+      place-items:center;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      line-height: 0;
+    }
+    .lang-option:hover{
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(45,226,255,0.35);
+    }
+    .lang-option img{
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      display:block;
+    }
+
+/* ===== Layout ===== */
+    .container{ max-width: 1100px; margin: 0 auto; padding: 20px 18px 80px; }
+
+    .card{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    /* ===== Hero ===== */
+    .hero{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; margin: 22px 0 42px; }
+    .hero-left{ padding: 40px 30px; display:flex; flex-direction: column; justify-content:center; }
+
+    .kicker{
+      display:flex; align-items:center; gap: 10px;
+      color: var(--pop-cyan); font-size: 12px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px;
+    }
+    .dot{ width: 8px; height: 8px; border-radius: 50%; background: var(--pop-cyan); box-shadow: 0 0 10px var(--pop-cyan); }
+
+    h1{
+      font-size: clamp(34px, 4.5vw, 52px);
+      margin: 0 0 18px;
+      line-height: 1.05;
+      letter-spacing: -1px;
+    }
+    .sub{
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 0 28px;
+      max-width: 520px;
+    }
+
+    .cta-row{ display:flex; gap: 12px; flex-wrap: wrap; }
+    .btn{
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      display:inline-flex; align-items:center; gap: 8px;
+      border: 1px solid transparent;
+    }
+    .btn.primary{ background: var(--pop-cyan); color: #050507; border-color: var(--pop-cyan); }
+    .btn.secondary{ background: rgba(255,255,255,0.05); border-color: var(--border); color: var(--text); }
+    .btn:hover{ transform: translateY(-2px); }
+
+    .hero-right{ padding: 15px; display:flex; flex-direction: column; gap: 15px; }
+
+    .poster{
+      flex: 1;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      min-height: 330px;
+      position: relative;
+      overflow: hidden;
+      background: #0e0e12 url('hero.jpg') center/cover no-repeat;
+    }
+    .poster::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(800px 360px at 20% 25%, rgba(45,226,255,0.10), transparent 60%),
+        linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.35));
+      pointer-events:none;
+    }
+    .poster-badge{
+      position:absolute; top: 14px; left: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(45,226,255,0.35);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05) inset, 0 10px 25px rgba(0,0,0,0.35);
+      backdrop-filter: blur(8px);
+    }
+    .poster-badge span{
+      color: var(--pop-cyan);
+      margin-left: 8px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .poster-caption{
+      position:absolute; left: 14px; right: 14px; bottom: 14px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.40);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.82);
+      font-size: 13px;
+      line-height: 1.35;
+      backdrop-filter: blur(8px);
+    }
+    .poster-caption b{ color: #fff; }
+
+    /* ===== Sections ===== */
+    .section{ margin-top: 44px; }
+    /* Less spacing between purchase CTA and order form */
+    #bestellformular.section{ margin-top: 24px; }
+    .section-head{
+      margin-bottom: 18px;
+      display:flex; align-items:flex-end; justify-content: space-between;
+      gap: 16px;
+    }
+    .section-head h2{ margin:0; font-size: 24px; }
+    .section-head p{ margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+
+    /* Highlights */
+    .highlights{
+      display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+    }
+    .hl{
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      padding: 16px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .hl:hover{ transform: translateY(-3px); border-color: rgba(45,226,255,0.35); }
+    .hl .icon{
+      width: 38px; height: 38px; border-radius: 12px;
+      display:grid; place-items:center;
+      border: 1px solid rgba(45,226,255,0.25);
+      background: rgba(45,226,255,0.10);
+      margin-bottom: 12px;
+      font-weight: 900;
+      color: var(--pop-cyan);
+    }
+    .hl h3{ margin: 0 0 6px; font-size: 16px; }
+    .hl p{ margin:0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+    /* Collection Grid */
+    .grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .item{
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+      overflow:hidden;
+    }
+    .item:hover{ border-color: rgba(45,226,255,0.45); transform: translateY(-4px); }
+
+    .thumb{
+      height: 190px;
+      background: rgba(0,0,0,0.25);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.10);
+      position: relative;
+    }
+    .thumb img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.03);
+      filter: saturate(1.02) contrast(1.02);
+    }
+    /* dezente Overlay-Glanzschicht für alle Thumbnails */
+    .thumb::before{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(600px 220px at 20% 20%, rgba(45,226,255,0.10), transparent 60%),
+                  linear-gradient(180deg, rgba(0,0,0,0.10), rgba(0,0,0,0.22));
+      pointer-events:none;
+    }
+
+    .tag{
+      font-size: 12px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--pop-cyan);
+      border: 1px solid rgba(45,226,255,0.22);
+      background: rgba(45,226,255,0.08);
+      padding: 5px 12px;
+      border-radius: 999px;
+      display:inline-block;
+      margin-bottom: 10px;
+    }
+    .item h3{ margin: 0 0 6px; font-size: 18px; }
+    .item p{ margin:0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    footer{ text-align:center; padding: 60px 0 20px; color: rgba(255,255,255,0.32); font-size: 12px; }
+    footer .footer-note{ margin-top: 6px; color: rgba(255,255,255,0.40); }
+
+    /* ===== Responsive ===== */
+    
+    /* ===== Modal Gallery (Produktbilder) ===== */
+    .product-card{ cursor: pointer; }
+    .product-card .thumb{ position: relative; overflow: hidden; }
+    .product-card .thumb::after{
+      content: "More photos";
+      position: absolute; left: 10px; bottom: 10px;
+      padding: 6px 10px; border-radius: 999px;
+      font-size: 11px; font-weight: 700; letter-spacing: .5px;
+      color: #000; background: var(--pop-cyan);
+      opacity: 0; transform: translateY(6px);
+      transition: all .25s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .product-card:hover .thumb::after{ opacity: 1; transform: translateY(0); }
+
+    /* Nur Urban Chrono: andere Overlay-Beschriftung */
+    .product-card.more-models .thumb::after{ content: "More models available"; }
+
+    /* Abschnitt-spezifische Overlay-Beschriftungen */
+    #kollektion .product-card .thumb::after{ content: "Buy now"; }
+    #bestellbar .product-card .thumb::after{ content: "More models available"; }
+
+    .modal{
+      position: fixed; inset: 0; z-index: 999;
+      display: none; align-items: center; justify-content: center;
+      padding: 18px;
+      background: rgba(0,0,0,.65);
+      backdrop-filter: blur(10px);
+    }
+    .modal.open{ display:flex; }
+    .modal-card{ width: min(920px, 100%); max-height: calc(100vh - 36px); overflow: hidden; }
+    .modal-top{
+      display:flex; align-items:flex-start; justify-content: space-between;
+      padding: 12px 12px 0;
+      gap: 16px;
+    }
+    .modal-top h3{ margin: 0; font-size: 18px; }
+    .modal-top .meta{ margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+    .icon-btn{
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      width: 40px; height: 40px; border-radius: 12px;
+      cursor: pointer;
+    }
+    .icon-btn:hover{ border-color: rgba(45,226,255,0.45); }
+
+    .modal-body{
+      display: grid; grid-template-columns: 1fr 280px;
+      gap: 12px;
+      padding: 12px;
+    
+      align-items: start;
+    }
+    .modal-media{
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #0e0e12;
+      min-height: 300px;
+      height: min(68vh, 560px);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .main-image{
+      width: 100%; height: 100%;
+      object-fit: contain; /* schärfer & nichts abschneiden */
+      display:block;
+      transition: transform 160ms ease;
+      transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+      will-change: transform;
+    }
+    /* Hover-Zoom: Zoom wird per JS (Pointer Events) aktiviert und folgt dem Mauszeiger */
+    .modal-media.zooming .main-image{
+      transform: scale(1.8);
+      cursor: zoom-in;
+    }
+
+@media (prefers-reduced-motion: reduce){
+      .main-image{ transition: none; }
+    }
+    .nav-btn{
+      position: absolute; top: 50%;
+      transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.35);
+      color: #fff;
+      cursor: pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size: 22px; font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
+    .nav-btn:hover{ border-color: rgba(45,226,255,0.55); }
+    #galleryPrev{ left: 12px; }
+    #galleryNext{ right: 12px; }
+
+    .modal-side{
+      padding-left: 0;
+      max-height: min(68vh, 560px);
+      overflow: auto;
+      padding-right: 2px;
+      display:flex; flex-direction: column;
+      gap: 12px;
+    }
+    .thumbs{
+      display:flex; flex-wrap: wrap; gap: 10px;
+      align-content: flex-start;
+    }
+    .thumb-btn{
+      width: 54px; height: 54px; /* kompakter */
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      padding: 0;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .thumb-btn img{ width: 100%; height: 100%; object-fit: cover; display:block; }
+    .thumb-btn.active{
+      border-color: var(--pop-cyan);
+      box-shadow: 0 0 0 2px rgba(45,226,255,.18);
+    }
+    .modal-hint{
+      margin: 0;
+      color: rgba(255,255,255,0.35);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .order-box{
+      margin-top: 4px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+    }
+    .order-box .btn{ width: 100%; justify-content: center; }
+    .order-note{
+      margin: 10px 0 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.35;
+    }
+
+    @media (max-width: 850px){
+      .modal-body{ grid-template-columns: 1fr; }
+      .modal-side{ padding-left: 0; }
+      .modal-media{ min-height: 320px; }
+    }
+
+
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+      .highlights{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 550px){
+      .grid{ grid-template-columns: 1fr; }
+      .header-inner{ flex-direction: column; align-items: stretch; }
+      .nav{ justify-content: flex-start; }
+      .hero-left{ padding: 34px 24px; }
+    }
+  
+.order-btn{
+  display:inline-block;
+  margin-top:12px;
+  padding:8px 14px;
+  border-radius:999px;
+  background: var(--pop-cyan);
+  color:#050507;
+  font-size:12px;
+  font-weight:700;
+}
+.order-btn:hover{opacity:.9}
+
+
+    /* Subtle crown pattern background */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background-image: url("assets/crown-logo.png");
+      background-repeat: repeat;
+      background-size: 110px 110px;
+      background-position: 0 0;
+      opacity: .03; /* subtle */
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > *{
+      position: relative;
+      z-index: 1;
+    }
+
+
+/* Kaufablauf */
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:16px;
+  margin-top:18px;
+}
+.step{
+  padding:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(10,10,10,.55);
+  border-radius:16px;
+  backdrop-filter: blur(8px);
+}
+.step h3{ margin:8px 0 6px; }
+.step p{ margin:0; opacity:.92; }
+.step-num{
+  width:34px; height:34px;
+  display:grid; place-items:center;
+  border-radius:999px;
+  background:rgba(0, 188, 212, .16);
+  color:var(--pop-cyan);
+  font-weight:800;
+}
+.notice{ margin-top:18px; padding: 24px 26px 26px; }
+.notice h3{ margin:0 0 14px; }
+.notice ul{
+  list-style:none;
+  padding:0;
+  margin: 0 0 18px;
+  display:grid;
+  gap:10px;
+}
+.notice li{ margin:0; display:flex; gap:14px; align-items:flex-start; }
+.notice li strong{ flex: 0 0 130px; }
+.notice li span{ flex:1; color: rgba(255,255,255,.78); line-height: 1.45; }
+.notice .order-btn{ margin: 6px 0 0; display:inline-flex; }
+
+
+
+
+/* --- Order actions & form --- */
+.order-actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+.order-actions .btn{flex:1; min-width:200px;}
+.order-actions .movement-picker{flex:1 1 100%; width:100%;}
+
+.order-box .order-note{margin-top:8px;}
+
+.order-form{margin-top:16px;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field label{font-weight:600;}
+.field input,.field textarea,.field select{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  color:var(--text);
+  border-radius:12px;
+  padding:12px 12px;
+  outline:none;
+}
+.field select:invalid{ color: var(--muted); }
+/* Dropdown-Liste: bei manchen Browsern ist der Hintergrund hell (weiß).
+   Deshalb Option-Text dunkel setzen, damit er immer lesbar ist. */
+.field select option{ color:#111; background:#fff; }
+.field select option[value=""]{ color:#777; }
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(255,255,255,0.28);}
+.field-full{grid-column:1 / -1;}
+.hint{color:var(--muted); font-size:0.9rem; margin-top:6px;}
+.check{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:0.95rem;}
+.check input{margin-top:4px;}
+.form-buttons{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+.form-buttons .btn{min-width:220px;}
+.form-note{margin-top:10px; color:var(--muted);}
+
+/* --- Selected variant preview in order form --- */
+.variant-preview{
+  display:none;
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  border-radius: 16px;
+}
+.variant-preview-inner{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.variant-preview img{
+  width: 120px;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.35);
+}
+.variant-preview .vp-text{
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.variant-preview .vp-text b{ color: var(--text); }
+
+@media (max-width: 760px){
+  .form-grid{grid-template-columns:1fr;}
+  .order-actions .btn{min-width:0;}
+  .form-buttons .btn{min-width:0; flex:1;}
+}
+
+
+    /* Modal: zwei Buttons gleich breit und kompakt */
+    .order-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .order-actions .btn{ flex:1 1 220px; text-align:center; }
+/* ===== Mobile / Touch Optimierung ===== */
+@media (hover: none), (pointer: coarse){
+  /* Kein "Hover-Shift" & kein zusätzliches Thumbnail-Zoom */
+  .item:hover{ transform: none; border-color: var(--border); }
+  .btn:hover{ transform: none; }
+  .thumb img{ transform: none; }
+
+  /* Tap fühlt sich cleaner an */
+  .product-card{ -webkit-user-select: none; user-select: none; }
+
+  .product-card, .btn, .thumb-btn, .nav-btn, .icon-btn, .order-btn{
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  /* Modal am Handy wie ein Fullscreen-Sheet */
+  .modal{ align-items: flex-end; padding: 0; }
+  .modal-card{
+    width: 100%;
+    height: 100dvh;
+    max-height: none;
+    border-radius: 0;
+  }
+  .modal-top{
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: rgba(7,7,10,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 14px;
+  }
+  .modal-body{
+    padding: 12px 14px 18px;
+    gap: 12px;
+  }
+  .modal-media{
+    height: 46vh;
+    min-height: 260px;
+    touch-action: pan-y; /* Vertical Scroll okay – horizontales Wischen fürs Wechseln */
+  }
+
+  /* Hover-Zoom auf Touch-Geräten deaktivieren (wir nutzen Swipe) */
+  .modal-media.zooming .main-image{ transform: none; cursor: default; }
+
+  /* Thumbnails als horizontale Scroll-Leiste (statt Wrap) */
+  .thumbs{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 6px;
+    gap: 10px;
+    scroll-snap-type: x mandatory;
+  }
+  .thumb-btn{
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    scroll-snap-align: start;
+  }
+
+  /* Pfeile etwas kompakter */
+  .nav-btn{ width: 42px; height: 42px; }
+}
+
+@media (max-width: 760px){
+  /* iOS Safari: verhindert das automatische "Reinzoomen" bei Formular-Fokus */
+  .field input, .field textarea{ font-size: 16px; }
+}
+
+
+
+    /* --- Product card description (cleaner layout) --- */
+    .product-card .teaser{margin:0 0 10px 0;color:var(--muted);line-height:1.45;}
+    .product-card .keypoints, .product-card .specs{margin:0;padding:0;list-style:none;display:grid;gap:6px;}
+    .product-card .keypoints li, .product-card .specs li{padding-left:12px;position:relative;line-height:1.35;}
+    .product-card .keypoints li::before, .product-card .specs li::before{content:"•";position:absolute;left:0;top:0;opacity:.7;}
+    .product-card details.more{margin-top:10px;}
+    .product-card details.more summary{cursor:pointer;color:rgba(120,255,240,.9);font-weight:600;list-style:none;}
+    .product-card details.more summary::-webkit-details-marker{display:none;}
+    .product-card details.more[open] summary{margin-bottom:8px;}
+
+
+/* --- Hero Slider (3 slides) --- */
+.hero-slider{
+  position:relative;
+  border-radius:16px;
+  overflow:hidden;
+  min-height: 320px;
+}
+.hero-slides{position:relative; height:100%;}
+.hero-slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transform: translateY(6px);
+  transition: opacity .35s ease, transform .35s ease;
+  pointer-events:none;
+}
+.hero-slide.is-active{
+  opacity:1;
+  transform: translateY(0);
+  pointer-events:auto;
+}
+/* UPDATE: Padding oben stark reduziert (5px), unten erhöht (75px) für mehr Platz */
+.slide-inner{padding:5px 18px 75px 18px;}
+
+/* UPDATE: Margin oben auf 0, unten leicht reduziert */
+.slide-brand{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 8px;
+  margin: 0 auto 6px;
+  text-align:center;
+}
+.slide-crown{
+  width: 88px;
+  max-width: 100%;
+  height:auto;
+  opacity: .96;
+  filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(255,255,255,.14)) drop-shadow(0 0 18px rgba(120,255,240,.12));
+}
+.slide-brand-top{
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  line-height: 1.05;
+}
+.slide-brand-bottom{
+  margin-top: -4px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--pop-cyan);
+  text-transform: uppercase;
+}
+
+.slide-title{
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  margin: 6px 0 8px;
+  text-align:center;
+}
+.slide-text{
+  font-size: 13.5px; /* slightly smaller to match DE layout */
+  color: var(--muted);
+  line-height: 1.45;
+  text-align:center;
+  margin: 6px 0 10px;
+}
+.slide-list{
+  list-style:none;
+  padding:0;
+  margin: 10px 0 12px;
+  display:grid;
+  gap:8px;
+}
+.slide-list li{
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  background: rgba(0,0,0,.16);
+}
+.slide-actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top: 10px;
+  margin-bottom: 26px;
+}
+.hero-dots{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:5px; /* UPDATE: Tiefer gesetzt (vorher 8px) */
+  z-index:10;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  padding:8px 12px;
+  border-radius:999px;
+  background: rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.10);
+  z-index:10;
+}
+.dotnav{
+  width:12px; height:12px;
+  border-radius:999px;
+  border:1px solid rgba(120,255,240,.65);
+  background: rgba(255,255,255,.12);
+  cursor:pointer;
+  box-shadow: 0 0 12px rgba(120,255,240,.18);
+}
+.dotnav.is-active{
+  background: rgba(120,255,240,.95);
+  border-color: rgba(120,255,240,.95);
+  box-shadow: 0 0 16px rgba(120,255,240,.35);
+}
+.hero-right .hero-slider{background: rgba(255,255,255,.02);}
+
+
+/* ===== Movement picker (Uhrwerk Auswahl) ===== */
+.movement-picker{
+  margin: 12px 0 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  background: rgba(0,0,0,.18);
+  backdrop-filter: blur(8px);
+}
+.movement-picker .mp-title{
+  font-weight: 600;
+  font-size: 13px;
+  opacity: .9;
+  margin-bottom: 8px;
+}
+.movement-picker .mp-grid{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.movement-picker .mp-item{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  cursor: pointer;
+  user-select: none;
+}
+.movement-picker .mp-item input{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(120,255,240,.55);
+  background: rgba(0,0,0,.18);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.35);
+  transform: translateY(0.5px);
+  cursor: pointer;
+}
+.movement-picker .mp-item input:checked{
+  background: rgba(120,255,240,.95);
+  border-color: rgba(120,255,240,.95);
+  box-shadow: 0 0 14px rgba(120,255,240,.35);
+}
+.movement-picker .mp-item.is-selected{
+  border-color: rgba(120,255,240,.55);
+  background: rgba(120,255,240,.08);
+}
+.movement-picker .mp-item:hover{
+  border-color: rgba(120,255,240,.45);
+}
+
+.movement-picker .mp-label{
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+</style>
+</head>
+<body class="lang-en" id="top">
+<header class="header">
+<div class="header-inner">
+<a aria-label="Back to top" class="brand" href="#top">
+<div aria-label="UrbanTimeVienna Logo" class="brand-badge"></div>
+<div class="brand-text">Urban Time <span>Vienna</span></div>
+</a>
+<nav aria-label="Main navigation" class="nav">
+<a href="#kollektion">Collection</a>
+<a href="#highlights">Highlights</a>
+<a href="#bestellbar">Made to order</a>
+<a href="#kaufablauf">How it works</a>
+<a href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Contact</a>
+<a class="reels" href="https://www.instagram.com/urbantimevienna/reels/" rel="noopener" target="_blank">Reels</a>
+<div class="lang-dropdown" id="langDropdown">
+<button aria-expanded="false" aria-haspopup="menu" aria-label="Choose language" class="lang-current" type="button">
+<img alt="English" src="assets/flag-gb.svg"/>
+</button>
+<div aria-label="Language" class="lang-menu" role="menu">
+<a aria-label="Deutsch" class="lang-option" data-lang="de" href="index.html" role="menuitem">
+<img alt="Deutsch" src="assets/flag-de.svg"/>
+</a>
+</div>
+</div>
+</nav>
+</div>
+</header>
+<main class="container">
+<section class="hero">
+<div class="card hero-left">
+<div class="kicker"><span class="dot"></span> Vienna • Watch Culture • Pop Art</div>
+<h1>Elegance with an edge.<br/>Time with style.</h1>
+<p class="sub">
+          UrbanTimeVienna curates timepieces with class — minimalist, high-quality, and finished with a touch of Pop Art.
+        </p>
+<div class="cta-row">
+<a class="btn primary" href="#kollektion">View collection</a>
+<a class="btn secondary" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">Instagram ↗</a>
+</div>
+</div>
+<div class="card hero-right">
+<div aria-label="Urban Time Vienna Highlights" class="hero-slider" id="heroSlider">
+<div class="hero-slides">
+<section class="hero-slide is-active" data-slide="0">
+<div class="slide-inner">
+<div aria-label="Urban Time Vienna" class="slide-brand">
+<img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
+<div class="slide-brand-text">
+<div class="slide-brand-top">URBAN TIME</div>
+<div class="slide-brand-bottom">VIENNA</div>
+</div>
+</div>
+<div class="slide-text">Curated · Refined · Style with character</div>
+<div class="slide-actions">
+<a class="btn secondary" href="#kollektion">Collection</a>
+<a class="btn primary" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">Instagram ↗</a>
+</div>
+</div>
+</section>
+<section class="hero-slide" data-slide="1">
+<div class="slide-inner">
+<div class="slide-title">How it works</div>
+<ul class="slide-list">
+<li><b>1.</b> Choose a model</li>
+<li><b>2.</b> <b>€300 deposit</b> to reserve</li>
+<li><b>3.</b> Shipping (cash on delivery) or pickup</li>
+</ul>
+<div class="slide-text">You’ll automatically receive tracking by email once your order ships.</div>
+<div class="slide-actions">
+<a class="btn primary" href="#kaufablauf">How it works</a>
+<a class="btn secondary" href="#bestellbar">Made to order</a>
+</div>
+</div>
+</section>
+<section class="hero-slide" data-slide="2">
+<div class="slide-inner">
+<div class="slide-title">Service &amp; delivery</div>
+<ul class="slide-list">
+<li>Processing: <b>up to 14 business days</b> after deposit</li>
+<li>Shipping: <b>cash on delivery</b> (remaining balance on delivery)</li>
+<li>Pickup: appointment by arrangement</li>
+</ul>
+<div class="slide-text">
+            Support: <a class="link" href="mailto:urbantimevienna@gmail.com">urbantimevienna@gmail.com</a>
+</div>
+<div class="slide-actions">
+<a class="btn secondary" href="#kollektion">In stock now</a>
+<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Contact ↗</a>
+</div>
+</div>
+</section>
+</div>
+</div></div></section>
+<section class="section" id="highlights">
+<div class="section-head">
+<div>
+<h2>Highlights</h2>
+<p>Curated, checked, and ready for your wrist game.</p>
+</div>
+</div>
+<div class="highlights">
+<div class="hl">
+<div class="icon">✓</div>
+<h3>Picked with taste</h3>
+<p>Clean designs, strong details — watches that fit Vienna just as well as anywhere.</p>
+</div>
+<div class="hl">
+<div class="icon">✦</div>
+<h3>Pop Art accents</h3>
+<p>Elegance stays clean — with a modern edge in cyan &amp; neon.</p>
+</div>
+<div class="hl">
+<div class="icon">↗</div>
+<h3>Always live on Instagram</h3>
+<p>New drops, wrist shots and reels: everything straight from @urbantimevienna.</p>
+</div>
+</div>
+</section>
+<section class="section" id="kollektion">
+<div class="section-head">
+<div>
+<h2>In stock</h2>
+<p>Pickup or shipping available — details via Instagram DM.</p>
+</div>
+</div>
+<div class="grid">
+<article class="item product-card" data-images="royal-urban.jpg" role="button" tabindex="0">
+<div class="thumb">
+<img alt="Submarine Hulk" loading="lazy" src="royal-urban.jpg"/>
+</div>
+<span class="tag">Price €800</span>
+<h3>Submarine "HULK"</h3>
+<p class="teaser">The Submariner “Hulk” earned its nickname from its intense green dial and matching green bezel. A modern take on a diving legend, it quickly became a cult icon — and is more sought-after than ever.</p>
+<ul class="keypoints">
+<li><b>Diver look:</b> green bezel &amp; striking dial</li>
+<li><b>Everyday-ready:</b> sporty, robust, clean</li>
+<li><b>Hacking seconds</b> for precise setting</li>
+<li><b>Power reserve</b> approx. 70 hours</li>
+<li><b>Accuracy:</b> −2/+2 s/day</li>
+</ul>
+<details class="more">
+<summary>Show technical details</summary>
+<ul class="specs">
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
+</ul>
+</details>
+</article>
+<article class="item product-card" data-images="pop-art-chrono.jpg" role="button" tabindex="0">
+<div class="thumb">
+<img alt="Pop-Art Chrono" loading="lazy" src="pop-art-chrono.jpg"/>
+</div>
+<span class="tag">Price €800</span>
+<h3>GMT II Bruce Wayne</h3>
+<p class="teaser">GMT II Bruce Wayne — a sporty-elegant GMT in a “stealth” look. Perfect for travel: a second time zone at a glance.</p>
+<ul class="keypoints">
+<li><b>Traveller GMT:</b> local hour hand jumps in 1-hour steps</li>
+<li><b>24-hour GMT hand</b> for home/reference time</li>
+<li><b>Date</b> linked to local time (quick change)</li>
+<li><b>Hacking seconds</b> for precise setting</li>
+<li><b>Power reserve</b> approx. 70 hours</li>
+</ul>
+<details class="more">
+<summary>Show technical details</summary>
+<ul class="specs">
+<li>Accuracy: −2/+2 s/day</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
+</ul>
+</details>
+</article>
+<article class="item product-card" data-images="stephans-stealth.jpg" role="button" tabindex="0">
+<div class="thumb">
+<img alt="GMT II Bi‑Tone" loading="lazy" src="stephans-stealth.jpg"/>
+</div>
+<span class="tag">Price €800</span>
+<h3>GMT II Bi‑Tone</h3>
+<p class="teaser">GMT II Bi‑Tone — the elegant GMT in a steel/gold look. Classic, bold, and ideal when you’re moving between two time zones.</p>
+<ul class="keypoints">
+<li><b>Bi-tone:</b> steel/gold look with strong wrist presence</li>
+<li><b>Traveller GMT:</b> local hour hand jumps in 1-hour steps</li>
+<li><b>24-hour GMT hand</b> for home/reference time</li>
+<li><b>Date</b> linked to local time (quick change)</li>
+<li><b>Power reserve</b> approx. 70 hours</li>
+</ul>
+<details class="more">
+<summary>Show technical details</summary>
+<ul class="specs">
+<li>Accuracy: −2/+2 s/day</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
+</ul>
+</details>
+</article>
+</div></section>
+<section class="section" id="bestellbar">
+<div class="section-head">
+<div>
+<h2>Available to order</h2>
+<p>Prepayment required · approx. 14 business days lead time</p>
+</div>
+</div>
+<div class="grid">
+<article class="item product-card" data-currency="EUR" data-images="urban_wayne_v1.jpg,urban_wayne_v2.jpg,urban_wayne_v3.jpg,urban_wayne_v4.jpg,urban_wayne_v5.jpg,urban_wayne_v6.jpg,urban_wayne_v7.jpg,urban_wayne_v8.jpg,urban_wayne_v9.jpg,urban_wayne_v10.jpg" data-movements='[{"code": "3186", "price": 750}, {"code": "3285", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Urban GMT – Stainless steel GMT" loading="lazy" src="order_1_1.jpg"/></div>
+<span class="tag price-tag">From: €750</span>
+<h3>Urban Time Vienna</h3>
+<p>Available on request · lead time approx. 14 business days</p>
+<a class="order-btn" href="#bestellformular">Order request</a>
+</article>
+<article class="item product-card" data-currency="EUR" data-images="urban_date_v1.jpg,urban_date_v2.jpg,urban_date_v3.jpg,urban_date_v4.jpg,urban_date_v5.jpg,urban_date_v6.jpg,urban_date_v7.jpg,urban_date_v8.jpg,urban_date_v9.jpg,urban_date_v10.jpg" data-movements='[{"code": "2836", "price": 750}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Vienna Date – Blue date model" loading="lazy" src="order_2_1.jpg"/></div>
+<span class="tag price-tag">From: €750</span>
+<h3>Urban Time Date</h3>
+<p>Available on request · lead time approx. 14 business days</p>
+<a class="order-btn" href="#bestellformular">Order request</a>
+</article>
+<article class="item product-card more-models" data-currency="EUR" data-images="urban_chrono_v1.jpg,urban_chrono_v2.jpg,urban_chrono_v3.jpg,urban_chrono_v4.jpg,urban_chrono_v5.jpg,urban_chrono_v6.jpg,urban_chrono_v7.jpg,urban_chrono_v8.jpg" data-movements='[{"code": "7750", "price": 800}, {"code": "4131", "price": 1050}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Urban Chrono – Chronograph" loading="lazy" src="order_3_1.jpg"/></div>
+<span class="tag price-tag">From: €800</span>
+<h3>Urban Time Chrono</h3>
+<p>Available on request · lead time approx. 14 business days</p>
+<a class="order-btn" href="#bestellformular">Order request</a>
+</article>
+<article class="item product-card" data-currency="EUR" data-images="president_dd_v1.jpg,president_dd_v2.jpg,president_dd_v3.jpg,president_dd_v4.jpg,president_dd_v5.jpg,president_dd_v6.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3255", "price": 1050}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Vienna DayDate – Gold Day-Date" loading="lazy" src="order_4_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
+<h3>Urban Time President DD.</h3>
+<p>Available on request · lead time approx. 14 business days</p>
+<a class="order-btn" href="#bestellformular">Order request</a>
+</article>
+<article class="item product-card" data-currency="EUR" data-images="urban_classic_v1.jpg,urban_classic_v2.jpg,urban_classic_v3.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Stephans Diver – Grey Diver" loading="lazy" src="order_5_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
+<h3>Urban Time Classic</h3>
+<p>Available on request · lead time approx. 14 business days</p>
+<a class="order-btn" href="#bestellformular">Order request</a>
+</article>
+<article class="item product-card" data-currency="EUR" data-images="president_d_comingsoon.png" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Royal Pink – Pink Dial" loading="lazy" src="order_6_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
+<h3>Urban Time President D.</h3>
+<p>Available on request · lead time approx. 14 business days</p>
+<a class="order-btn" href="#bestellformular">Order request</a>
+</article>
+</div>
+</section>
+<section class="section" id="kaufablauf">
+<div class="section-head">
+<div>
+<h2>How the purchase works</h2>
+<p>Transparent, safe and straightforward — your watch in just a few steps.</p>
+</div>
+</div>
+<div class="steps">
+<div class="step">
+<div class="step-num">1</div>
+<h3>Send an order request</h3>
+<p>Choose a model and send your request via the form or on Instagram.</p>
+</div>
+<div class="step">
+<div class="step-num">2</div>
+<h3>Offer &amp; confirmation</h3>
+<p>You’ll receive the final price, estimated lead time and all order details.</p>
+</div>
+<div class="step">
+<div class="step-num">3</div>
+<h3>Deposit to reserve</h3>
+<p>With a <strong>€300</strong> deposit, your watch is reserved (credited toward the total price).</p>
+</div>
+<div class="step">
+<div class="step-num">4</div>
+<h3>Shipping via cash on delivery</h3>
+<p>The remaining balance is paid on delivery via <strong>cash on delivery</strong> — secure for both sides.</p>
+</div>
+</div>
+<div class="card notice">
+<h3>Payment &amp; delivery summary</h3>
+<ul>
+<li><strong>Deposit</strong><span>€300 (reservation, credited toward total)</span></li>
+<li><strong>Remaining balance</strong><span>cash on delivery upon delivery</span></li>
+<li><strong>Typical price range</strong><span>depending on model/accessories usually around €800 (incl. box &amp; accessories)</span></li>
+<li><strong>Note</strong><span>If the cash-on-delivery shipment is refused, the deposit is retained as a handling/cancellation fee.</span></li>
+</ul>
+<a class="order-btn" href="#bestellformular">Send an order request now</a>
+</div>
+</section>
+<section class="section" id="bestellformular">
+<div class="card" style="padding:24px;">
+<h2>Order request</h2>
+<p style="color:var(--muted); margin-top:8px;">
+      You can order directly via Instagram or use the form. If you open the form from a model, fields are auto-filled.
+    </p>
+<div class="form-actions-top">
+<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Order: Instagram DM</a>
+</div>
+<form class="order-form" id="orderForm" novalidate="">
+<div aria-live="polite" class="variant-preview" id="selectedVariantPreview">
+<div class="variant-preview-inner">
+<img alt="" id="selectedVariantImg" loading="lazy" src=""/>
+<div class="vp-text">
+<b id="selectedVariantCaption">Selected variant</b><br/>
+<span>This image is automatically taken from your selection.</span>
+</div>
+</div>
+</div>
+<div class="form-grid">
+<div class="field field-full">
+<label for="of_model">Model</label>
+<input id="of_model" name="model" placeholder="e.g. Urban Time Wayne – Variant 7" required="" type="text"/>
+</div>
+<div class="field field-full">
+<label for="of_delivery">Delivery or pickup</label>
+<select id="of_delivery" name="deliveryMethod" required="">
+<option disabled="" selected="" value="">Please choose…</option>
+<option value="Shipping (cash on delivery)">Shipping (cash on delivery)</option>
+<option value="Pickup">Pickup</option>
+</select>
+</div>
+<div class="field">
+<label for="of_name">Name</label>
+<input id="of_name" name="name" placeholder="First and last name" required="" type="text"/>
+</div>
+<div class="field">
+<label for="of_email">Email</label>
+<input id="of_email" name="email" placeholder="name@email.com" required="" type="email"/>
+</div>
+<div class="field field-full">
+<label for="of_street">Street &amp; house number</label>
+<input id="of_street" name="street" placeholder="Example Street 12" required="" type="text"/>
+</div>
+<div class="field">
+<label for="of_postal">Postal code</label>
+<input id="of_postal" name="postal" placeholder="1010" required="" type="text"/>
+</div>
+<div class="field">
+<label for="of_city">City</label>
+<input id="of_city" name="city" placeholder="Vienna" required="" type="text"/>
+</div>
+<div class="field">
+<label for="of_country">Country</label>
+<input id="of_country" name="country" placeholder="Austria" required="" type="text"/>
+</div>
+<div class="field">
+<label for="of_instagram">Instagram (optional)</label>
+<input id="of_instagram" name="instagram" placeholder="@yourname" type="text"/>
+</div>
+<div class="field field-full">
+<label for="of_phone">Phone (optional)</label>
+<input id="of_phone" name="phone" placeholder="+43 …" type="tel"/>
+</div>
+<div class="field field-full">
+<label for="of_message">Any questions? (optional)</label>
+<textarea id="of_message" name="message" placeholder="Any questions? Write them here." rows="5"></textarea>
+<p class="hint">Note: model/variant &amp; image are automatically sent as reference.</p>
+</div>
+<div class="field field-full">
+<label class="check">
+<input id="of_terms" required="" type="checkbox"/>
+<span>I confirm the deposit (€300) and accept the purchase process (cash-on-delivery shipping or pickup).</span>
+</label>
+</div>
+</div>
+<div class="form-buttons">
+<button class="btn primary" id="orderEmailBtn" type="submit">Send request by email</button>
+</div>
+<p class="form-note" id="formNote">
+        Note: Your request is sent directly via the form (no email app needed).
+      </p>
+</form>
+</div>
+</section>
+<footer>
+<div>© <span id="year"></span> Urban Time Vienna · All rights reserved</div>
+<div class="footer-note">Private sale: no returns, no warranty/guarantee.</div>
+</footer>
+</main>
+<div aria-hidden="true" class="modal" id="galleryModal">
+<div aria-labelledby="galleryTitle" aria-modal="true" class="card modal-card" role="dialog">
+<div class="modal-top">
+<div>
+<h3 id="galleryTitle">Watch</h3>
+<p class="meta" id="galleryMeta"></p>
+</div>
+<button aria-label="Close" class="icon-btn" id="galleryClose" type="button">✕</button>
+</div>
+<div class="modal-body">
+<div class="modal-media">
+<button aria-label="Previous image" class="nav-btn" id="galleryPrev" type="button">‹</button>
+<img alt="" class="main-image" id="galleryMain" src=""/>
+<button aria-label="Next image" class="nav-btn" id="galleryNext" type="button">›</button>
+</div>
+<div class="modal-side">
+<div class="thumbs" id="galleryThumbs"></div>
+<div class="order-box">
+<div class="order-actions"><div class="movement-picker" id="movementPicker"></div>
+<a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">
+                Order: Instagram DM
+              </a>
+<a class="btn primary" href="#bestellformular" id="orderFormBtn">
+                Request via form
+              </a>
+</div>
+<p class="order-note" id="orderNote">Instagram: On click, the model text is copied — just paste it into Instagram.</p>
+</div>
+<p class="modal-hint">Tip: Arrow keys ← → switch • ESC closes</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Jahr im Footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // ===== Modal Galerie (mehrere Bilder pro Uhr) =====
+    const modal = document.getElementById("galleryModal");
+    const mainImg = document.getElementById("galleryMain");
+    const titleEl = document.getElementById("galleryTitle");
+    const metaEl = document.getElementById("galleryMeta");
+    const thumbsEl = document.getElementById("galleryThumbs");
+    const closeBtn = document.getElementById("galleryClose");
+    const prevBtn = document.getElementById("galleryPrev");
+    const nextBtn = document.getElementById("galleryNext");
+    const orderInstaBtn = document.getElementById("orderInstaBtn");
+    const orderFormBtn = document.getElementById("orderFormBtn");
+    const orderNote = document.getElementById("orderNote");
+
+    // Instagram DM-Link (anpassen, falls dein Username anders ist)
+    const IG_DM_LINK = "https://ig.me/m/urbantimevienna";
+    // ===== Movement picker (Uhrwerk Auswahl) =====
+    const movementPicker = document.getElementById("movementPicker");
+    let currentMovements = [];
+    let selectedMovement = null;
+
+    function getSelectedMovement(){
+      if(selectedMovement) return selectedMovement;
+      if(Array.isArray(currentMovements) && currentMovements.length){
+        selectedMovement = currentMovements[0];
+        return selectedMovement;
+      }
+      return null;
+    }
+
+    function syncMovementSelectedUI(){
+      if(!movementPicker) return;
+      movementPicker.querySelectorAll(".mp-item").forEach(lbl => {
+        const inp = lbl.querySelector('input[name="movement"]');
+        lbl.classList.toggle("is-selected", !!(inp && inp.checked));
+      });
+    }
+
+    function renderMovementPicker(){
+      if(!movementPicker) return;
+
+      if(!Array.isArray(currentMovements) || !currentMovements.length){
+        movementPicker.innerHTML = "";
+        movementPicker.style.display = "none";
+        selectedMovement = null;
+        return;
+      }
+
+      movementPicker.style.display = "";
+      const sel = getSelectedMovement();
+      const titleText = "Select movement";
+      const title = `<div class="mp-title">${titleText}</div>`;
+
+      const items = currentMovements.map((m, idx) => {
+        const code = String(m.code || "").trim();
+        const price = Number(m.price || 0);
+        const id = `mv_${code}`;
+        const isSel = sel && String(sel.code) === code;
+        const checked = isSel ? "checked" : (idx===0 ? "checked" : "");
+        const cls = `mp-item${(isSel || idx===0) ? " is-selected" : ""}`;
+        const label = `${code} · ${price} €`;
+        return `
+          <label class="${cls}" for="${id}">
+            <input type="radio" name="movement" id="${id}" value="${code}" ${checked}>
+            <span class="mp-label">${label}</span>
+          </label>
+        `;
+      }).join("");
+
+      movementPicker.innerHTML = title + `<div class="mp-grid">${items}</div>`;
+
+      movementPicker.querySelectorAll('input[name="movement"]').forEach(inp => {
+        inp.addEventListener("change", () => {
+          const code = inp.value;
+          const found = currentMovements.find(x => String(x.code) === String(code));
+          selectedMovement = found || null;
+          syncMovementSelectedUI();
+          updateOrderText();
+        });
+      });
+
+      // initial highlight
+      syncMovementSelectedUI();
+    }
+
+
+    
+    function openInNewTab(url){
+      // Use a real anchor-click to keep the current page stable
+      const a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    function fillOrderFormFromSelection(){
+      const modelEl = document.getElementById("of_model");
+      const msgEl = document.getElementById("of_message");
+
+      const file = basename(currentImages[currentIndex] || "");
+      const variantNo = currentIndex + 1;
+      const hasVariants = (currentImages.length || 0) > 1;
+
+      const mv = getSelectedMovement();
+      const mvTxt = mv ? ` – Movement ${mv.code} – ${mv.price} €` : ``;
+      const modelText = hasVariants ? `${currentTitle} – Variant ${variantNo}${mvTxt}` : `${currentTitle}${mvTxt}`;
+      if(modelEl) modelEl.value = modelText;
+
+      const defaultMsg =
+`Please send the price, delivery time and availability.
+
+If possible, I would also like a detailed video or additional photos.
+Thank you!`;
+
+      // Nachricht bleibt clean: Referenzen (Modell/Variante/Bild) werden separat mitgesendet.
+      if(msgEl && !msgEl.value.trim()){
+        msgEl.value = defaultMsg;
+      }
+
+      updateOrderFormVariantPreview();
+    }
+
+    function updateOrderFormVariantPreview(){
+      const wrap = document.getElementById("selectedVariantPreview");
+      const img = document.getElementById("selectedVariantImg");
+      const cap = document.getElementById("selectedVariantCaption");
+      if(!wrap || !img) return;
+
+      const src = currentImages[currentIndex] || "";
+      if(!src){
+        wrap.style.display = "none";
+        return;
+      }
+
+      const variantNo = currentIndex + 1;
+      const hasVariants = (currentImages.length || 0) > 1;
+
+      img.src = src;
+      img.alt = hasVariants ? `${currentTitle} – Variant ${variantNo}` : `${currentTitle}`;
+
+      if(cap){
+        const mv = getSelectedMovement();
+        const mvCap = mv ? ` · ${mv.code} · ${mv.price} €` : ``;
+        cap.textContent = hasVariants ? `${currentTitle} · Variant ${variantNo}${mvCap}` : `${currentTitle}${mvCap}`;
+      }
+
+      wrap.style.display = "block";
+    }
+
+let currentImages = [];
+    let currentIndex = 0;
+    let currentTitle = "Watch";
+
+    function basename(path){
+      return (path || "").split("?")[0].split("#")[0].split("/").pop();
+    }
+
+    function copyText(text){
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise((resolve, reject) => {
+        try{
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          const ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+          ok ? resolve() : reject();
+        }catch(e){ reject(e); }
+      });
+    }
+
+    
+    
+    async function getImageBlobFromSrc(src){
+      return new Promise((resolve, reject) => {
+        try{
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => {
+            try{
+              const c = document.createElement("canvas");
+              c.width = img.naturalWidth || img.width;
+              c.height = img.naturalHeight || img.height;
+              const ctx = c.getContext("2d");
+              ctx.drawImage(img, 0, 0);
+              c.toBlob((blob) => {
+                if(blob) resolve(blob);
+                else reject(new Error("toBlob failed"));
+              }, "image/png");
+            }catch(e){ reject(e); }
+          };
+          img.onerror = (e) => reject(e);
+          img.src = src;
+        }catch(e){ reject(e); }
+      });
+    }
+
+    async function copyTextAndMaybeImage(text, imageSrc){
+      let textCopied = false;
+      try{
+        await copyText(text);
+        textCopied = true;
+      }catch(e){
+        textCopied = false;
+      }
+
+      if(!(navigator.clipboard && navigator.clipboard.write && window.ClipboardItem)){
+        return { textCopied, imageCopied: false };
+      }
+
+      try{
+        const blob = await getImageBlobFromSrc(imageSrc);
+        const items = [
+          new ClipboardItem({ "text/plain": new Blob([text], { type: "text/plain" }) }),
+          new ClipboardItem({ [blob.type || "image/png"]: blob })
+        ];
+        await navigator.clipboard.write(items);
+        return { textCopied: true, imageCopied: true };
+      }catch(e){
+        return { textCopied, imageCopied: false };
+      }
+    }
+
+
+    function updateOrderText(){
+      const src = currentImages[currentIndex] || "";
+      const file = basename(src);
+      const variantNo = currentIndex + 1;
+      const hasVariants = (currentImages.length || 0) > 1;
+
+            const mv = getSelectedMovement();
+      const mvLine = mv ? `Movement: ${mv.code}` : "";
+      const priceLine = mv ? `Price: ${mv.price} €` : "";
+
+      const msg = `Order request: ${currentTitle}
+Variant: ${hasVariants ? variantNo : "-"}
+Image: ${file}
+${mvLine}
+${priceLine}
+
+Please send the price, delivery time and availability.`;
+
+      orderInstaBtn.href = IG_DM_LINK;
+      orderInstaBtn.setAttribute("aria-label", `Open Instagram DM — ${currentTitle}`);
+      orderInstaBtn.textContent = "Order: Instagram DM";
+
+      if(orderFormBtn){
+        orderFormBtn.setAttribute("aria-label", `Go to form — ${currentTitle}`);
+      }
+
+      orderNote.textContent = "On click, the model text is copied — just paste it into Instagram.";
+
+      orderInstaBtn.onclick = async (e) => {
+        e.preventDefault();
+
+        const srcNow = currentImages[currentIndex] || "";
+        orderNote.textContent = "Copying model…";
+
+        const res = await copyTextAndMaybeImage(msg, srcNow);
+
+        if(res.imageCopied){
+          orderNote.textContent = "Text + image copied ✅ Just paste in Instagram (Ctrl+V).";
+        }else if(res.textCopied){
+          orderNote.textContent = "Text copied ✅ Opening Instagram… (You can zoom the image in the modal)";
+        }else{
+          orderNote.textContent = "Copying isn’t possible — please send the text/screenshot manually.";
+        }
+
+        openInNewTab(IG_DM_LINK);
+      };
+
+      if(orderFormBtn){
+        orderFormBtn.onclick = (e) => {
+          e.preventDefault();
+          fillOrderFormFromSelection();
+          closeGallery();
+          const sec = document.getElementById("bestellformular");
+          if(sec){
+            sec.scrollIntoView({behavior:"smooth", block:"start"});
+            setTimeout(() => {
+              const f = document.getElementById("of_name") || document.getElementById("of_email");
+              if(f) f.focus({preventScroll:true});
+            }, 500);
+          }
+        };
+      }
+      updateOrderFormVariantPreview();
+    }
+
+// Hover-Zoom auf das große Bild (kein Klick, kein neuer Tab) — robust (Mouse + Cursor-Position)
+    (function(){
+      const media = document.querySelector(".modal-media");
+      if(!media || !mainImg) return;
+
+      function setVars(e){
+        // Wichtig: Position relativ zum Container berechnen (der bleibt unverändert),
+        // nicht relativ zum bereits skalierten <img>, sonst wirkt der Zoom "fix".
+        const rect = media.getBoundingClientRect();
+        let x = ((e.clientX - rect.left) / rect.width) * 100;
+        let y = ((e.clientY - rect.top) / rect.height) * 100;
+        // Clamp 0..100
+        x = Math.max(0, Math.min(100, x));
+        y = Math.max(0, Math.min(100, y));
+        mainImg.style.setProperty("--zoom-x", x.toFixed(2) + "%");
+        mainImg.style.setProperty("--zoom-y", y.toFixed(2) + "%");
+      }
+
+      function resetVars(){
+        mainImg.style.setProperty("--zoom-x", "50%");
+        mainImg.style.setProperty("--zoom-y", "50%");
+      }
+
+      // Pointer Events: funktioniert zuverlässig, auch wenn matchMedia(pointer:fine) falsch meldet.
+      mainImg.addEventListener("pointerenter", (e) => {
+        if(e.pointerType && e.pointerType !== "mouse") return; // kein Zoom auf Touch
+        media.classList.add("zooming");
+        setVars(e);
+      });
+
+      mainImg.addEventListener("pointermove", (e) => {
+        if(!media.classList.contains("zooming")) return;
+        setVars(e);
+      });
+
+      mainImg.addEventListener("pointerleave", () => {
+        media.classList.remove("zooming");
+        resetVars();
+      });
+
+      // Falls Pointer-Cancel (z.B. Fensterwechsel)
+      mainImg.addEventListener("pointercancel", () => {
+        media.classList.remove("zooming");
+        resetVars();
+      });
+
+      resetVars();
+    })();
+
+function setIndex(i){
+      if(!currentImages.length) return;
+      currentIndex = (i + currentImages.length) % currentImages.length;
+      mainImg.src = currentImages[currentIndex];
+      mainImg.alt = `${currentTitle} – Image ${currentIndex + 1}`;
+      // Active Thumb
+      [...thumbsEl.children].forEach((btn, idx) => {
+        btn.classList.toggle("active", idx === currentIndex);
+      });
+      updateOrderText();
+    }
+
+    function openGallery(card){
+      const images = (card.dataset.images || "")
+        .split(",")
+        .map(s => s.trim())
+        .filter(Boolean);
+
+      if(!images.length) return;
+
+      currentImages = images;
+
+      // Movements (Uhrwerk) optional (nur bei 'Auf Bestellung')
+      currentMovements = [];
+      selectedMovement = null;
+      try{
+        currentMovements = JSON.parse(card.dataset.movements || "[]") || [];
+      }catch(e){ currentMovements = []; }
+      if(Array.isArray(currentMovements) && currentMovements.length){
+        selectedMovement = currentMovements[0];
+      }
+      renderMovementPicker();
+
+      const title = (card.querySelector("h3")?.textContent || "Watch").trim();
+      const meta = (card.querySelector(".tag")?.textContent || "").trim();
+
+      currentTitle = title;
+
+      titleEl.textContent = title;
+      metaEl.textContent = meta;
+
+      thumbsEl.innerHTML = "";
+      images.forEach((src, idx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "thumb-btn";
+        btn.setAttribute("aria-label", `Show image ${idx + 1}`);
+
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = `${title} – Image ${idx + 1}`;
+        img.loading = "lazy";
+
+        btn.appendChild(img);
+        btn.addEventListener("click", () => setIndex(idx));
+        thumbsEl.appendChild(btn);
+      });
+
+      setIndex(0);
+
+      modal.classList.add("open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeGallery(){
+      modal.classList.remove("open");
+      modal.setAttribute("aria-hidden", "true");
+      document.body.style.overflow = "";
+
+      // Hover-Zoom Reset (falls aktiv)
+      document.querySelector(".modal-media")?.classList.remove("zooming");
+      // Wichtig: Kein inline transform-origin setzen (würde Cursor-Follow-Zoom blockieren)
+      mainImg.style.removeProperty("transform-origin");
+      mainImg.style.setProperty("--zoom-x","50%");
+      mainImg.style.setProperty("--zoom-y","50%");
+    }
+
+    // Klick/Keyboard auf Produktkarten
+    // WICHTIG: Die Galerie soll NUR öffnen, wenn man auf das Bild (Thumbnail) klickt.
+    // "Technische Details" (<details>/<summary>) darf NICHT die Galerie/Popup öffnen.
+    document.querySelectorAll(".product-card").forEach(card => {
+      card.addEventListener("click", (e) => {
+        // Wenn der User auf "Bestellanfrage" klickt, öffnen wir trotzdem die Galerie
+        // (damit man ein Modell auswählen kann), statt nur zum Formular zu springen.
+        const orderBtn = e.target.closest("a.order-btn");
+        if(orderBtn){
+          e.preventDefault();
+          e.stopPropagation();
+          openGallery(card);
+          return;
+        }
+
+        const t = (e.target && e.target.nodeType === 1)
+          ? e.target
+          : (e.target && e.target.parentElement ? e.target.parentElement : null);
+
+        // Klick auf Links/Buttons/Details soll NICHT die Galerie öffnen
+        if(t && t.closest("a,button,details,summary")) return;
+
+        // Galerie nur öffnen, wenn auf das Bild (Thumbnail) geklickt wird
+        if(!t || !t.closest(".thumb")) return;
+
+        openGallery(card);
+      });
+
+      card.addEventListener("keydown", (e) => {
+        const t = (e.target && e.target.nodeType === 1)
+          ? e.target
+          : (e.target && e.target.parentElement ? e.target.parentElement : null);
+        if(t && t.closest("details,summary")) return;
+        if(e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          openGallery(card);
+        }
+      });
+    });
+
+    // Details/Summary sollen NIE die Galerie öffnen (Mobile zuverlässig)
+    document.querySelectorAll(".product-card details, .product-card details *").forEach(el => {
+      el.addEventListener("click", (e) => e.stopPropagation());
+      el.addEventListener("keydown", (e) => e.stopPropagation());
+    });
+
+    // Modal Controls
+    closeBtn.addEventListener("click", closeGallery);
+    prevBtn.addEventListener("click", () => setIndex(currentIndex - 1));
+    nextBtn.addEventListener("click", () => setIndex(currentIndex + 1));
+
+    // Swipe (Mobile): links/rechts wischen zum Wechseln
+    const mediaEl = document.querySelector('.modal-media');
+    let swipeActive = false;
+    let sx = 0, sy = 0;
+
+    mediaEl?.addEventListener('pointerdown', (e) => {
+      if(!modal.classList.contains('open')) return;
+      if(e.pointerType !== 'touch') return;
+      swipeActive = true;
+      sx = e.clientX;
+      sy = e.clientY;
+    }, {passive: true});
+
+    mediaEl?.addEventListener('pointerup', (e) => {
+      if(!swipeActive) return;
+      swipeActive = false;
+      if(e.pointerType !== 'touch') return;
+      const dx = e.clientX - sx;
+      const dy = e.clientY - sy;
+      // Horizontale Wischgeste nur, wenn deutlich stärker als vertikal
+      if(Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.2){
+        if(dx < 0) setIndex(currentIndex + 1);
+        else setIndex(currentIndex - 1);
+      }
+    }, {passive: true});
+
+    mediaEl?.addEventListener('pointercancel', () => { swipeActive = false; }, {passive: true});
+
+    // Klick auf Overlay schließt
+    modal.addEventListener("click", (e) => {
+      if(e.target === modal) closeGallery();
+    });
+
+    // Keyboard: ESC/Arrows
+    document.addEventListener("keydown", (e) => {
+      if(!modal.classList.contains("open")) return;
+      if(e.key === "Escape") closeGallery();
+      if(e.key === "ArrowLeft") setIndex(currentIndex - 1);
+      if(e.key === "ArrowRight") setIndex(currentIndex + 1);
+    });
+
+
+    // ===== Bestellformular: E-Mail + Copy =====
+    const ORDER_TO_EMAIL = "urbantimevienna@gmail.com";
+
+    // --- Versand ohne Mailprogramm (Google Apps Script Webhook) ---
+    // Wichtig: Diese beiden Werte müssen zu deinem Apps Script passen.
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFppgJ02rlkF34bMitHHSkPVxDREqywXZk18PGddRR_mmQsjN9Kqhvrcz5MIwLsJKP/exec";
+const APPS_SCRIPT_TOKEN = "uTv_2026!9xA#kP3zQ1";
+
+    // Optional (nur für die lokale HTML-Vorschau / Copy-Text):
+    const BRAND_NAME = "Urban Time Vienna";
+
+    function buildOrderText(){
+      const model = (document.getElementById("of_model")?.value || "").trim();
+      const name = (document.getElementById("of_name")?.value || "").trim();
+      const email = (document.getElementById("of_email")?.value || "").trim();
+      const street = (document.getElementById("of_street")?.value || "").trim();
+      const postal = (document.getElementById("of_postal")?.value || "").trim();
+      const city = (document.getElementById("of_city")?.value || "").trim();
+      const country = (document.getElementById("of_country")?.value || "").trim();
+      const deliveryMethod = (document.getElementById("of_delivery")?.value || "").trim();
+
+    
+      const instagram = (document.getElementById("of_instagram")?.value || "").trim();
+      const phone = (document.getElementById("of_phone")?.value || "").trim();
+      const message = (document.getElementById("of_message")?.value || "").trim();
+
+      const imgSrc = document.getElementById("selectedVariantImg")?.getAttribute("src") || "";
+      const imgFile = basename(imgSrc);
+
+      const lines = [];
+      lines.push("Order request (web form)");
+      lines.push("");
+      if(model) lines.push(`Model: ${model}`);
+      if(deliveryMethod) lines.push(`Delivery/pickup: ${deliveryMethod}`);
+      if(imgFile) lines.push(`Image reference: ${imgFile}`);
+      lines.push("");
+      if(message) lines.push(message);
+      lines.push("");
+      lines.push("---");
+      lines.push("Contact details:");
+      if(name) lines.push(`Name: ${name}`);
+      if(email) lines.push(`Email: ${email}`);
+      if(street || postal || city || country){
+        lines.push("Address:");
+        if(street) lines.push(street);
+        if(postal || city) lines.push(`${postal} ${city}`.trim());
+        if(country) lines.push(country);
+      }
+      if(instagram) lines.push(`Instagram: ${instagram}`);
+      if(phone) lines.push(`Phone: ${phone}`);
+      return lines.join("\n");
+    }
+
+    function setFormNote(text){
+      const n = document.getElementById("formNote");
+      if(n) n.textContent = text;
+    }
+function escapeHtml(str){
+  return (str || "").replace(/[&<>"']/g, (ch) => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[ch]));
+}
+
+function formatDateTimeVienna(date){
+  try{
+    return date.toLocaleString("en-GB", {
+      timeZone: "Europe/Vienna",
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit"
+    });
+  }catch(e){
+    return date.toLocaleString();
+  }
+}
+
+function toAbsoluteUrl(path){
+  if(!path) return "";
+  if(/^https?:\/\//i.test(path)) return path;
+  if(!SITE_BASE_URL) return "";
+  const base = SITE_BASE_URL.replace(/\/$/, "");
+  const p = path.replace(/^\//, "");
+  return `${base}/${p}`;
+}
+
+function buildReceiptHtml({ mode }){
+  // mode: "admin" | "customer"
+  const dt = new Date();
+  const dtText = formatDateTimeVienna(dt);
+
+  const model = (document.getElementById("of_model")?.value || "").trim();
+  const name = (document.getElementById("of_name")?.value || "").trim();
+  const email = (document.getElementById("of_email")?.value || "").trim();
+  const instagram = (document.getElementById("of_instagram")?.value || "").trim();
+  const phone = (document.getElementById("of_phone")?.value || "").trim();
+  const message = (document.getElementById("of_message")?.value || "").trim();
+
+  const imgSrc = document.getElementById("selectedVariantImg")?.getAttribute("src") || "";
+  const absImg = toAbsoluteUrl(imgSrc);
+  const absLogo = toAbsoluteUrl(BRAND_LOGO_PATH);
+
+  const title = mode === "customer" ? "Order confirmation (request)" : "New order request";
+  const intro = mode === "customer"
+    ? `Thanks for your request! We’ll get back to you as soon as possible with price, lead time and availability.`
+    : `A new request has been received via the web form.`;
+
+  const safe = (s) => escapeHtml(s).replace(/\n/g, "<br>");
+  const show = (label, value) => value ? `<tr><td style="padding:6px 0; color:#666; width:180px;">${label}</td><td style="padding:6px 0;">${safe(value)}</td></tr>` : "";
+
+  const watchImg = absImg
+    ? `<div style="margin:18px 0 6px 0;">
+         <img src="${escapeHtml(absImg)}" alt="Selected watch" style="max-width:100%; border-radius:12px; border:1px solid #eee;">
+       </div>`
+    : `<div style="margin:18px 0 6px 0; padding:12px; border:1px solid #eee; border-radius:12px; color:#666;">
+         Image reference: ${escapeHtml(basename(imgSrc))}
+       </div>`;
+
+  const logoBlock = absLogo
+    ? `<img src="${escapeHtml(absLogo)}" alt="${escapeHtml(BRAND_NAME)}" style="height:40px; display:block;">`
+    : `<div style="font-weight:800; letter-spacing:.08em; font-size:14px;">${escapeHtml(BRAND_NAME)}</div>`;
+
+  const customerNote = mode === "customer"
+    ? `<div style="margin-top:18px; padding:12px 14px; background:#f7f7f7; border-radius:12px; color:#555;">
+         Note: This is a confirmation of your request (not an invoice / not a completed purchase).
+       </div>`
+    : "";
+
+  const contactRows = mode === "admin"
+    ? (show("Name", name) + show("Email", email) + show("Instagram", instagram) + show("Phone", phone))
+    : (show("Name", name) + show("Email", email));
+
+  return `
+  <div style="font-family:Arial, Helvetica, sans-serif; background:#f3f4f6; padding:24px;">
+    <div style="max-width:640px; margin:0 auto; background:#ffffff; border-radius:16px; overflow:hidden; border:1px solid #e9e9e9;">
+      <div style="padding:18px 22px; border-bottom:1px solid #f0f0f0; display:flex; align-items:center; justify-content:space-between; gap:16px;">
+        <div>${logoBlock}</div>
+        <div style="text-align:right; color:#666; font-size:12px;">
+          <div>${escapeHtml(dtText)}</div>
+          <div style="margin-top:4px;">${escapeHtml(title)}</div>
+        </div>
+      </div>
+
+      <div style="padding:22px;">
+        <h2 style="margin:0 0 10px 0; font-size:18px;">${escapeHtml(title)}</h2>
+        <p style="margin:0 0 14px 0; color:#444; line-height:1.5;">${escapeHtml(intro)}</p>
+
+        <div style="margin:16px 0; padding:14px 16px; border:1px solid #eee; border-radius:12px;">
+          <div style="font-weight:700; margin-bottom:6px;">Order details</div>
+          <div style="color:#333;">${escapeHtml(model || "—")}</div>
+          ${watchImg}
+        </div>
+
+        ${message ? `<div style="margin:16px 0; padding:14px 16px; border:1px solid #eee; border-radius:12px;">
+          <div style="font-weight:700; margin-bottom:6px;">Message</div>
+          <div style="color:#333; line-height:1.5;">${safe(message)}</div>
+        </div>` : ""}
+
+        <div style="margin:16px 0; padding:14px 16px; border:1px solid #eee; border-radius:12px;">
+          <div style="font-weight:700; margin-bottom:6px;">Contact details</div>
+          <table style="width:100%; border-collapse:collapse; font-size:14px;">
+            ${contactRows}
+          </table>
+        </div>
+
+        ${customerNote}
+
+        <div style="margin-top:22px; color:#888; font-size:12px; line-height:1.4;">
+          <div>${escapeHtml(BRAND_NAME)} • Web form</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+    const orderForm = document.getElementById("orderForm");
+    function getSelectedMeta(){
+      const imgSrc = document.getElementById("selectedVariantImg")?.getAttribute("src") || "";
+      const imageUrl = imgSrc ? new URL(imgSrc, window.location.href).href : "";
+
+      // Caption ist am verlässlichsten (wird in updateOrderFormVariantPreview gesetzt)
+      const capText = (document.getElementById("selectedVariantCaption")?.textContent || "").trim();
+
+      const hasVariants = (currentImages.length || 0) > 1;
+      const variantNo = hasVariants ? String(currentIndex + 1) : "";
+
+      // Best effort: Modellname aus aktuellem Titel
+      const modelBase = (currentTitle || "").trim();
+      const imageLabel = capText || (modelBase ? (variantNo ? `${modelBase} · Variante ${variantNo}` : modelBase) : "");
+
+      return { imageUrl, variantNo, imageLabel };
+    }
+
+    if(orderForm){
+  orderForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    if(!orderForm.checkValidity()){
+      orderForm.reportValidity();
+      return;
+    }
+
+    const model = (document.getElementById("of_model")?.value || "").trim();
+    const customerEmail = (document.getElementById("of_email")?.value || "").trim();
+    const customerName = (document.getElementById("of_name")?.value || "").trim();
+
+    const street = (document.getElementById("of_street")?.value || "").trim();
+    const postal = (document.getElementById("of_postal")?.value || "").trim();
+    const city = (document.getElementById("of_city")?.value || "").trim();
+    const country = (document.getElementById("of_country")?.value || "").trim();
+
+    const instagram = (document.getElementById("of_instagram")?.value || "").trim();
+    const phone = (document.getElementById("of_phone")?.value || "").trim();
+    const deliveryMethod = (document.getElementById("of_delivery")?.value || "").trim();
+    const message = (document.getElementById("of_message")?.value || "").trim();
+
+    // Für die PDF/Email (ein Feld als Fallback)
+    const address = [
+      street,
+      `${postal} ${city}`.trim(),
+      country
+    ].filter(Boolean).join("\n");
+
+    const { imageUrl, variantNo, imageLabel } = getSelectedMeta();
+
+    const btn = document.getElementById("orderEmailBtn");
+    if(btn){
+      btn.disabled = true;
+      btn.textContent = "Sending…";
+    }
+    setFormNote("Sending request…");
+
+    try{
+      if(!APPS_SCRIPT_URL){
+        setFormNote("Apps Script URL is missing — please set it.");
+        if(btn){ btn.disabled = false; btn.textContent = "Send request by email"; }
+        return;
+      }
+
+      const payload = {
+        token: APPS_SCRIPT_TOKEN,
+        // Kunde
+        name: customerName,
+        email: customerEmail,
+        instagram,
+        phone,
+        deliveryMethod,
+        // Adresse (getrennt + zusammen)
+        street,
+        postal,
+        city,
+        country,
+        address,
+        // Uhr/Variante
+        model,
+        variant: variantNo,
+        imageLabel,
+        imageUrl,
+        // Nachricht
+        message,
+      };
+
+      // Wichtig: text/plain + no-cors => kein OPTIONS/Preflight, funktioniert stabil auf Netlify
+      await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+
+      setFormNote("Request sent ✅ You’ll receive a confirmation email.");
+      if(btn){ btn.textContent = "Sent ✅"; }
+    }catch(err){
+      console.error(err);
+      setFormNote("Sending failed. Please try again or use 'Copy text'.");
+      if(btn){
+        btn.disabled = false;
+        btn.textContent = "Send request by email";
+      }
+    }
+  });
+}
+
+  
+
+// --- Hero Slider (3 slides) ---
+(function(){
+  const root = document.getElementById('heroSlider');
+  if(!root) return;
+
+  const slides = Array.from(root.querySelectorAll('.hero-slide'));
+  const dots = Array.from(root.querySelectorAll('.dotnav'));
+  let idx = 0;
+  let timer = null;
+
+  const show = (n) => {
+    idx = (n + slides.length) % slides.length;
+    slides.forEach((s,i)=>s.classList.toggle('is-active', i===idx));
+    dots.forEach((d,i)=>d.classList.toggle('is-active', i===idx));
+  };
+
+  const start = () => {
+    stop();
+    timer = setInterval(()=>show(idx+1), 6500);
+  };
+  const stop = () => { if(timer) clearInterval(timer); timer=null; };
+
+  dots.forEach(d=>{
+    d.addEventListener('click', ()=>{
+      const go = parseInt(d.dataset.go, 10);
+      if(!Number.isNaN(go)) show(go);
+      start();
+    });
+  });
+
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+
+  show(0);
+  start();
+})();
+
+
+
+    // ===== Language Dropdown (DE / EN) =====
+    (function () {
+      try {
+        var dd = document.getElementById("langDropdown");
+        if (!dd) return;
+
+        var btn = dd.querySelector(".lang-current");
+        var isOpen = function(){ return dd.classList.contains("is-open"); };
+        var setOpen = function(open){
+          dd.classList.toggle("is-open", open);
+          if(btn) btn.setAttribute("aria-expanded", open ? "true" : "false");
+        };
+
+        if(btn){
+          btn.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            setOpen(!isOpen());
+          });
+        }
+
+        // close on outside click / ESC
+        document.addEventListener("click", function(){ setOpen(false); });
+        document.addEventListener("keydown", function(e){
+          if(e.key === "Escape") setOpen(false);
+        });
+
+        dd.querySelectorAll("[data-lang]").forEach(function(a){
+          a.addEventListener("click", function(){
+            try { localStorage.setItem("utv_lang", a.getAttribute("data-lang")); } catch (e) {}
+          });
+        });
+      } catch (e) {}
+    })();
+</script>
+</body>
+</html>
