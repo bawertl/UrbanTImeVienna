@@ -1005,36 +1005,6 @@
 }
 .hero-right .slide-inner > *{ position: relative; z-index: 2; }
 
-.premium-chip{
-  position:absolute;
-  top: 18px; left: 18px;
-  width: 56px; height: 40px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
-  border: 1px solid rgba(255,255,255,.18);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.35), 0 8px 20px rgba(0,0,0,.35);
-  opacity: .92;
-}
-.premium-chip::before{
-  content:"";
-  position:absolute;
-  inset:8px 10px;
-  border-radius:6px;
-  border:1px solid rgba(255,255,255,.18);
-  background: linear-gradient(90deg, rgba(45,226,255,.15), rgba(255,59,212,.10));
-  opacity:.95;
-}
-.premium-chip::after{
-  content:"";
-  position:absolute;
-  left: 12px; right: 12px;
-  top: 50%;
-  height: 1px;
-  background: rgba(255,255,255,.18);
-  opacity: .7;
-  transform: translateY(-.5px);
-}
-
 .premium-micro{
   position:absolute;
   bottom: 14px; right: 18px;
@@ -1067,6 +1037,129 @@
   }
 }
 
+
+
+/* === Hero Brand Card (original look, subtle movement, fully clickable to Instagram) === */
+.hero-brand-link{
+  display:block;
+  width:100%;
+  height:100%;
+  padding: 16px;
+  text-decoration:none;
+  color: inherit;
+}
+.hero-brand-link:focus-visible{
+  outline: 3px solid rgba(45,226,255,.65);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+.hero-brand-inner{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:78px 18px 78px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(900px 420px at 12% 0%, rgba(45,226,255,.22), transparent 55%),
+    radial-gradient(700px 420px at 88% 18%, rgba(255,59,212,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  box-shadow: 0 26px 80px rgba(0,0,0,.55),
+              inset 0 0 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+.hero-brand-inner::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background-image: url('assets/pattern-crown.svg');
+  background-size: 280px 280px;
+  background-repeat: repeat;
+  opacity: .10;
+  transform: rotate(8deg) scale(1.05);
+  pointer-events:none;
+  animation: utvPatternDrift 10s linear infinite;
+}
+.hero-brand-inner::after{
+  content:"";
+  position:absolute;
+  top:-30%;
+  left:-140%;
+  width: 90%;
+  height: 170%;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.18) 45%, rgba(255,255,255,.10) 50%, transparent 60%);
+  transform: rotate(18deg);
+  opacity: 0;
+  pointer-events:none;
+  animation: utvShineSweep 6.2s ease-in-out infinite;
+}
+.hero-brand-inner > *{ position: relative; z-index: 2; }
+
+@keyframes utvPatternDrift{
+  from{ background-position: 0 0; }
+  to{ background-position: 240px 160px; }
+}
+@keyframes utvShineSweep{
+  0%{ transform: translateX(0) rotate(18deg); opacity: 0; }
+  15%{ opacity: .18; }
+  50%{ opacity: .18; }
+  85%{ opacity: 0; }
+  100%{ transform: translateX(320%) rotate(18deg); opacity: 0; }
+}
+  to{ transform: translate(2%, 2%) rotate(18deg); }
+}
+@keyframes utvFloat{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-3px); }
+}
+.hero-brand-inner .slide-crown{ animation: utvFloat 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce){
+  .hero-brand-inner::before,
+  .hero-brand-inner::after,
+  .hero-brand-inner .slide-crown{ animation: none !important; }
+}
+
+@media (max-width: 520px){
+  .hero-brand-link{ padding: 12px; }
+  .hero-brand-inner{ padding: 60px 18px 54px; }
+}
+
+@media (hover:hover) and (pointer:fine){
+  .hero-brand-inner{ transition: transform .25s ease, box-shadow .25s ease; }
+  .hero-brand-inner:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 32px 92px rgba(0,0,0,.62), 0 0 26px rgba(45,226,255,.10);
+  }
+}
+
+/* Thumbnails – smoother snap on mobile */
+.thumbs.thumbs-under{
+  scroll-behavior: smooth;
+  scroll-padding: 10px;
+  scrollbar-width: none;
+}
+.thumbs.thumbs-under::-webkit-scrollbar{ display:none; }
+.thumb-btn{ flex: 0 0 auto; }
+
+/* Modal: keep perfectly centered & scrollable on small screens */
+.modal{
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-card{ margin: auto; }
+
+/* UTV motion accessibility */
+@media (prefers-reduced-motion: reduce){
+  .hero-brand-inner::before,
+  .hero-brand-inner::after,
+  .hero-brand-inner .slide-crown{
+    animation: none !important;
+  }
+}
 </style>
 </head>
 <body class="lang-en" id="top">
@@ -1106,71 +1199,25 @@
         </p>
 <div class="cta-row">
 <a class="btn primary" href="#kollektion">View collection</a>
-<a class="btn secondary" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">Instagram ↗</a>
 </div>
 </div>
 <div class="card hero-right">
-<div aria-label="Urban Time Vienna Highlights" class="hero-slider" id="heroSlider">
-<div class="hero-slides">
-<section class="hero-slide is-active" data-slide="0">
-<div class="slide-inner">
-<div class="premium-chip" aria-hidden="true"></div>
-<div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
+  <a class="hero-brand-link" href="https://www.instagram.com/urbantimevienna/" target="_blank" rel="noopener" aria-label="Open Urban Time Vienna on Instagram">
+    <div class="hero-brand-inner">
+      <div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
 
-<div aria-label="Urban Time Vienna" class="slide-brand">
-<img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
-<div class="slide-brand-text">
-<div class="slide-brand-top">URBAN TIME</div>
-<div class="slide-brand-bottom">VIENNA</div>
-</div>
-</div>
-<div class="slide-text">Curated · Refined · Style with character</div>
-<div class="slide-actions">
-<a class="btn secondary" href="#kollektion">Collection</a>
-<a class="btn primary" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">Instagram ↗</a>
-</div>
-</div>
-</section>
-<section class="hero-slide" data-slide="1">
-<div class="slide-inner">
-<div class="premium-chip" aria-hidden="true"></div>
-<div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
+      <div aria-label="Urban Time Vienna" class="slide-brand">
+        <img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
+        <div class="slide-brand-text">
+          <div class="slide-brand-top">URBAN TIME</div>
+          <div class="slide-brand-bottom">VIENNA</div>
+        </div>
+      </div>
 
-<div class="slide-title">How it works</div>
-<ul class="slide-list">
-<li><b>1.</b> Choose a model</li>
-<li><b>2.</b> <b>€300 deposit</b> to reserve</li>
-<li><b>3.</b> Shipping (cash on delivery) or pickup</li>
-</ul>
-<div class="slide-text">You’ll automatically receive tracking by email once your order ships.</div>
-<div class="slide-actions">
-<a class="btn primary" href="#kaufablauf">How it works</a>
-<a class="btn secondary" href="#bestellbar">Made to order</a>
-</div>
-</div>
-</section>
-<section class="hero-slide" data-slide="2">
-<div class="slide-inner">
-<div class="premium-chip" aria-hidden="true"></div>
-<div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
-
-<div class="slide-title">Service &amp; delivery</div>
-<ul class="slide-list">
-<li>Processing: <b>up to 14 business days</b> after deposit</li>
-<li>Shipping: <b>cash on delivery</b> (remaining balance on delivery)</li>
-<li>Pickup: appointment by arrangement</li>
-</ul>
-<div class="slide-text">
-            Support: <a class="link" href="mailto:urbantimevienna@gmail.com">urbantimevienna@gmail.com</a>
-</div>
-<div class="slide-actions">
-<a class="btn secondary" href="#kollektion">In stock now</a>
-<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Contact ↗</a>
-</div>
-</div>
-</section>
-</div>
-</div></div></section>
+      <div class="slide-text">Curated · Refined · Style with character</div>
+    </div>
+  </a>
+</div></section>
 <section class="section" id="highlights">
 <div class="section-head">
 <div>
@@ -1557,7 +1604,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Instagram DM-Link (anpassen, falls dein Username anders ist)
     const IG_DM_LINK = "https://ig.me/m/urbantimevienna";
-    // ===== Movement picker (Uhrwerk Auswahl) =====
+    
+    function preloadImages(list){
+      (list||[]).forEach((src)=>{ const im=new Image(); im.src=src; });
+    }
+// ===== Movement picker (Uhrwerk Auswahl) =====
     const movementPicker = document.getElementById("movementPicker");
     const movementDesc = document.getElementById("movementDesc");
     let currentMovements = [];
@@ -1907,7 +1958,9 @@ function setIndex(i){
 
       currentImages = images;
 
-      // Movements (Uhrwerk) optional (nur bei 'Auf Bestellung')
+      
+      preloadImages(images);
+// Movements (Uhrwerk) optional (nur bei 'Auf Bestellung')
       currentMovements = [];
       selectedMovement = null;
       try{
