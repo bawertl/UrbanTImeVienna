@@ -411,16 +411,22 @@
     
       align-items: start;
     }
-    .modal-media{
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: #0e0e12;
-      min-height: 300px;
-      height: min(68vh, 560px);
-      display:flex; align-items:center; justify-content:center;
-    }
+    
+.modal-media{
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0e0e12;
+  display:flex;
+  flex-direction:column;
+}
+.media-stage{
+  position: relative;
+  min-height: 300px;
+  height: min(68vh, 560px);
+  display:flex; align-items:center; justify-content:center;
+}
     .main-image{
       width: 100%; height: 100%;
       object-fit: contain; /* schärfer & nichts abschneiden */
@@ -430,7 +436,7 @@
       will-change: transform;
     }
     /* Hover-Zoom: Zoom wird per JS (Pointer Events) aktiviert und folgt dem Mauszeiger */
-    .modal-media.zooming .main-image{
+    .media-stage.zooming .main-image{
       transform: scale(1.8);
       cursor: zoom-in;
     }
@@ -481,7 +487,21 @@
       border-color: var(--pop-cyan);
       box-shadow: 0 0 0 2px rgba(45,226,255,.18);
     }
-    .modal-hint{
+
+
+/* Thumbnails unter dem Bild (Desktop + Mobile) */
+.thumbs.thumbs-under{
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  gap: 10px;
+  padding: 10px 10px 12px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+  scroll-snap-type: x mandatory;
+}
+.thumbs.thumbs-under .thumb-btn{ scroll-snap-align: start; }    .modal-hint{
       margin: 0;
       color: rgba(255,255,255,0.35);
       font-size: 12px;
@@ -506,7 +526,7 @@
     @media (max-width: 850px){
       .modal-body{ grid-template-columns: 1fr; }
       .modal-side{ padding-left: 0; }
-      .modal-media{ min-height: 320px; }
+      .media-stage{ min-height: 320px; }
     }
 
 
@@ -703,14 +723,14 @@
     padding: 12px 14px 18px;
     gap: 12px;
   }
-  .modal-media{
+  .media-stage{
     height: 46vh;
     min-height: 260px;
-    touch-action: pan-y; /* Vertical Scroll okay – horizontales Wischen fürs Wechseln */
+    touch-action: pan-y; /* Vertical scroll ok – horizontal swipe switches */
   }
 
   /* Hover-Zoom auf Touch-Geräten deaktivieren (wir nutzen Swipe) */
-  .modal-media.zooming .main-image{ transform: none; cursor: default; }
+  .media-stage.zooming .main-image{ transform: none; cursor: default; }
 
   /* Thumbnails als horizontale Scroll-Leiste (statt Wrap) */
   .thumbs{
@@ -773,7 +793,7 @@
   pointer-events:auto;
 }
 /* UPDATE: Padding oben stark reduziert (5px), unten erhöht (75px) für mehr Platz */
-.slide-inner{padding:5px 18px 75px 18px;}
+.slide-inner{height:100%; display:flex; flex-direction:column; justify-content:center; padding:48px 18px 92px 18px;}
 
 /* UPDATE: Margin oben auf 0, unten leicht reduziert */
 .slide-brand{
@@ -930,6 +950,37 @@
   font-size: 13px;
   white-space: nowrap;
 }
+
+
+.movement-desc{
+  margin: 6px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  background: rgba(0,0,0,.14);
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.movement-desc strong{ color: var(--text); font-weight: 800; }
+.movement-desc ul{ margin: 8px 0 0 18px; padding: 0; }
+.movement-desc li{ margin: 4px 0; }
+
+
+
+/* ===== Privatverkaufsbedingungen (Popup) ===== */
+.terms-link{
+  color: var(--pop-cyan);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.terms-link:hover{ opacity: .9; }
+
+.terms-modal .modal-card{ width: min(760px, 100%); }
+.terms-modal .modal-body{ display:block; padding: 18px; overflow:auto; }
+.terms-modal .terms-content p{ margin: 0 0 12px; color: var(--text); }
+.terms-modal .terms-content ul{ margin: 0 0 12px 18px; padding: 0; color: var(--text); }
+.terms-modal .terms-content li{ margin: 6px 0; color: var(--text); }
 
 </style>
 </head>
@@ -1304,6 +1355,12 @@
 <span>Ich bestätige die Anzahlung (300 €) und akzeptiere den Kaufablauf (Versand per Nachnahme oder Abholung).</span>
 </label>
 </div>
+<div class="field field-full">
+  <label class="check">
+    <input id="of_privterms" required type="checkbox"/>
+    <span>Ich habe die <a href="#" id="openPrivTerms" class="terms-link">Privatverkaufsbedingungen</a> gelesen und akzeptiere sie.</span>
+  </label>
+</div>
 </div>
 <div class="form-buttons">
 <button class="btn primary" id="orderEmailBtn" type="submit">Anfrage per E‑Mail senden</button>
@@ -1330,14 +1387,17 @@
 </div>
 <div class="modal-body">
 <div class="modal-media">
-<button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
-<img alt="" class="main-image" id="galleryMain" src="">
-<button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
-</img></div>
+  <div class="media-stage" id="mediaStage">
+    <button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
+    <img alt="" class="main-image" id="galleryMain" src=""/>
+    <button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
+  </div>
+  <div class="thumbs thumbs-under" id="galleryThumbs"></div>
+</div>
 <div class="modal-side">
-<div class="thumbs" id="galleryThumbs"></div>
 <div class="order-box">
 <div class="order-actions"><div class="movement-picker" id="movementPicker"></div>
+<div class="movement-desc" id="movementDesc" aria-live="polite"></div>
 <a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">
                 Bestellen: Instagram DM
               </a>
@@ -1356,6 +1416,41 @@
     // Jahr im Footer
     document.getElementById("year").textContent = new Date().getFullYear();
 
+
+// ===== Privatverkaufsbedingungen (Popup) =====
+document.addEventListener("DOMContentLoaded", () => {
+  const privTermsModal = document.getElementById("privTermsModal");
+  const openPrivTerms = document.getElementById("openPrivTerms");
+  const closePrivTerms = document.getElementById("closePrivTerms");
+  if(!privTermsModal || !openPrivTerms) return;
+
+  const openPrivTermsModal = () => {
+    privTermsModal.classList.add("open");
+    privTermsModal.setAttribute("aria-hidden", "false");
+  };
+  const closePrivTermsModal = () => {
+    privTermsModal.classList.remove("open");
+    privTermsModal.setAttribute("aria-hidden", "true");
+  };
+
+  openPrivTerms.addEventListener("click", (e) => {
+    e.preventDefault();
+    openPrivTermsModal();
+  });
+
+  closePrivTerms?.addEventListener("click", closePrivTermsModal);
+
+  privTermsModal.addEventListener("click", (e) => {
+    if(e.target === privTermsModal) closePrivTermsModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape" && privTermsModal.classList.contains("open")){
+      closePrivTermsModal();
+    }
+  });
+});
+
     // ===== Modal Galerie (mehrere Bilder pro Uhr) =====
     const modal = document.getElementById("galleryModal");
     const mainImg = document.getElementById("galleryMain");
@@ -1373,6 +1468,7 @@
     const IG_DM_LINK = "https://ig.me/m/urbantimevienna";
     // ===== Movement picker (Uhrwerk Auswahl) =====
     const movementPicker = document.getElementById("movementPicker");
+    const movementDesc = document.getElementById("movementDesc");
     let currentMovements = [];
     let selectedMovement = null;
 
@@ -1392,6 +1488,46 @@
         lbl.classList.toggle("is-selected", !!(inp && inp.checked));
       });
     }
+
+const MOVEMENT_INFO = {
+  "2836": { de: { title: "2836", bullets: ["Bewährtes Automatikwerk (klassische Basis).","Gute Preis/Leistung, servicefreundlich.","Typisch kürzere Gangreserve als bei der 32xx‑Serie."]},
+            en: { title: "2836", bullets: ["Proven automatic movement (classic base).","Great value, service-friendly.","Typically shorter power reserve than the 32xx series."]}},
+  "3235": { de: { title: "3235", bullets: ["Neuere Generation mit modernerem Aufbau.","Typisch längere Gangreserve (ca. 70h) und höhere Effizienz.","Stabilere Gangwerte / moderneres Datumsmodul."]},
+            en: { title: "3235", bullets: ["Newer generation with a more modern architecture.","Typically longer power reserve (~70h) and higher efficiency.","More stable timekeeping / updated date module."]}},
+  "3186": { de: { title: "3186", bullets: ["GMT‑Werk (zweite Zeitzone) – ideal für Reisen.","Klassische GMT‑Generation, bewährt und zuverlässig.","Typisch kürzere Gangreserve als 3285."]},
+            en: { title: "3186", bullets: ["GMT movement (second time zone) — ideal for travel.","Proven GMT generation, reliable.","Typically shorter power reserve than 3285."]}},
+  "3285": { de: { title: "3285", bullets: ["Neuere GMT‑Generation mit optimierter Effizienz.","Typisch längere Gangreserve (ca. 70h).","Verbesserte Stabilität / modernes GMT‑Layout."]},
+            en: { title: "3285", bullets: ["Newer GMT generation with improved efficiency.","Typically longer power reserve (~70h).","Improved stability / modern GMT layout."]}},
+  "7750": { de: { title: "7750", bullets: ["Robustes Automatik‑Chronographenwerk (bewährter Klassiker).","Servicefreundlich, zuverlässig im Alltag.","Typisch ~40–44h Gangreserve (je nach Ausführung)."]},
+            en: { title: "7750", bullets: ["Robust automatic chronograph movement (proven classic).","Service-friendly, reliable for daily wear.","Typically ~40–44h power reserve (depending on build)."]}},
+  "4131": { de: { title: "4131", bullets: ["High‑End Chronograph (moderne Architektur).","Typisch längere Gangreserve (ca. 72h) und feinere Bedienung.","Smootheres Start/Stop‑Gefühl (Säulenrad/vertikale Kupplung, je nach Ausführung)."]},
+            en: { title: "4131", bullets: ["High-end chronograph (modern architecture).","Typically longer power reserve (~72h) and smoother operation.","Smoother start/stop feel (column wheel/vertical clutch depending on build)."]}},
+  "3255": { de: { title: "3255", bullets: ["Day‑Date‑Werk mit höherer Qualitäts-/Leistungsstufe.","Typisch längere Gangreserve (ca. 70h) und höhere Effizienz.","Optimiertes Datums-/Wochentag‑Handling (je nach Ausführung)."]},
+            en: { title: "3255", bullets: ["Day-Date movement at a higher spec level.","Typically longer power reserve (~70h) and higher efficiency.","Optimized date/day handling (depending on build)."]}}
+};
+
+function updateMovementDescription(){
+  if(!movementDesc) return;
+  const mv = getSelectedMovement();
+  if(!mv || !mv.code){
+    movementDesc.style.display = "none";
+    movementDesc.innerHTML = "";
+    return;
+  }
+  const code = String(mv.code).trim();
+  const info = MOVEMENT_INFO[code];
+  if(!info){
+    movementDesc.style.display = "none";
+    movementDesc.innerHTML = "";
+    return;
+  }
+  const lang = (document.documentElement.lang || "de").toLowerCase().startsWith("en") ? "en" : "de";
+  const payload = info[lang] || info.de;
+  const bullets = (payload.bullets || []).map(b => `<li>${b}</li>`).join("");
+  const title = (lang === "en") ? "Movement info" : "Uhrwerk-Info";
+  movementDesc.innerHTML = `<strong>${title} (${payload.title}):</strong><ul>${bullets}</ul>`;
+  movementDesc.style.display = "";
+}
 
     function renderMovementPicker(){
       if(!movementPicker) return;
@@ -1433,11 +1569,13 @@
           selectedMovement = found || null;
           syncMovementSelectedUI();
           updateOrderText();
+          updateMovementDescription();
         });
       });
 
       // initial highlight
       syncMovementSelectedUI();
+      updateMovementDescription();
     }
 
 
@@ -1616,6 +1754,9 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
 
       orderNote.textContent = "Beim Klick wird der Modelltext kopiert – in Instagram einfach einfügen.";
 
+      // keep movement info in sync
+      updateMovementDescription();
+
       orderInstaBtn.onclick = async (e) => {
         e.preventDefault();
 
@@ -1655,7 +1796,7 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
 
 // Hover-Zoom auf das große Bild (kein Klick, kein neuer Tab) — robust (Mouse + Cursor-Position)
     (function(){
-      const media = document.querySelector(".modal-media");
+      const media = document.querySelector(".media-stage");
       if(!media || !mainImg) return;
 
       function setVars(e){
@@ -1773,7 +1914,7 @@ function setIndex(i){
       document.body.style.overflow = "";
 
       // Hover-Zoom Reset (falls aktiv)
-      document.querySelector(".modal-media")?.classList.remove("zooming");
+      document.querySelector(".media-stage")?.classList.remove("zooming");
       // Wichtig: Kein inline transform-origin setzen (würde Cursor-Follow-Zoom blockieren)
       mainImg.style.removeProperty("transform-origin");
       mainImg.style.setProperty("--zoom-x","50%");
@@ -1832,7 +1973,7 @@ function setIndex(i){
     nextBtn.addEventListener("click", () => setIndex(currentIndex + 1));
 
     // Swipe (Mobile): links/rechts wischen zum Wechseln
-    const mediaEl = document.querySelector('.modal-media');
+    const mediaEl = document.querySelector('.media-stage');
     let swipeActive = false;
     let sx = 0, sy = 0;
 
@@ -2231,5 +2372,28 @@ function buildReceiptHtml({ mode }){
       } catch (e) {}
     })();
 </script>
+<div class="modal terms-modal" id="privTermsModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-top">
+      <h3>Privatverkaufsbedingungen</h3>
+      <button class="icon-btn" id="closePrivTerms" type="button" aria-label="Schließen">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="terms-content">
+        <p><strong>Wichtiger Hinweis:</strong> Urban Time Vienna verkauft als <strong>Privatverkäufer</strong> (kein gewerblicher Händler).</p>
+        <ul>
+          <li><strong>Privatverkauf:</strong> Keine Rücknahme, kein Umtausch.</li>
+          <li><strong>Keine Garantie/Gewährleistung:</strong> Verkauf erfolgt „wie gesehen“ / „wie beschrieben“, soweit gesetzlich zulässig.</li>
+          <li><strong>Anzahlung:</strong> 300 € zur Reservierung; wird auf den Kaufpreis angerechnet.</li>
+          <li><strong>Lieferung/Abholung:</strong> Versand per Nachnahme oder persönliche Abholung (nach Absprache).</li>
+          <li><strong>Produktdetails:</strong> Modell/Variante/Bilder dienen als Referenz; Details können je nach Verfügbarkeit leicht abweichen.</li>
+          <li><strong>Kaufabschluss:</strong> Der Kauf kommt erst nach Bestätigung der Bestellung/Anfrage zustande.</li>
+        </ul>
+        <p>Mit dem Häkchen bestätigst du, dass du diese Bedingungen gelesen hast und akzeptierst.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
