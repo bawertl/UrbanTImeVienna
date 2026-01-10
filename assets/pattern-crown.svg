@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 120 120">
+  <g fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.35" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Crown spikes + body -->
+    <path d="M22 78 L34 42 L45 54 L60 26 L75 54 L86 42 L98 78" />
+    <path d="M22 78 Q60 92 98 78" />
+    <!-- Base ring -->
+    <ellipse cx="60" cy="86" rx="30" ry="9" />
+    <ellipse cx="60" cy="86" rx="22" ry="6" opacity="0.22" />
+  </g>
+</svg>
