@@ -395,7 +395,13 @@
       backdrop-filter: blur(10px);
     }
     .modal.open{ display:flex; }
-    .modal-card{ width: min(920px, 100%); max-height: calc(100vh - 36px); overflow: hidden; }
+    .modal-card{
+      width: min(920px, 100%);
+      /* mobile address-bar "vh" jump vermeiden */
+      max-height: calc(100vh - 36px);
+      max-height: calc(100svh - 36px);
+      overflow: hidden;
+    }
     .modal-top{
       display:flex; align-items:flex-start; justify-content: space-between;
       padding: 12px 12px 0;
@@ -432,7 +438,9 @@
 .media-stage{
   position: relative;
   min-height: 300px;
-  height: min(68vh, 560px);
+  /* stable viewport units, damit das Bild auf Mobile nicht "springt" */
+  height: min(calc(68vh - 90px), 560px);
+  height: min(calc(68svh - 90px), 560px);
   display:flex; align-items:center; justify-content:center;
 }
     .main-image{
@@ -466,6 +474,7 @@
     .modal-side{
       padding-left: 0;
       max-height: min(68vh, 560px);
+      max-height: min(68svh, 560px);
       overflow: auto;
       padding-right: 2px;
       display:flex; flex-direction: column;
@@ -528,7 +537,7 @@
     @media (max-width: 850px){
       .modal-body{ grid-template-columns: 1fr; }
       .modal-side{ padding-left: 0; }
-      .media-stage{ min-height: 320px; }
+      .media-stage{ min-height: 260px; }
     }
 
 
