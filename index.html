@@ -1168,6 +1168,33 @@
 }
 .ig-slide.is-active{ opacity: 1; }
 
+
+/* Autoplay via CSS (robust even when JS is blocked) */
+.ig-hero-rotator{ --ig-cycle: 14s; }
+.ig-hero-rotator .ig-slide-1{ animation: igFadeSlide1 var(--ig-cycle) infinite; }
+.ig-hero-rotator .ig-slide-2{ animation: igFadeSlide2 var(--ig-cycle) infinite; }
+
+@keyframes igFadeSlide1{
+  0%{ opacity: 1; }
+  45%{ opacity: 1; }
+  50%{ opacity: 0; }
+  95%{ opacity: 0; }
+  100%{ opacity: 1; }
+}
+@keyframes igFadeSlide2{
+  0%{ opacity: 0; }
+  45%{ opacity: 0; }
+  50%{ opacity: 1; }
+  95%{ opacity: 1; }
+  100%{ opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .ig-hero-rotator .ig-slide{ animation: none !important; transition: none !important; }
+  .ig-hero-rotator .ig-slide-1{ opacity: 1 !important; }
+  .ig-hero-rotator .ig-slide-2{ opacity: 0 !important; }
+}
+
 .ig-tagline{ margin-top: 8px; }
 
 .ig-lines{
@@ -1304,7 +1331,7 @@
       <div aria-hidden="true" class="ig-micro-top">URBAN • TIME • VIENNA</div>
 
       <!-- Slide 1 -->
-      <div class="ig-slide is-active" aria-hidden="false">
+      <div class="ig-slide ig-slide-1 is-active" aria-hidden="false">
         <div aria-label="Urban Time Vienna" class="slide-brand">
           <img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
           <div class="slide-brand-text">
@@ -1316,7 +1343,7 @@
       </div>
 
       <!-- Slide 2 -->
-      <div class="ig-slide" aria-hidden="true">
+      <div class="ig-slide ig-slide-2" aria-hidden="true">
         <div aria-label="Urban Time Vienna" class="slide-brand">
           <img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
           <div class="slide-brand-text">
@@ -2202,59 +2229,6 @@ function setIndex(i){
 
 // ===== Language Dropdown (DE / EN) =====
 
-// ===== Instagram Hero Rotator (2 Slides, 7s, Crossfade) =====
-    (function(){
-      try{
-        var rotator = document.getElementById('igHeroRotator');
-        if(!rotator) return;
-        var slides = Array.prototype.slice.call(rotator.querySelectorAll('.ig-slide'));
-        if(!slides || slides.length < 2) return;
-
-        // Respect reduced motion
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        var current = 0;
-        var intervalMs = 7000;
-        var timer = null;
-
-        function show(i){
-          slides.forEach(function(s, idx){
-            var active = idx === i;
-            s.classList.toggle('is-active', active);
-            s.setAttribute('aria-hidden', active ? 'false' : 'true');
-          });
-          current = i;
-        }
-
-        // Initialize ARIA
-        slides.forEach(function(s, idx){
-          s.setAttribute('role','group');
-          s.setAttribute('aria-label','Slide ' + (idx+1) + ' von ' + slides.length);
-          s.setAttribute('aria-hidden', idx === 0 ? 'false' : 'true');
-        });
-
-        function start(){
-          if(timer) return;
-          timer = setInterval(function(){
-            show((current + 1) % slides.length);
-          }, intervalMs);
-        }
-
-        function stop(){
-          if(!timer) return;
-          clearInterval(timer);
-          timer = null;
-        }
-
-        start();
-
-        // Pause when tab is hidden
-        document.addEventListener('visibilitychange', function(){
-          if(document.hidden) stop();
-          else start();
-        });
-      }catch(e){}
-    })();
 
     (function () {
       try {
