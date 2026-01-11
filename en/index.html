@@ -1040,29 +1040,6 @@
 
 
 
-
-/* === Hero Instagram Rotator (2 images, swaps every 7s, both clickable) === */
-.hero-ig-rotator{
-  padding: 0;
-  display:block;
-  min-height: 420px;
-  overflow:hidden;
-}
-@media (max-width: 900px){
-  .hero-ig-rotator{ min-height: 360px; }
-}
-.hero-ig-rotator .hero-ig-img{
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display:block;
-  opacity: 1;
-  transition: opacity .45s ease;
-}
-.hero-ig-rotator .hero-ig-img.is-fading{ opacity: 0; }
-@media (prefers-reduced-motion: reduce){
-  .hero-ig-rotator .hero-ig-img{ transition: none !important; }
-}
 /* === Hero Brand Card (original look, subtle movement, fully clickable to Instagram) === */
 .hero-brand-link{
   display:block;
@@ -1140,6 +1117,103 @@
   50%{ transform: translateY(-3px); }
 }
 .hero-brand-inner .slide-crown{ animation: utvFloat 6s ease-in-out infinite; }
+
+
+/* === Instagram Hero Rotator (integrated like the left hero card) === */
+.ig-hero-link{
+  display:block;
+  width:100%;
+  height:100%;
+  padding:0;
+  text-decoration:none;
+  color: inherit;
+  border-radius: var(--radius);
+  overflow:hidden;
+}
+.ig-hero-link:focus-visible{
+  outline: 3px solid rgba(45,226,255,.65);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+.ig-hero-rotator{
+  position: relative;
+  height: 100%;
+  min-height: 320px;
+}
+
+.ig-micro-top{
+  position:absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,.46);
+  text-transform: uppercase;
+  pointer-events:none;
+}
+
+.ig-slide{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 56px 30px 54px;
+  opacity: 0;
+  transition: opacity .85s ease;
+}
+.ig-slide.is-active{ opacity: 1; }
+
+.ig-tagline{ margin-top: 8px; }
+
+.ig-lines{
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: .2px;
+  line-height: 1.22;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 14px 40px rgba(0,0,0,.45);
+}
+
+.ig-btn{
+  margin-top: 18px;
+  display:inline-flex;
+  align-items:center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.35);
+  font-weight: 800;
+  color: rgba(255,255,255,.88);
+}
+.ig-btn .ig-badge{
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display:grid;
+  place-items:center;
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.14) inset;
+}
+.ig-btn .ig-badge svg{ width: 18px; height: 18px; fill: #fff; }
+
+@media (hover:hover) and (pointer:fine){
+  .ig-hero-link:hover .ig-btn{ transform: translateY(-1px); }
+}
+
+@media (max-width: 520px){
+  .ig-slide{ padding: 56px 18px 52px; }
+  .ig-lines{ font-size: 20px; }
+}
 
 @media (prefers-reduced-motion: reduce){
   .hero-brand-inner::before,
@@ -1226,9 +1300,47 @@
 </div>
 </div>
 <div class="card hero-right">
-  <a aria-label="Urban Time Vienna auf Instagram öffnen" class="hero-brand-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
-    <div class="hero-brand-inner hero-ig-rotator" data-images="../assets/ig-slide-1.jpg,../assets/ig-slide-2.jpg">
-      <img class="hero-ig-img" src="../assets/ig-slide-1.jpg" alt="Urban Time Vienna – Instagram" loading="eager"/>
+  <a aria-label="Open Urban Time Vienna on Instagram" class="ig-hero-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
+    <div class="ig-hero-rotator" id="igHeroRotator">
+      <div aria-hidden="true" class="ig-micro-top">URBAN • TIME • VIENNA</div>
+
+      <!-- Slide 1 -->
+      <div class="ig-slide is-active" aria-hidden="false">
+        <div aria-label="Urban Time Vienna" class="slide-brand">
+          <img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
+          <div class="slide-brand-text">
+            <div class="slide-brand-top">URBAN TIME</div>
+            <div class="slide-brand-bottom">VIENNA</div>
+          </div>
+        </div>
+        <div class="slide-text ig-tagline">Curated · Refined · Style with character</div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="ig-slide" aria-hidden="true">
+        <div aria-label="Urban Time Vienna" class="slide-brand">
+          <img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
+          <div class="slide-brand-text">
+            <div class="slide-brand-top">URBAN TIME</div>
+            <div class="slide-brand-bottom">VIENNA</div>
+          </div>
+        </div>
+
+        <div class="ig-lines">
+          More variants<br/>
+          in color &amp; design<br/>
+          just DM us on Instagram
+        </div>
+
+        <div class="ig-btn" aria-hidden="true">
+          <span class="ig-badge" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5zM18 6.2a1.1 1.1 0 1 1-1.1 1.1A1.1 1.1 0 0 1 18 6.2z"/>
+            </svg>
+          </span>
+          <span>Instagram message</span>
+        </div>
+      </div>
     </div>
   </a>
 </div></section>
@@ -2092,6 +2204,60 @@ function setIndex(i){
     }
 
 // ===== Language Dropdown (DE / EN) =====
+
+// ===== Instagram Hero Rotator (2 Slides, 7s, Crossfade) =====
+    (function(){
+      try{
+        var rotator = document.getElementById('igHeroRotator');
+        if(!rotator) return;
+        var slides = Array.prototype.slice.call(rotator.querySelectorAll('.ig-slide'));
+        if(!slides || slides.length < 2) return;
+
+        // Respect reduced motion
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        var current = 0;
+        var intervalMs = 7000;
+        var timer = null;
+
+        function show(i){
+          slides.forEach(function(s, idx){
+            var active = idx === i;
+            s.classList.toggle('is-active', active);
+            s.setAttribute('aria-hidden', active ? 'false' : 'true');
+          });
+          current = i;
+        }
+
+        // Initialize ARIA
+        slides.forEach(function(s, idx){
+          s.setAttribute('role','group');
+          s.setAttribute('aria-label','Slide ' + (idx+1) + ' of ' + slides.length);
+          s.setAttribute('aria-hidden', idx === 0 ? 'false' : 'true');
+        });
+
+        function start(){
+          if(timer) return;
+          timer = setInterval(function(){
+            show((current + 1) % slides.length);
+          }, intervalMs);
+        }
+
+        function stop(){
+          if(!timer) return;
+          clearInterval(timer);
+          timer = null;
+        }
+
+        start();
+
+        // Pause when tab is hidden
+        document.addEventListener('visibilitychange', function(){
+          if(document.hidden) stop();
+          else start();
+        });
+      }catch(e){}
+    })();
     (function () {
       try {
         var dd = document.getElementById("langDropdown");
@@ -2125,37 +2291,6 @@ function setIndex(i){
         });
       } catch (e) {}
     })();
-
-    // ===== Hero Instagram Rotator (swap images every 7s; link always to Instagram) =====
-    (function initHeroInstagramRotator(){
-      try {
-        var rotator = document.querySelector('.hero-ig-rotator[data-images]');
-        if(!rotator) return;
-        var img = rotator.querySelector('img.hero-ig-img');
-        if(!img) return;
-        var raw = rotator.getAttribute('data-images') || '';
-        var images = raw.split(',').map(function(x){ return (x||'').trim(); }).filter(Boolean);
-        if(images.length < 2) return;
-
-        // Preload
-        images.forEach(function(src){ var i = new Image(); i.src = src; });
-
-        var idx = 0;
-        var intervalMs = 7000;
-
-        setInterval(function(){
-          idx = (idx + 1) % images.length;
-          img.classList.add('is-fading');
-          window.setTimeout(function(){
-            img.src = images[idx];
-          }, 220);
-          window.setTimeout(function(){
-            img.classList.remove('is-fading');
-          }, 420);
-        }, intervalMs);
-      } catch (e) {}
-    })();
-
 </script>
 <div aria-hidden="true" class="modal terms-modal" id="privTermsModal">
 <div class="modal-card">
