@@ -486,9 +486,6 @@ function openGallery(card){
       const modelText = `${title} – Modell ${variantNum}/${variantTotal}${mvTxt}`;
       if(orderForm){ orderForm.dataset.movement = mv ? mv.code : ""; orderForm.dataset.price = mv ? String(mv.price) : ""; }
       if(ofModel) ofModel.value = modelText;
-      if(ofMsg && (!ofMsg.value || ofMsg.value.trim().length < 3)){
-        ofMsg.value = T.formPrefill;
-      }
       orderForm.dataset.imageRef = file || (src ? basename(src) : "");
       if(formNote) formNote.textContent = "Formular ist vorausgefüllt ✅ Du kannst es jetzt absenden oder den Text kopieren.";
     }
