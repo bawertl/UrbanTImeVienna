@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>UrbanTimeVienna</title>
-<meta content="UrbanTimeVienna – elegante Uhrenkultur mit einem Hauch Pop Art." name="description"/>
+<meta content="UrbanTimeVienna – elegant watch culture with a hint of Pop Art." name="description"/>
 <script>
   // Language preference (DE default). Redirect based on stored choice.
   (function () {
@@ -215,10 +215,10 @@
     .btn.secondary{ background: rgba(255,255,255,0.05); border-color: var(--border); color: var(--text); }
     .btn:hover{ transform: translateY(-2px); }
 
-    /* Hero-right: Slider soll bis zum Rand gehen (kein innerer Rand durch padding) */
+    /* Hero-right: slider should reach the card edges (no inset padding) */
     .hero-right{ padding: 0; display:flex; flex-direction: column; gap: 15px; }
 
-    /* FIX: Der Slider (heller Bereich) soll die komplette Kartenhöhe ausfüllen */
+    /* FIX: Make the slider (lighter area) fill the full card height */
     .hero-right #heroSlider{
       flex: 1 1 auto;
       min-height: 320px;
@@ -276,7 +276,7 @@
 
     /* ===== Sections ===== */
     .section{ margin-top: 44px; }
-    /* Weniger Abstand zwischen Kaufablauf-CTA und Bestellformular */
+    /* Less spacing between purchase CTA and order form */
     #bestellformular.section{ margin-top: 24px; }
     .section-head{
       margin-bottom: 18px;
@@ -370,7 +370,7 @@
     .product-card{ cursor: pointer; }
     .product-card .thumb{ position: relative; overflow: hidden; }
     .product-card .thumb::after{
-      content: "Mehr Bilder";
+      content: "More photos";
       position: absolute; left: 10px; bottom: 10px;
       padding: 6px 10px; border-radius: 999px;
       font-size: 11px; font-weight: 700; letter-spacing: .5px;
@@ -382,11 +382,11 @@
     .product-card:hover .thumb::after{ opacity: 1; transform: translateY(0); }
 
     /* Nur Urban Chrono: andere Overlay-Beschriftung */
-    .product-card.more-models .thumb::after{ content: "Weitere Modelle zur Auswahl"; }
+    .product-card.more-models .thumb::after{ content: "More models available"; }
 
     /* Abschnitt-spezifische Overlay-Beschriftungen */
-    #kollektion .product-card .thumb::after{ content: "Jetzt kaufen"; }
-    #bestellbar .product-card .thumb::after{ content: "Weitere Modelle zur Auswahl"; }
+    #kollektion .product-card .thumb::after{ content: "Buy now"; }
+    #bestellbar .product-card .thumb::after{ content: "More models available"; }
 
     .modal{
       position: fixed; inset: 0; z-index: 999;
@@ -398,7 +398,7 @@
     .modal.open{ display:flex; }
     .modal-card{
       width: min(920px, 100%);
-      /* mobile address-bar "vh" jump vermeiden */
+      /* avoid mobile address-bar "vh" jump */
       max-height: calc(100vh - 36px);
       max-height: calc(100svh - 36px);
       overflow: hidden;
@@ -439,7 +439,7 @@
 .media-stage{
   position: relative;
   min-height: 300px;
-  /* stable viewport units, damit das Bild auf Mobile nicht "springt" */
+  /* stable viewport units so the image doesn't "jump" on mobile */
   height: min(calc(68vh - 90px), 560px);
   height: min(calc(68svh - 90px), 560px);
   display:flex; align-items:center; justify-content:center;
@@ -572,7 +572,7 @@
       content:"";
       position: fixed;
       inset: 0;
-      background-image: url("assets/crown-logo.png");
+      background-image: url("../assets/crown-logo.png");
       background-repeat: repeat;
       background-size: 110px 110px;
       background-position: 0 0;
@@ -772,7 +772,7 @@
   transform: translateY(0);
   pointer-events:auto;
 }
-/* Slide-Inhalt wirklich mittig im Kasten (oben/unten gleicher Abstand) */
+/* Truly centered slide content (same top/bottom padding) */
 .slide-inner{height:100%; display:flex; flex-direction:column; justify-content:center; padding:78px 18px 78px 18px;}
 
 /* UPDATE: Margin oben auf 0, unten leicht reduziert */
@@ -814,6 +814,7 @@
   text-align:center;
 }
 .slide-text{
+  font-size: 13.5px; /* slightly smaller to match DE layout */
   color: var(--muted);
   line-height: 1.45;
   text-align:center;
@@ -984,7 +985,7 @@
   content:"";
   position:absolute;
   inset:-2px;
-  background-image: url('assets/pattern-crown.svg');
+  background-image: url('../assets/pattern-crown.svg');
   background-size: 280px 280px;
   background-repeat: repeat;
   opacity: .06;
@@ -1075,7 +1076,7 @@
   content:"";
   position:absolute;
   inset:-2px;
-  background-image: url('assets/pattern-crown.svg');
+  background-image: url('../assets/pattern-crown.svg');
   background-size: 280px 280px;
   background-repeat: repeat;
   opacity: .10;
@@ -1162,7 +1163,7 @@
   align-items:center;
   justify-content:center;
   text-align:center;
-  /* Mehr Luft nach oben, damit die Kronenspitzen nicht in den Micro-Text laufen */
+  /* More top padding so the crown does not collide with the micro title */
   padding: 74px 30px 54px;
   opacity: 0;
   transition: opacity .85s ease;
@@ -1292,27 +1293,27 @@
 }
 </style>
 </head>
-<body class="lang-de" id="top">
+<body class="lang-en" id="top">
 <header class="header">
 <div class="header-inner">
-<a aria-label="Zur Startseite" class="brand" href="#top">
+<a aria-label="Back to top" class="brand" href="#top">
 <div aria-label="UrbanTimeVienna Logo" class="brand-badge"></div>
 <div class="brand-text">Urban Time <span>Vienna</span></div>
 </a>
-<nav aria-label="Hauptnavigation" class="nav">
-<a href="#kollektion">Kollektion</a>
+<nav aria-label="Main navigation" class="nav">
+<a href="#kollektion">Collection</a>
 <a href="#highlights">Highlights</a>
-<a href="#bestellbar">Auf Bestellung</a>
-<a href="#kaufablauf">Kaufablauf</a>
-<a href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Kontakt</a>
+<a href="#bestellbar">Made to order</a>
+<a href="#kaufablauf">How it works</a>
+<a href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Contact</a>
 <a class="reels" href="https://www.instagram.com/urbantimevienna/reels/" rel="noopener" target="_blank">Reels</a>
 <div class="lang-dropdown" id="langDropdown">
-<button aria-expanded="false" aria-haspopup="menu" aria-label="Sprache wählen" class="lang-current" type="button">
-<img alt="Deutsch" src="assets/flag-de.svg"/>
+<button aria-expanded="false" aria-haspopup="menu" aria-label="Choose language" class="lang-current" type="button">
+<img alt="English" src="../assets/flag-gb.svg"/>
 </button>
-<div aria-label="Sprache" class="lang-menu" role="menu">
-<a aria-label="English" class="lang-option" data-lang="en" href="en/" role="menuitem">
-<img alt="English" src="assets/flag-gb.svg"/>
+<div aria-label="Language" class="lang-menu" role="menu">
+<a aria-label="Deutsch" class="lang-option" data-lang="de" href="../index.html" role="menuitem">
+<img alt="Deutsch" src="../assets/flag-de.svg"/>
 </a>
 </div>
 </div>
@@ -1323,35 +1324,35 @@
 <section class="hero">
 <div class="card hero-left">
 <div class="kicker"><span class="dot"></span> Vienna • Watch Culture • Pop Art</div>
-<h1>Eleganz mit Kante.<br/>Zeit mit Stil.</h1>
+<h1>Elegance with an edge.<br/>Time with style.</h1>
 <p class="sub">
-          UrbanTimeVienna kuratiert Uhren mit Klasse — minimalistisch, hochwertig und mit einem Hauch Pop‑Art als Akzent.
+          UrbanTimeVienna curates timepieces with class — minimalist, high-quality, and finished with a touch of Pop Art.
         </p>
 <div class="cta-row">
-<a class="btn primary" href="#kollektion">Kollektion ansehen</a>
+<a class="btn primary" href="#kollektion">View collection</a>
 </div>
 </div>
 <div class="card hero-right">
-  <a aria-label="Urban Time Vienna auf Instagram öffnen" class="ig-hero-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
+  <a aria-label="Open Urban Time Vienna on Instagram" class="ig-hero-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
     <div class="ig-hero-rotator" id="igHeroRotator">
       <div aria-hidden="true" class="ig-micro-top">URBAN • TIME • VIENNA</div>
 
       <!-- Slide 1 -->
       <div class="ig-slide ig-slide-1 is-active" aria-hidden="false">
         <div aria-label="Urban Time Vienna" class="slide-brand">
-          <img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
+          <img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
           <div class="slide-brand-text">
             <div class="slide-brand-top">URBAN TIME</div>
             <div class="slide-brand-bottom">VIENNA</div>
           </div>
         </div>
-        <div class="slide-text ig-tagline">Kuratiert · Veredelt · Stil mit Charakter</div>
+        <div class="slide-text ig-tagline">Curated · Refined · Style with character</div>
       </div>
 
       <!-- Slide 2 -->
       <div class="ig-slide ig-slide-2" aria-hidden="true">
         <div aria-label="Urban Time Vienna" class="slide-brand">
-          <img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
+          <img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
           <div class="slide-brand-text">
             <div class="slide-brand-top">URBAN TIME</div>
             <div class="slide-brand-bottom">VIENNA</div>
@@ -1359,9 +1360,9 @@
         </div>
 
         <div class="ig-lines">
-          Weitere Varianten<br/>
-          mit Farbe und Design<br/>
-          einfach per Insta DM anfragen
+          More variants<br/>
+          in color &amp; design<br/>
+          just DM us on Instagram
         </div>
 
         <div class="ig-btn" aria-hidden="true">
@@ -1370,7 +1371,7 @@
               <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5zM18 6.2a1.1 1.1 0 1 1-1.1 1.1A1.1 1.1 0 0 1 18 6.2z"/>
             </svg>
           </span>
-          <span>Instagram Nachricht</span>
+          <span>Instagram message</span>
         </div>
       </div>
     </div>
@@ -1380,106 +1381,106 @@
 <div class="section-head">
 <div>
 <h2>Highlights</h2>
-<p>Kuratiert, geprüft und ready für deinen Wrist-Game.</p>
+<p>Curated, checked, and ready for your wrist game.</p>
 </div>
 </div>
 <div class="highlights">
 <div class="hl">
 <div class="icon">✓</div>
-<h3>Ausgewählt mit Geschmack</h3>
-<p>Klare Designs, starke Details — Uhren, die in Wien genauso passen wie überall.</p>
+<h3>Picked with taste</h3>
+<p>Clean designs, strong details — watches that fit Vienna just as well as anywhere.</p>
 </div>
 <div class="hl">
 <div class="icon">✦</div>
-<h3>Pop‑Art Akzente</h3>
-<p>Eleganz bleibt clean – aber mit einem modernen Edge in Cyan &amp; Neon.</p>
+<h3>Pop Art accents</h3>
+<p>Elegance stays clean — with a modern edge in cyan &amp; neon.</p>
 </div>
 <div class="hl">
 <div class="icon">↗</div>
-<h3>Immer live auf Instagram</h3>
-<p>Neue Drops, Wrist‑Shots und Reels: alles direkt auf @urbantimevienna.</p>
+<h3>Always live on Instagram</h3>
+<p>New drops, wrist shots and reels: everything straight from @urbantimevienna.</p>
 </div>
 </div>
 </section>
 <section class="section" id="kollektion">
 <div class="section-head">
 <div>
-<h2>Aktuell lagernd</h2>
-<p>Abholung oder Versand möglich – Details per Instagram DM.</p>
+<h2>In stock</h2>
+<p>Pickup or shipping available — details via Instagram DM.</p>
 </div>
 </div>
 <div class="grid">
-<article class="item product-card" data-images="royal-urban.jpg" role="button" tabindex="0">
+<article class="item product-card" data-images="../royal-urban.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="Submarine Hulk" loading="lazy" src="royal-urban.jpg"/>
+<img alt="Submarine Hulk" loading="lazy" src="../royal-urban.jpg"/>
 </div>
-<span class="tag">Preis €580</span>
+<span class="tag">Price €580</span>
 <h3>Submarine "HULK"</h3>
-<p class="teaser">Die Submariner „Hulk“ verdankt ihren Namen ihrem intensiven grünen Zifferblatt und der grünen Lünette. Als moderne Interpretation einer Taucherlegende wurde sie schnell zum Kultobjekt – heute begehrt wie nie.</p>
+<p class="teaser">The Submariner “Hulk” earned its nickname from its intense green dial and matching green bezel. A modern take on a diving legend, it quickly became a cult icon — and is more sought-after than ever.</p>
 <ul class="keypoints">
-<li><b>Taucher‑Look:</b> grüne Lünette &amp; markantes Zifferblatt</li>
-<li><b>Alltagstauglich:</b> sportlich, robust, clean</li>
-<li><b>Sekundenstopp</b> fürs exakte Einstellen</li>
-<li><b>Genauigkeit:</b> −2/+2 s/Tag</li>
+<li><b>Diver look:</b> green bezel &amp; striking dial</li>
+<li><b>Everyday-ready:</b> sporty, robust, clean</li>
+<li><b>Hacking seconds</b> for precise setting</li>
+<li><b>Accuracy:</b> −2/+2 s/day</li>
 </ul>
 <details class="more">
-<summary>Technische Details anzeigen</summary>
+<summary>Show technical details</summary>
 <ul class="specs">
-<li>Chronergy‑Hemmung</li>
-<li>Nickel‑Phosphor‑Hemmung</li>
-<li>Blaue Parachrom‑Spirale</li>
-<li>Paraflex‑Stoßsicherung</li>
-<li>28.800 A/h • 40 Lagersteine • Ø ~33 mm</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
 </ul>
 </details>
 </article>
-<article class="item product-card" data-images="pop-art-chrono.jpg" role="button" tabindex="0">
+<article class="item product-card" data-images="../pop-art-chrono.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="Pop-Art Chrono" loading="lazy" src="pop-art-chrono.jpg"/>
+<img alt="Pop-Art Chrono" loading="lazy" src="../pop-art-chrono.jpg"/>
 </div>
-<span class="tag">Preis €800</span>
+<span class="tag">Price €800</span>
 <h3>GMT II Bruce Wayne</h3>
-<p class="teaser">GMT II Bruce Wayne – sportlich‑elegante GMT im „Stealth“-Look. Ideal für Reisen: zweite Zeitzone auf einen Blick.</p>
+<p class="teaser">GMT II Bruce Wayne — a sporty-elegant GMT in a “stealth” look. Perfect for travel: a second time zone at a glance.</p>
 <ul class="keypoints">
-<li><b>Traveller‑GMT:</b> Lokal‑Stundenzeiger springt in 1‑h Schritten</li>
-<li><b>24‑h GMT‑Zeiger</b> für Home‑/Referenzzeit</li>
-<li><b>Datum</b> an Lokalzeit gekoppelt (schneller Wechsel)</li>
-<li><b>Sekundenstopp</b> fürs exakte Einstellen</li>
+<li><b>Traveller GMT:</b> local hour hand jumps in 1-hour steps</li>
+<li><b>24-hour GMT hand</b> for home/reference time</li>
+<li><b>Date</b> linked to local time (quick change)</li>
+<li><b>Hacking seconds</b> for precise setting</li>
 </ul>
 <details class="more">
-<summary>Technische Details anzeigen</summary>
+<summary>Show technical details</summary>
 <ul class="specs">
-<li>Genauigkeit: −2/+2 s/Tag</li>
-<li>Chronergy‑Hemmung</li>
-<li>Nickel‑Phosphor‑Hemmung</li>
-<li>Blaue Parachrom‑Spirale</li>
-<li>Paraflex‑Stoßsicherung</li>
-<li>28.800 A/h • 40 Lagersteine • Ø ~33 mm</li>
+<li>Accuracy: −2/+2 s/day</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
 </ul>
 </details>
 </article>
-<article class="item product-card" data-images="stephans-stealth.jpg" role="button" tabindex="0">
+<article class="item product-card" data-images="../stephans-stealth.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="GMT II Bi‑Tone" loading="lazy" src="stephans-stealth.jpg"/>
+<img alt="GMT II Bi‑Tone" loading="lazy" src="../stephans-stealth.jpg"/>
 </div>
-<span class="tag">Preis €830</span>
+<span class="tag">Price €830</span>
 <h3>GMT II Bi‑Tone</h3>
-<p class="teaser">GMT II Bi‑Tone – die elegante GMT im Stahl/Gold‑Look. Klassisch, markant und ideal, wenn Sie zwischen zwei Zeitzonen unterwegs sind.</p>
+<p class="teaser">GMT II Bi‑Tone — the elegant GMT in a steel/gold look. Classic, bold, and ideal when you’re moving between two time zones.</p>
 <ul class="keypoints">
-<li><b>Bi‑Tone:</b> Edelstahl/Gold‑Optik mit starkem Wrist‑Presence</li>
-<li><b>Traveller‑GMT:</b> Lokal‑Stundenzeiger springt in 1‑h Schritten</li>
-<li><b>24‑h GMT‑Zeiger</b> für Home‑/Referenzzeit</li>
-<li><b>Datum</b> an Lokalzeit gekoppelt (schneller Wechsel)</li>
+<li><b>Bi-tone:</b> steel/gold look with strong wrist presence</li>
+<li><b>Traveller GMT:</b> local hour hand jumps in 1-hour steps</li>
+<li><b>24-hour GMT hand</b> for home/reference time</li>
+<li><b>Date</b> linked to local time (quick change)</li>
 </ul>
 <details class="more">
-<summary>Technische Details anzeigen</summary>
+<summary>Show technical details</summary>
 <ul class="specs">
-<li>Genauigkeit: −2/+2 s/Tag</li>
-<li>Chronergy‑Hemmung</li>
-<li>Nickel‑Phosphor‑Hemmung</li>
-<li>Blaue Parachrom‑Spirale</li>
-<li>Paraflex‑Stoßsicherung</li>
-<li>28.800 A/h • 40 Lagersteine • Ø ~33 mm</li>
+<li>Accuracy: −2/+2 s/day</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
 </ul>
 </details>
 </article>
@@ -1487,200 +1488,200 @@
 <section class="section" id="bestellbar">
 <div class="section-head">
 <div>
-<h2>Auf Bestellung verfügbar</h2>
-<p>Vorauszahlung erforderlich · ca. 14 Werktage Lieferzeit</p>
+<h2>Available to order</h2>
+<p>Prepayment required · approx. 14 business days lead time</p>
 </div>
 </div>
 <div class="grid">
-<article class="item product-card" data-currency="EUR" data-images="urban_wayne_v1.jpg,urban_wayne_v2.jpg,urban_wayne_v3.jpg,urban_wayne_v4.jpg,urban_wayne_v5.jpg,urban_wayne_v6.jpg,urban_wayne_v7.jpg,urban_wayne_v8.jpg,urban_wayne_v9.jpg,urban_wayne_v10.jpg" data-movements='[{"code": "3186", "price": 750}, {"code": "3285", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Urban GMT – Edelstahl GMT" loading="lazy" src="order_1_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 750 €</span>
+<article class="item product-card" data-currency="EUR" data-images="../urban_wayne_v1.jpg,../urban_wayne_v2.jpg,../urban_wayne_v3.jpg,../urban_wayne_v4.jpg,../urban_wayne_v5.jpg,../urban_wayne_v6.jpg,../urban_wayne_v7.jpg,../urban_wayne_v8.jpg,../urban_wayne_v9.jpg,../urban_wayne_v10.jpg" data-movements='[{"code": "3186", "price": 750}, {"code": "3285", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Urban GMT – Stainless steel GMT" loading="lazy" src="../order_1_1.jpg"/></div>
+<span class="tag price-tag">From: €750</span>
 <h3>Urban Time Vienna</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="urban_date_v1.jpg,urban_date_v2.jpg,urban_date_v3.jpg,urban_date_v4.jpg,urban_date_v5.jpg,urban_date_v6.jpg,urban_date_v7.jpg,urban_date_v8.jpg,urban_date_v9.jpg,urban_date_v10.jpg" data-movements='[{"code": "2836", "price": 750}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Vienna Date – Blaues Date-Modell" loading="lazy" src="order_2_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 750 €</span>
+<article class="item product-card" data-currency="EUR" data-images="../urban_date_v1.jpg,../urban_date_v2.jpg,../urban_date_v3.jpg,../urban_date_v4.jpg,../urban_date_v5.jpg,../urban_date_v6.jpg,../urban_date_v7.jpg,../urban_date_v8.jpg,../urban_date_v9.jpg,../urban_date_v10.jpg" data-movements='[{"code": "2836", "price": 750}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Vienna Date – Blue date model" loading="lazy" src="../order_2_1.jpg"/></div>
+<span class="tag price-tag">From: €750</span>
 <h3>Urban Time Date</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card more-models" data-currency="EUR" data-images="urban_chrono_v1.jpg,urban_chrono_v2.jpg,urban_chrono_v3.jpg,urban_chrono_v4.jpg,urban_chrono_v5.jpg,urban_chrono_v6.jpg,urban_chrono_v7.jpg,urban_chrono_v8.jpg" data-movements='[{"code": "7750", "price": 800}, {"code": "4131", "price": 1050}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Urban Chrono – Chronograph" loading="lazy" src="order_3_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 800 €</span>
+<article class="item product-card more-models" data-currency="EUR" data-images="../urban_chrono_v1.jpg,../urban_chrono_v2.jpg,../urban_chrono_v3.jpg,../urban_chrono_v4.jpg,../urban_chrono_v5.jpg,../urban_chrono_v6.jpg,../urban_chrono_v7.jpg,../urban_chrono_v8.jpg" data-movements='[{"code": "7750", "price": 800}, {"code": "4131", "price": 1050}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Urban Chrono – Chronograph" loading="lazy" src="../order_3_1.jpg"/></div>
+<span class="tag price-tag">From: €800</span>
 <h3>Urban Time Chrono</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="president_dd_v1.jpg,president_dd_v2.jpg,president_dd_v3.jpg,president_dd_v4.jpg,president_dd_v5.jpg,president_dd_v6.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3255", "price": 1050}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Vienna DayDate – Gold Day-Date" loading="lazy" src="order_4_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 720 €</span>
-<h3>Urban Time Präsident DD.</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<article class="item product-card" data-currency="EUR" data-images="../president_dd_v1.jpg,../president_dd_v2.jpg,../president_dd_v3.jpg,../president_dd_v4.jpg,../president_dd_v5.jpg,../president_dd_v6.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3255", "price": 1050}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Vienna DayDate – Gold Day-Date" loading="lazy" src="../order_4_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
+<h3>Urban Time President DD.</h3>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="urban_classic_v1.jpg,urban_classic_v2.jpg,urban_classic_v3.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Stephans Diver – Grey Diver" loading="lazy" src="order_5_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 720 €</span>
+<article class="item product-card" data-currency="EUR" data-images="../urban_classic_v1.jpg,../urban_classic_v2.jpg,../urban_classic_v3.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Stephans Diver – Grey Diver" loading="lazy" src="../order_5_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
 <h3>Urban Time Classic</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="president_d_v1.jpg,president_d_v2.jpg,president_d_v3.jpg,president_d_v4.jpg,president_d_v5.jpg,president_d_v6.jpg,president_d_v7.jpg,president_d_v8.jpg,president_d_v9.jpg,president_d_v10.jpg,president_d_v11.jpg,president_d_v12.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Royal Pink – Pink Dial" loading="lazy" src="order_6_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 720 €</span>
-<h3>Urban Time Präsident D.</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<article class="item product-card" data-currency="EUR" data-images="../president_d_v1.jpg,../president_d_v2.jpg,../president_d_v3.jpg,../president_d_v4.jpg,../president_d_v5.jpg,../president_d_v6.jpg,../president_d_v7.jpg,../president_d_v8.jpg,../president_d_v9.jpg,../president_d_v10.jpg,../president_d_v11.jpg,../president_d_v12.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
+<div class="thumb"><img alt="Royal Pink – Pink Dial" loading="lazy" src="../order_6_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
+<h3>Urban Time President D.</h3>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
 </div>
 </section>
 <section class="section" id="kaufablauf">
 <div class="section-head">
 <div>
-<h2>So funktioniert der Kauf</h2>
-<p>Transparent, sicher und unkompliziert – in wenigen Schritten zu deiner Uhr.</p>
+<h2>How the purchase works</h2>
+<p>Transparent, safe and straightforward — your watch in just a few steps.</p>
 </div>
 </div>
 <div class="steps">
 <div class="step">
 <div class="step-num">1</div>
-<h3>Bestellanfrage senden</h3>
-<p>Wähle ein Modell aus und sende deine Anfrage über das Formular oder per Instagram.</p>
+<h3>Send an order request</h3>
+<p>Choose a model and send your request via the form or on Instagram.</p>
 </div>
 <div class="step">
 <div class="step-num">2</div>
-<h3>Angebot &amp; Bestätigung</h3>
-<p>Du bekommst den finalen Preis, die voraussichtliche Lieferzeit und alle Details zur Bestellung.</p>
+<h3>Offer &amp; confirmation</h3>
+<p>You’ll receive the final price, estimated lead time and all order details.</p>
 </div>
 <div class="step">
 <div class="step-num">3</div>
-<h3>Anzahlung zur Reservierung</h3>
-<p>Mit einer Anzahlung von <strong>300 €</strong> wird deine Uhr fix reserviert (wird auf den Gesamtpreis angerechnet).</p>
+<h3>Deposit to reserve</h3>
+<p>With a <strong>€300</strong> deposit, your watch is reserved (credited toward the total price).</p>
 </div>
 <div class="step">
 <div class="step-num">4</div>
-<h3>Versand per Nachnahme</h3>
-<p>Der Restbetrag wird bei Zustellung per <strong>Nachnahme</strong> bezahlt – sicher für beide Seiten.</p>
+<h3>Shipping via cash on delivery</h3>
+<p>The remaining balance is paid on delivery via <strong>cash on delivery</strong> — secure for both sides.</p>
 </div>
 </div>
 <div class="card notice">
-<h3>Zahlung &amp; Versand im Überblick</h3>
+<h3>Payment &amp; delivery summary</h3>
 <ul>
-<li><strong>Anzahlung</strong><span>300 € (Reservierung, wird angerechnet)</span></li>
-<li><strong>Restbetrag</strong><span>per Nachnahme bei Zustellung</span></li>
-<li><strong>Preisrahmen</strong><span>je nach Modell/Zubehör meist ca. 800 € (inkl. Box &amp; Zubehör)</span></li>
-<li><strong>Hinweis</strong><span>Bei Nichtannahme der Nachnahmesendung wird die Anzahlung als Aufwands-/Stornogebühr einbehalten.</span></li>
+<li><strong>Deposit</strong><span>€300 (reservation, credited toward total)</span></li>
+<li><strong>Remaining balance</strong><span>cash on delivery upon delivery</span></li>
+<li><strong>Typical price range</strong><span>depending on model/accessories usually around €800 (incl. box &amp; accessories)</span></li>
+<li><strong>Note</strong><span>If the cash-on-delivery shipment is refused, the deposit is retained as a handling/cancellation fee.</span></li>
 </ul>
-<a class="order-btn" href="#bestellformular">Jetzt Bestellanfrage stellen</a>
+<a class="order-btn" href="#bestellformular">Send an order request now</a>
 </div>
 </section>
 <section class="section" id="bestellformular">
 <div class="card" style="padding:24px;">
-<h2>Bestellanfrage</h2>
+<h2>Order request</h2>
 <p style="color:var(--muted); margin-top:8px;">
-      Du kannst direkt per Instagram bestellen oder das Formular nutzen. Beim Öffnen aus einem Modell werden die Felder automatisch vorausgefüllt.
+      You can order directly via Instagram or use the form. If you open the form from a model, fields are auto-filled.
     </p>
 <div class="form-actions-top">
-<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Bestellen: Instagram DM</a>
+<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Order: Instagram DM</a>
 </div>
 <form class="order-form" id="orderForm" novalidate="">
 <div aria-live="polite" class="variant-preview" id="selectedVariantPreview">
 <div class="variant-preview-inner">
 <img alt="" id="selectedVariantImg" loading="lazy" src=""/>
 <div class="vp-text">
-<b id="selectedVariantCaption">Ausgewählte Variante</b><br/>
-<span>Dieses Bild wird automatisch aus deiner Auswahl übernommen.</span>
+<b id="selectedVariantCaption">Selected variant</b><br/>
+<span>This image is automatically taken from your selection.</span>
 </div>
 </div>
 </div>
 <div class="form-grid">
 <div class="field field-full">
-<label for="of_model">Modell</label>
-<input id="of_model" name="model" placeholder="z.B. Urban Time Wayne – Variante 7" required="" type="text"/>
+<label for="of_model">Model</label>
+<input id="of_model" name="model" placeholder="e.g. Urban Time Wayne – Variant 7" required="" type="text"/>
 </div>
 <div class="field field-full">
-<label for="of_delivery">Lieferung oder Abholung</label>
+<label for="of_delivery">Delivery or pickup</label>
 <select id="of_delivery" name="deliveryMethod" required="">
-<option disabled="" selected="" value="">Bitte auswählen…</option>
-<option value="Versand (Nachnahme)">Versand (Nachnahme)</option>
-<option value="Abholung">Abholung</option>
+<option disabled="" selected="" value="">Please choose…</option>
+<option value="Shipping (cash on delivery)">Shipping (cash on delivery)</option>
+<option value="Pickup">Pickup</option>
 </select>
 </div>
 <div class="field">
 <label for="of_name">Name</label>
-<input id="of_name" name="name" placeholder="Vor- und Nachname" required="" type="text"/>
+<input id="of_name" name="name" placeholder="First and last name" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_email">E‑Mail</label>
+<label for="of_email">Email</label>
 <input id="of_email" name="email" placeholder="name@email.com" required="" type="email"/>
 </div>
 <div class="field field-full">
-<label for="of_street">Straße &amp; Hausnummer</label>
-<input id="of_street" name="street" placeholder="Musterstraße 12" required="" type="text"/>
+<label for="of_street">Street &amp; house number</label>
+<input id="of_street" name="street" placeholder="Example Street 12" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_postal">PLZ</label>
+<label for="of_postal">Postal code</label>
 <input id="of_postal" name="postal" placeholder="1010" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_city">Ort</label>
-<input id="of_city" name="city" placeholder="Wien" required="" type="text"/>
+<label for="of_city">City</label>
+<input id="of_city" name="city" placeholder="Vienna" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_country">Land</label>
-<input id="of_country" name="country" placeholder="Österreich" required="" type="text"/>
+<label for="of_country">Country</label>
+<input id="of_country" name="country" placeholder="Austria" required="" type="text"/>
 </div>
 <div class="field">
 <label for="of_instagram">Instagram (optional)</label>
-<input id="of_instagram" name="instagram" placeholder="@deinname" type="text"/>
+<input id="of_instagram" name="instagram" placeholder="@yourname" type="text"/>
 </div>
 <div class="field field-full">
-<label for="of_phone">Telefon (optional)</label>
+<label for="of_phone">Phone (optional)</label>
 <input id="of_phone" name="phone" placeholder="+43 …" type="tel"/>
 </div>
 <div class="field field-full">
-<label for="of_message">Weitere Fragen (optional)</label>
-<textarea id="of_message" name="message" placeholder="Hast du noch weitere Fragen? Schreib sie hier rein." rows="5"></textarea>
-<p class="hint">Hinweis: Modell/Variante &amp; Bild werden automatisch als Referenz mitgesendet.</p>
+<label for="of_message">Any questions? (optional)</label>
+<textarea id="of_message" name="message" placeholder="Any questions? Write them here." rows="5"></textarea>
+<p class="hint">Note: model/variant &amp; image are automatically sent as reference.</p>
 </div>
 <div class="field field-full">
 <label class="check">
 <input id="of_terms" required="" type="checkbox"/>
-<span>Ich bestätige die Anzahlung (300 €) und akzeptiere den Kaufablauf (Versand per Nachnahme oder Abholung).</span>
+<span>I confirm the deposit (€300) and accept the purchase process (cash-on-delivery shipping or pickup).</span>
 </label>
 </div>
 <div class="field field-full">
 <label class="check">
 <input id="of_privterms" required="" type="checkbox"/>
-<span>Ich habe die <a class="terms-link" href="#" id="openPrivTerms">Privatverkaufsbedingungen</a> gelesen und akzeptiere sie.</span>
+<span>I have read and accept the <a class="terms-link" href="#" id="openPrivTerms">private sale terms</a>.</span>
 </label>
 </div>
 </div>
 <div class="form-buttons">
-<button class="btn primary" id="orderEmailBtn" type="submit">Anfrage per E‑Mail senden</button>
+<button class="btn primary" id="orderEmailBtn" type="submit">Send request by email</button>
 </div>
 <p class="form-note" id="formNote">
-        Hinweis: Die Anfrage wird direkt über das Formular gesendet (ohne E‑Mail‑Programm).
+        Note: Your request is sent directly via the form (no email app needed).
       </p>
 </form>
 </div>
 </section>
 <footer>
-<div>© <span id="year"></span> Urban Time Vienna · Alle Rechte vorbehalten</div>
-<div class="footer-note">Privatverkauf: keine Rücknahme, keine Garantie/Gewährleistung.</div>
+<div>© <span id="year"></span> Urban Time Vienna · All rights reserved</div>
+<div class="footer-note">Private sale: no returns, no warranty/guarantee.</div>
 </footer>
 </main>
 <div aria-hidden="true" class="modal" id="galleryModal">
 <div aria-labelledby="galleryTitle" aria-modal="true" class="card modal-card" role="dialog">
 <div class="modal-top">
 <div>
-<h3 id="galleryTitle">Uhr</h3>
+<h3 id="galleryTitle">Watch</h3>
 <p class="meta" id="galleryMeta"></p>
 </div>
-<button aria-label="Schließen" class="icon-btn" id="galleryClose" type="button">✕</button>
+<button aria-label="Close" class="icon-btn" id="galleryClose" type="button">✕</button>
 </div>
 <div class="modal-body">
 <div class="modal-media">
 <div class="media-stage" id="mediaStage">
-<button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
+<button aria-label="Previous image" class="nav-btn" id="galleryPrev" type="button">‹</button>
 <img alt="" class="main-image" id="galleryMain" src=""/>
-<button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
+<button aria-label="Next image" class="nav-btn" id="galleryNext" type="button">›</button>
 </div>
 <div class="thumbs thumbs-under" id="galleryThumbs"></div>
 </div>
@@ -1689,15 +1690,15 @@
 <div class="order-actions"><div class="movement-picker" id="movementPicker"></div>
 <div aria-live="polite" class="movement-desc" id="movementDesc"></div>
 <a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">
-                Bestellen: Instagram DM
+                Order: Instagram DM
               </a>
 <a class="btn primary" href="#bestellformular" id="orderFormBtn">
-                Anfrage per Formular
+                Request via form
               </a>
 </div>
-<p class="order-note" id="orderNote">Instagram: Beim Klick wird der Modelltext kopiert – in Instagram einfach einfügen.</p>
+<p class="order-note" id="orderNote">Instagram: On click, the model text is copied — just paste it into Instagram.</p>
 </div>
-<p class="modal-hint">Tipp: Pfeiltasten ← → wechseln • ESC schließt</p>
+<p class="modal-hint">Tip: Arrow keys ← → switch • ESC closes</p>
 </div>
 </div>
 </div>
@@ -1743,6 +1744,7 @@
     setActive(idx);
   }, intervalMs);
 })();
+
 
 // ===== Privatverkaufsbedingungen (Popup) =====
 document.addEventListener("DOMContentLoaded", () => {
@@ -1872,7 +1874,7 @@ function updateMovementDescription(){
 
       movementPicker.style.display = "";
       const sel = getSelectedMovement();
-      const titleText = "Uhrwerk wählen";
+      const titleText = "Select movement";
       const title = `<div class="mp-title">${titleText}</div>`;
 
       const items = currentMovements.map((m, idx) => {
@@ -1931,14 +1933,15 @@ function updateMovementDescription(){
       const hasVariants = (currentImages.length || 0) > 1;
 
       const mv = getSelectedMovement();
-      const mvTxt = mv ? ` – Uhrwerk ${mv.code} – ${mv.price} €` : ``;
-      const modelText = hasVariants ? `${currentTitle} – Variante ${variantNo}${mvTxt}` : `${currentTitle}${mvTxt}`;
+      const mvTxt = mv ? ` – Movement ${mv.code} – ${mv.price} €` : ``;
+      const modelText = hasVariants ? `${currentTitle} – Variant ${variantNo}${mvTxt}` : `${currentTitle}${mvTxt}`;
       if(modelEl) modelEl.value = modelText;
 
       const defaultMsg =
-`Bitte Preis, Lieferzeit und Verfügbarkeit senden.
+`Please send the price, delivery time and availability.
 
-Hast du noch weitere Fragen? Schreibe sie hier rein.`;
+If possible, I would also like a detailed video or additional photos.
+Thank you!`;
 
       // Nachricht bleibt clean: Referenzen (Modell/Variante/Bild) werden separat mitgesendet.
       if(msgEl && !msgEl.value.trim()){
@@ -1964,12 +1967,12 @@ Hast du noch weitere Fragen? Schreibe sie hier rein.`;
       const hasVariants = (currentImages.length || 0) > 1;
 
       img.src = src;
-      img.alt = hasVariants ? `${currentTitle} – Variante ${variantNo}` : `${currentTitle}`;
+      img.alt = hasVariants ? `${currentTitle} – Variant ${variantNo}` : `${currentTitle}`;
 
       if(cap){
         const mv = getSelectedMovement();
         const mvCap = mv ? ` · ${mv.code} · ${mv.price} €` : ``;
-        cap.textContent = hasVariants ? `${currentTitle} · Variante ${variantNo}${mvCap}` : `${currentTitle}${mvCap}`;
+        cap.textContent = hasVariants ? `${currentTitle} · Variant ${variantNo}${mvCap}` : `${currentTitle}${mvCap}`;
       }
 
       wrap.style.display = "block";
@@ -1977,7 +1980,7 @@ Hast du noch weitere Fragen? Schreibe sie hier rein.`;
 
 let currentImages = [];
     let currentIndex = 0;
-    let currentTitle = "Uhr";
+    let currentTitle = "Watch";
 
     function basename(path){
       return (path || "").split("?")[0].split("#")[0].split("/").pop();
@@ -2063,26 +2066,26 @@ let currentImages = [];
       const hasVariants = (currentImages.length || 0) > 1;
 
             const mv = getSelectedMovement();
-      const mvLine = mv ? `Uhrwerk: ${mv.code}` : "";
-      const priceLine = mv ? `Preis: ${mv.price} €` : "";
+      const mvLine = mv ? `Movement: ${mv.code}` : "";
+      const priceLine = mv ? `Price: ${mv.price} €` : "";
 
-      const msg = `Bestellanfrage: ${currentTitle}
-Variante: ${hasVariants ? variantNo : "-"}
-Bild: ${file}
+      const msg = `Order request: ${currentTitle}
+Variant: ${hasVariants ? variantNo : "-"}
+Image: ${file}
 ${mvLine}
 ${priceLine}
 
-Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
+Please send the price, delivery time and availability.`;
 
       orderInstaBtn.href = IG_DM_LINK;
-      orderInstaBtn.setAttribute("aria-label", `Instagram DM öffnen – ${currentTitle}`);
-      orderInstaBtn.textContent = "Bestellen: Instagram DM";
+      orderInstaBtn.setAttribute("aria-label", `Open Instagram DM — ${currentTitle}`);
+      orderInstaBtn.textContent = "Order: Instagram DM";
 
       if(orderFormBtn){
-        orderFormBtn.setAttribute("aria-label", `Zum Formular – ${currentTitle}`);
+        orderFormBtn.setAttribute("aria-label", `Go to form — ${currentTitle}`);
       }
 
-      orderNote.textContent = "Beim Klick wird der Modelltext kopiert – in Instagram einfach einfügen.";
+      orderNote.textContent = "On click, the model text is copied — just paste it into Instagram.";
 
       // keep movement info in sync
       updateMovementDescription();
@@ -2091,16 +2094,16 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
         e.preventDefault();
 
         const srcNow = currentImages[currentIndex] || "";
-        orderNote.textContent = "Kopiere Modell…";
+        orderNote.textContent = "Copying model…";
 
         const res = await copyTextAndMaybeImage(msg, srcNow);
 
         if(res.imageCopied){
-          orderNote.textContent = "Text + Bild kopiert ✅ In Instagram einfach einfügen (Strg+V).";
+          orderNote.textContent = "Text + image copied ✅ Just paste in Instagram (Ctrl+V).";
         }else if(res.textCopied){
-          orderNote.textContent = "Text kopiert ✅ Öffne Instagram…";
+          orderNote.textContent = "Text copied ✅ Open Instagram…";
         }else{
-          orderNote.textContent = "Kopieren nicht möglich – bitte Text/Screenshot manuell senden.";
+          orderNote.textContent = "Copying isn’t possible — please send the text/screenshot manually.";
         }
 
         openInNewTab(IG_DM_LINK);
@@ -2128,7 +2131,7 @@ function setIndex(i){
       if(!currentImages.length) return;
       currentIndex = (i + currentImages.length) % currentImages.length;
       mainImg.src = currentImages[currentIndex];
-      mainImg.alt = `${currentTitle} – Bild ${currentIndex + 1}`;
+      mainImg.alt = `${currentTitle} – Image ${currentIndex + 1}`;
       // Active Thumb
       [...thumbsEl.children].forEach((btn, idx) => {
         btn.classList.toggle("active", idx === currentIndex);
@@ -2159,7 +2162,7 @@ function setIndex(i){
       }
       renderMovementPicker();
 
-      const title = (card.querySelector("h3")?.textContent || "Uhr").trim();
+      const title = (card.querySelector("h3")?.textContent || "Watch").trim();
       const meta = (card.querySelector(".tag")?.textContent || "").trim();
 
       currentTitle = title;
@@ -2172,11 +2175,11 @@ function setIndex(i){
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "thumb-btn";
-        btn.setAttribute("aria-label", `Bild ${idx + 1} anzeigen`);
+        btn.setAttribute("aria-label", `Show image ${idx + 1}`);
 
         const img = document.createElement("img");
         img.src = src;
-        img.alt = `${title} – Bild ${idx + 1}`;
+        img.alt = `${title} – Image ${idx + 1}`;
         img.loading = "lazy";
 
         btn.appendChild(img);
@@ -2266,7 +2269,6 @@ function setIndex(i){
     }
 
 // ===== Language Dropdown (DE / EN) =====
-
 
     (function () {
       try {
@@ -2474,21 +2476,21 @@ function setIndex(i){
 <div aria-hidden="true" class="modal terms-modal" id="privTermsModal">
 <div class="modal-card">
 <div class="modal-top">
-<h3>Privatverkaufsbedingungen</h3>
-<button aria-label="Schließen" class="icon-btn" id="closePrivTerms" type="button">×</button>
+<h3>Private sale terms</h3>
+<button aria-label="Close" class="icon-btn" id="closePrivTerms" type="button">×</button>
 </div>
 <div class="modal-body">
 <div class="terms-content">
-<p><strong>Wichtiger Hinweis:</strong> Urban Time Vienna verkauft als <strong>Privatverkäufer</strong> (kein gewerblicher Händler).</p>
+<p><strong>Important notice:</strong> Urban Time Vienna sells as a <strong>private seller</strong> (not a commercial dealer).</p>
 <ul>
-<li><strong>Privatverkauf:</strong> Keine Rücknahme, kein Umtausch.</li>
-<li><strong>Keine Garantie/Gewährleistung:</strong> Verkauf erfolgt „wie gesehen“ / „wie beschrieben“, soweit gesetzlich zulässig.</li>
-<li><strong>Anzahlung:</strong> 300 € zur Reservierung; wird auf den Kaufpreis angerechnet.</li>
-<li><strong>Lieferung/Abholung:</strong> Versand per Nachnahme oder persönliche Abholung (nach Absprache).</li>
-<li><strong>Produktdetails:</strong> Modell/Variante/Bilder dienen als Referenz; Details können je nach Verfügbarkeit leicht abweichen.</li>
-<li><strong>Kaufabschluss:</strong> Der Kauf kommt erst nach Bestätigung der Bestellung/Anfrage zustande.</li>
+<li><strong>Private sale:</strong> No returns, no exchanges.</li>
+<li><strong>No warranty/guarantee:</strong> Sold “as seen” / “as described”, to the extent permitted by law.</li>
+<li><strong>Deposit:</strong> €300 to reserve; credited towards the purchase price.</li>
+<li><strong>Delivery/pickup:</strong> Cash on delivery shipment or personal pickup (by arrangement).</li>
+<li><strong>Product details:</strong> Model/variant/photos are for reference; details may vary slightly depending on availability.</li>
+<li><strong>Conclusion of sale:</strong> The sale is only concluded after confirmation of the order/request.</li>
 </ul>
-<p>Mit dem Häkchen bestätigst du, dass du diese Bedingungen gelesen hast und akzeptierst.</p>
+<p>By ticking the box, you confirm that you have read and accept these terms.</p>
 </div>
 </div>
 </div>
