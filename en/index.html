@@ -7,36 +7,16 @@
 <title>UrbanTimeVienna</title>
 <meta content="UrbanTimeVienna – elegant watch culture with a hint of Pop Art." name="description"/>
 <script>
-// Language preference helper (Cloudflare Pages: / and /en/)
-(function () {
-  try {
-    var pref = null;
-    try { pref = localStorage.getItem("utv_lang"); } catch (e) {}
-
-    var path = (location.pathname || "").replace(/\\/g, "/");
-
-    // Normalize weird paths like /de/ to /
-    if (/^\/de\/?/i.test(path)) {
-      location.replace("/");
-      return;
-    }
-
-    // Detect /en/ both on the web and when opening locally via file://
-    // (e.g. "/C:/.../en/index.html").
-    var onEN = /\/en(\/|$)/i.test(path);
-
-    if (pref === "en" && !onEN) {
-      // Relative path so local double-click works too.
-      location.replace("en/");
-      return;
-    }
-    if (pref === "de" && onEN) {
-      // Go back to root from /en/ (works for web + file://).
-      location.replace("../");
-      return;
-    }
-  } catch (e) {}
-})();
+  // Language preference (DE default). Redirect based on stored choice.
+  (function () {
+    try {
+      var preferred = localStorage.getItem("utv_lang"); // "de" | "en" | null
+      var path = (location.pathname || "").replace(/\/g, "/");
+      var onEN = /\/en\/(?:$|index\.html$)/i.test(path) || /\/en\//i.test(path);
+      if (preferred === "en" && !onEN) { location.replace("en/"); return; }
+      if (preferred === "de" && onEN) { location.replace("../index.html"); return; }
+    } catch (e) {}
+  })();;
 </script>
 <style>
     :root{
@@ -1005,7 +985,7 @@
   content:"";
   position:absolute;
   inset:-2px;
-  background-image: url("../assets/pattern-crown.svg");
+  background-image: url('../assets/pattern-crown.svg');
   background-size: 280px 280px;
   background-repeat: repeat;
   opacity: .06;
@@ -1096,7 +1076,7 @@
   content:"";
   position:absolute;
   inset:-2px;
-  background-image: url("../assets/pattern-crown.svg");
+  background-image: url('../assets/pattern-crown.svg');
   background-size: 280px 280px;
   background-repeat: repeat;
   opacity: .10;
@@ -1181,15 +1161,6 @@
     animation: none !important;
   }
 }
-
-/* Hero brand: auto-switch between brand card + IG promo image */
-.hero-brand { position: relative; overflow: hidden; }
-.hero-brand-slides { position: relative; width: 100%; height: 100%; }
-.hero-brand-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 600ms ease; pointer-events: none; }
-.hero-brand-slide.is-active { opacity: 1; }
-.hero-brand-slide[data-slide="promo"] { display: flex; }
-.hero-brand-promo { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 18px; }
-
 </style>
 </head>
 <body class="lang-en" id="top">
@@ -1211,7 +1182,7 @@
 <img alt="English" src="../assets/flag-gb.svg"/>
 </button>
 <div aria-label="Language" class="lang-menu" role="menu">
-<a aria-label="Deutsch" class="lang-option" data-lang="de" href="../" role="menuitem">
+<a aria-label="Deutsch" class="lang-option" data-lang="de" href="../index.html" role="menuitem">
 <img alt="Deutsch" src="../assets/flag-de.svg"/>
 </a>
 </div>
@@ -1233,15 +1204,18 @@
 </div>
 <div class="card hero-right">
 <a aria-label="Open Urban Time Vienna on Instagram" class="hero-brand-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
-      <div class="hero-brand-slides" aria-label="Instagram Promo">
-        <div class="hero-brand-slide is-active" data-slide="brand">
-          <div class="hero-brand-inner">
+<div class="hero-brand-inner">
 <div aria-hidden="true" class="premium-micro">URBAN • TIME • VIENNA</div>
-        </div>
-        <div class="hero-brand-slide" data-slide="promo">
-          <img class="hero-brand-promo" src="../assets/ig_promo_variants.jpg" alt="Weitere Varianten per Instagram DM anfragen"/>
-        </div>
-      </div></a>
+<div aria-label="Urban Time Vienna" class="slide-brand">
+<img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
+<div class="slide-brand-text">
+<div class="slide-brand-top">URBAN TIME</div>
+<div class="slide-brand-bottom">VIENNA</div>
+</div>
+</div>
+<div class="slide-text">Curated · Refined · Style with character</div>
+</div>
+</a>
 </div></section>
 <section class="section" id="highlights">
 <div class="section-head">
@@ -1278,7 +1252,7 @@
 <div class="grid">
 <article class="item product-card" data-images="../royal-urban.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="Submarine Hulk" loading="lazy" src="/royal-urban.jpg"/>
+<img alt="Submarine Hulk" loading="lazy" src="../royal-urban.jpg"/>
 </div>
 <span class="tag">Price €580</span>
 <h3>Submarine "HULK"</h3>
@@ -1302,7 +1276,7 @@
 </article>
 <article class="item product-card" data-images="../pop-art-chrono.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="Pop-Art Chrono" loading="lazy" src="/pop-art-chrono.jpg"/>
+<img alt="Pop-Art Chrono" loading="lazy" src="../pop-art-chrono.jpg"/>
 </div>
 <span class="tag">Price €800</span>
 <h3>GMT II Bruce Wayne</h3>
@@ -1327,7 +1301,7 @@
 </article>
 <article class="item product-card" data-images="../stephans-stealth.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="GMT II Bi‑Tone" loading="lazy" src="/stephans-stealth.jpg"/>
+<img alt="GMT II Bi‑Tone" loading="lazy" src="../stephans-stealth.jpg"/>
 </div>
 <span class="tag">Price €830</span>
 <h3>GMT II Bi‑Tone</h3>
@@ -1360,42 +1334,42 @@
 </div>
 <div class="grid">
 <article class="item product-card" data-currency="EUR" data-images="../urban_wayne_v1.jpg,../urban_wayne_v2.jpg,../urban_wayne_v3.jpg,../urban_wayne_v4.jpg,../urban_wayne_v5.jpg,../urban_wayne_v6.jpg,../urban_wayne_v7.jpg,../urban_wayne_v8.jpg,../urban_wayne_v9.jpg,../urban_wayne_v10.jpg" data-movements='[{"code": "3186", "price": 750}, {"code": "3285", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Urban GMT – Stainless steel GMT" loading="lazy" src="/order_1_1.jpg"/></div>
+<div class="thumb"><img alt="Urban GMT – Stainless steel GMT" loading="lazy" src="../order_1_1.jpg"/></div>
 <span class="tag price-tag">From: €750</span>
 <h3>Urban Time Vienna</h3>
 <p>Available on request · lead time approx. 14 business days</p>
 <a class="order-btn" href="#bestellformular">Order request</a>
 </article>
 <article class="item product-card" data-currency="EUR" data-images="../urban_date_v1.jpg,../urban_date_v2.jpg,../urban_date_v3.jpg,../urban_date_v4.jpg,../urban_date_v5.jpg,../urban_date_v6.jpg,../urban_date_v7.jpg,../urban_date_v8.jpg,../urban_date_v9.jpg,../urban_date_v10.jpg" data-movements='[{"code": "2836", "price": 750}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Vienna Date – Blue date model" loading="lazy" src="/order_2_1.jpg"/></div>
+<div class="thumb"><img alt="Vienna Date – Blue date model" loading="lazy" src="../order_2_1.jpg"/></div>
 <span class="tag price-tag">From: €750</span>
 <h3>Urban Time Date</h3>
 <p>Available on request · lead time approx. 14 business days</p>
 <a class="order-btn" href="#bestellformular">Order request</a>
 </article>
 <article class="item product-card more-models" data-currency="EUR" data-images="../urban_chrono_v1.jpg,../urban_chrono_v2.jpg,../urban_chrono_v3.jpg,../urban_chrono_v4.jpg,../urban_chrono_v5.jpg,../urban_chrono_v6.jpg,../urban_chrono_v7.jpg,../urban_chrono_v8.jpg" data-movements='[{"code": "7750", "price": 800}, {"code": "4131", "price": 1050}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Urban Chrono – Chronograph" loading="lazy" src="/order_3_1.jpg"/></div>
+<div class="thumb"><img alt="Urban Chrono – Chronograph" loading="lazy" src="../order_3_1.jpg"/></div>
 <span class="tag price-tag">From: €800</span>
 <h3>Urban Time Chrono</h3>
 <p>Available on request · lead time approx. 14 business days</p>
 <a class="order-btn" href="#bestellformular">Order request</a>
 </article>
 <article class="item product-card" data-currency="EUR" data-images="../president_dd_v1.jpg,../president_dd_v2.jpg,../president_dd_v3.jpg,../president_dd_v4.jpg,../president_dd_v5.jpg,../president_dd_v6.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3255", "price": 1050}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Vienna DayDate – Gold Day-Date" loading="lazy" src="/order_4_1.jpg"/></div>
+<div class="thumb"><img alt="Vienna DayDate – Gold Day-Date" loading="lazy" src="../order_4_1.jpg"/></div>
 <span class="tag price-tag">From: €720</span>
 <h3>Urban Time President DD.</h3>
 <p>Available on request · lead time approx. 14 business days</p>
 <a class="order-btn" href="#bestellformular">Order request</a>
 </article>
 <article class="item product-card" data-currency="EUR" data-images="../urban_classic_v1.jpg,../urban_classic_v2.jpg,../urban_classic_v3.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Stephans Diver – Grey Diver" loading="lazy" src="/order_5_1.jpg"/></div>
+<div class="thumb"><img alt="Stephans Diver – Grey Diver" loading="lazy" src="../order_5_1.jpg"/></div>
 <span class="tag price-tag">From: €720</span>
 <h3>Urban Time Classic</h3>
 <p>Available on request · lead time approx. 14 business days</p>
 <a class="order-btn" href="#bestellformular">Order request</a>
 </article>
 <article class="item product-card" data-currency="EUR" data-images="../president_d_v1.jpg,../president_d_v2.jpg,../president_d_v3.jpg,../president_d_v4.jpg,../president_d_v5.jpg,../president_d_v6.jpg,../president_d_v7.jpg,../president_d_v8.jpg,../president_d_v9.jpg,../president_d_v10.jpg,../president_d_v11.jpg,../president_d_v12.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 830}]' role="button" tabindex="0">
-<div class="thumb"><img alt="Royal Pink – Pink Dial" loading="lazy" src="/order_6_1.jpg"/></div>
+<div class="thumb"><img alt="Royal Pink – Pink Dial" loading="lazy" src="../order_6_1.jpg"/></div>
 <span class="tag price-tag">From: €720</span>
 <h3>Urban Time President D.</h3>
 <p>Available on request · lead time approx. 14 business days</p>
@@ -2136,21 +2110,6 @@ function setIndex(i){
         });
       } catch (e) {}
     })();
-
-// ===== Hero Brand Slider (switch every 6s) =====
-(function () {
-  try {
-    var slides = document.querySelectorAll(".hero-brand-slide");
-    if (!slides || slides.length < 2) return;
-
-    var i = 0;
-    setInterval(function () {
-      slides[i].classList.remove("is-active");
-      i = (i + 1) % slides.length;
-      slides[i].classList.add("is-active");
-    }, 6000);
-  } catch (e) {}
-})();
 </script>
 <div aria-hidden="true" class="modal terms-modal" id="privTermsModal">
 <div class="modal-card">
