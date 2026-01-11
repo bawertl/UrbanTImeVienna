@@ -11,11 +11,12 @@
   (function () {
     try {
       var preferred = localStorage.getItem("utv_lang"); // "de" | "en" | null
-      var onEN = /index_en\.html$/i.test(location.pathname);
-      if (preferred === "en" && !onEN) { location.replace("index_en.html"); return; }
-      if (preferred === "de" && onEN) { location.replace("index.html"); return; }
+      var path = (location.pathname || "").replace(/\/g, "/");
+      var onEN = /\/en\/(?:$|index\.html$)/i.test(path) || /\/en\//i.test(path);
+      if (preferred === "en" && !onEN) { location.replace("en/"); return; }
+      if (preferred === "de" && onEN) { location.replace("../index.html"); return; }
     } catch (e) {}
-  })();
+  })();;
 </script>
 <style>
     :root{
@@ -1180,8 +1181,8 @@
 <img alt="Deutsch" src="assets/flag-de.svg"/>
 </button>
 <div aria-label="Sprache" class="lang-menu" role="menu">
-<a aria-label="English" class="lang-option" data-lang="en" href="/index_en.html" role="menuitem">
-  <img alt="English" src="assets/flag-gb.svg"/>
+<a aria-label="English" class="lang-option" data-lang="en" href="en/" role="menuitem">
+<img alt="English" src="assets/flag-gb.svg"/>
 </a>
 </div>
 </div>
@@ -1201,21 +1202,19 @@
 </div>
 </div>
 <div class="card hero-right">
-  <a class="hero-brand-link" href="https://www.instagram.com/urbantimevienna/" target="_blank" rel="noopener" aria-label="Urban Time Vienna auf Instagram öffnen">
-    <div class="hero-brand-inner">
-      <div class="premium-micro" aria-hidden="true">URBAN • TIME • VIENNA</div>
-
-      <div aria-label="Urban Time Vienna" class="slide-brand">
-        <img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
-        <div class="slide-brand-text">
-          <div class="slide-brand-top">URBAN TIME</div>
-          <div class="slide-brand-bottom">VIENNA</div>
-        </div>
-      </div>
-
-      <div class="slide-text">Kuratiert · Veredelt · Stil mit Charakter</div>
-    </div>
-  </a>
+<a aria-label="Urban Time Vienna auf Instagram öffnen" class="hero-brand-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
+<div class="hero-brand-inner">
+<div aria-hidden="true" class="premium-micro">URBAN • TIME • VIENNA</div>
+<div aria-label="Urban Time Vienna" class="slide-brand">
+<img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
+<div class="slide-brand-text">
+<div class="slide-brand-top">URBAN TIME</div>
+<div class="slide-brand-bottom">VIENNA</div>
+</div>
+</div>
+<div class="slide-text">Kuratiert · Veredelt · Stil mit Charakter</div>
+</div>
+</a>
 </div></section>
 <section class="section" id="highlights">
 <div class="section-head">
@@ -1252,8 +1251,8 @@
 <div class="grid">
 <article class="item product-card" data-images="royal-urban.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="Submarine Hulk" loading="lazy" src="royal-urban.jpg">
-</img></div>
+<img alt="Submarine Hulk" loading="lazy" src="royal-urban.jpg"/>
+</div>
 <span class="tag">Preis €580</span>
 <h3>Submarine "HULK"</h3>
 <p class="teaser">Die Submariner „Hulk“ verdankt ihren Namen ihrem intensiven grünen Zifferblatt und der grünen Lünette. Als moderne Interpretation einer Taucherlegende wurde sie schnell zum Kultobjekt – heute begehrt wie nie.</p>
@@ -1276,8 +1275,8 @@
 </article>
 <article class="item product-card" data-images="pop-art-chrono.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="Pop-Art Chrono" loading="lazy" src="pop-art-chrono.jpg">
-</img></div>
+<img alt="Pop-Art Chrono" loading="lazy" src="pop-art-chrono.jpg"/>
+</div>
 <span class="tag">Preis €800</span>
 <h3>GMT II Bruce Wayne</h3>
 <p class="teaser">GMT II Bruce Wayne – sportlich‑elegante GMT im „Stealth“-Look. Ideal für Reisen: zweite Zeitzone auf einen Blick.</p>
@@ -1301,8 +1300,8 @@
 </article>
 <article class="item product-card" data-images="stephans-stealth.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="GMT II Bi‑Tone" loading="lazy" src="stephans-stealth.jpg">
-</img></div>
+<img alt="GMT II Bi‑Tone" loading="lazy" src="stephans-stealth.jpg"/>
+</div>
 <span class="tag">Preis €830</span>
 <h3>GMT II Bi‑Tone</h3>
 <p class="teaser">GMT II Bi‑Tone – die elegante GMT im Stahl/Gold‑Look. Klassisch, markant und ideal, wenn Sie zwischen zwei Zeitzonen unterwegs sind.</p>
@@ -1429,12 +1428,12 @@
 <form class="order-form" id="orderForm" novalidate="">
 <div aria-live="polite" class="variant-preview" id="selectedVariantPreview">
 <div class="variant-preview-inner">
-<img alt="" id="selectedVariantImg" loading="lazy" src="">
+<img alt="" id="selectedVariantImg" loading="lazy" src=""/>
 <div class="vp-text">
-<b id="selectedVariantCaption">Ausgewählte Variante</b><br>
+<b id="selectedVariantCaption">Ausgewählte Variante</b><br/>
 <span>Dieses Bild wird automatisch aus deiner Auswahl übernommen.</span>
-</br></div>
-</img></div>
+</div>
+</div>
 </div>
 <div class="form-grid">
 <div class="field field-full">
@@ -1493,10 +1492,10 @@
 </label>
 </div>
 <div class="field field-full">
-  <label class="check">
-    <input id="of_privterms" required type="checkbox"/>
-    <span>Ich habe die <a href="#" id="openPrivTerms" class="terms-link">Privatverkaufsbedingungen</a> gelesen und akzeptiere sie.</span>
-  </label>
+<label class="check">
+<input id="of_privterms" required="" type="checkbox"/>
+<span>Ich habe die <a class="terms-link" href="#" id="openPrivTerms">Privatverkaufsbedingungen</a> gelesen und akzeptiere sie.</span>
+</label>
 </div>
 </div>
 <div class="form-buttons">
@@ -1524,17 +1523,17 @@
 </div>
 <div class="modal-body">
 <div class="modal-media">
-  <div class="media-stage" id="mediaStage">
-    <button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
-    <img alt="" class="main-image" id="galleryMain" src=""/>
-    <button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
-  </div>
-  <div class="thumbs thumbs-under" id="galleryThumbs"></div>
+<div class="media-stage" id="mediaStage">
+<button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
+<img alt="" class="main-image" id="galleryMain" src=""/>
+<button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
+</div>
+<div class="thumbs thumbs-under" id="galleryThumbs"></div>
 </div>
 <div class="modal-side">
 <div class="order-box">
 <div class="order-actions"><div class="movement-picker" id="movementPicker"></div>
-<div class="movement-desc" id="movementDesc" aria-live="polite"></div>
+<div aria-live="polite" class="movement-desc" id="movementDesc"></div>
 <a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">
                 Bestellen: Instagram DM
               </a>
@@ -2109,28 +2108,27 @@ function setIndex(i){
       } catch (e) {}
     })();
 </script>
-<div class="modal terms-modal" id="privTermsModal" aria-hidden="true">
-  <div class="modal-card">
-    <div class="modal-top">
-      <h3>Privatverkaufsbedingungen</h3>
-      <button class="icon-btn" id="closePrivTerms" type="button" aria-label="Schließen">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="terms-content">
-        <p><strong>Wichtiger Hinweis:</strong> Urban Time Vienna verkauft als <strong>Privatverkäufer</strong> (kein gewerblicher Händler).</p>
-        <ul>
-          <li><strong>Privatverkauf:</strong> Keine Rücknahme, kein Umtausch.</li>
-          <li><strong>Keine Garantie/Gewährleistung:</strong> Verkauf erfolgt „wie gesehen“ / „wie beschrieben“, soweit gesetzlich zulässig.</li>
-          <li><strong>Anzahlung:</strong> 300 € zur Reservierung; wird auf den Kaufpreis angerechnet.</li>
-          <li><strong>Lieferung/Abholung:</strong> Versand per Nachnahme oder persönliche Abholung (nach Absprache).</li>
-          <li><strong>Produktdetails:</strong> Modell/Variante/Bilder dienen als Referenz; Details können je nach Verfügbarkeit leicht abweichen.</li>
-          <li><strong>Kaufabschluss:</strong> Der Kauf kommt erst nach Bestätigung der Bestellung/Anfrage zustande.</li>
-        </ul>
-        <p>Mit dem Häkchen bestätigst du, dass du diese Bedingungen gelesen hast und akzeptierst.</p>
-      </div>
-    </div>
-  </div>
+<div aria-hidden="true" class="modal terms-modal" id="privTermsModal">
+<div class="modal-card">
+<div class="modal-top">
+<h3>Privatverkaufsbedingungen</h3>
+<button aria-label="Schließen" class="icon-btn" id="closePrivTerms" type="button">×</button>
 </div>
-
+<div class="modal-body">
+<div class="terms-content">
+<p><strong>Wichtiger Hinweis:</strong> Urban Time Vienna verkauft als <strong>Privatverkäufer</strong> (kein gewerblicher Händler).</p>
+<ul>
+<li><strong>Privatverkauf:</strong> Keine Rücknahme, kein Umtausch.</li>
+<li><strong>Keine Garantie/Gewährleistung:</strong> Verkauf erfolgt „wie gesehen“ / „wie beschrieben“, soweit gesetzlich zulässig.</li>
+<li><strong>Anzahlung:</strong> 300 € zur Reservierung; wird auf den Kaufpreis angerechnet.</li>
+<li><strong>Lieferung/Abholung:</strong> Versand per Nachnahme oder persönliche Abholung (nach Absprache).</li>
+<li><strong>Produktdetails:</strong> Modell/Variante/Bilder dienen als Referenz; Details können je nach Verfügbarkeit leicht abweichen.</li>
+<li><strong>Kaufabschluss:</strong> Der Kauf kommt erst nach Bestätigung der Bestellung/Anfrage zustande.</li>
+</ul>
+<p>Mit dem Häkchen bestätigst du, dass du diese Bedingungen gelesen hast und akzeptierst.</p>
+</div>
+</div>
+</div>
+</div>
 </body>
 </html>
