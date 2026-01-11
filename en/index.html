@@ -1040,6 +1040,29 @@
 
 
 
+
+/* === Hero Instagram Rotator (2 images, swaps every 7s, both clickable) === */
+.hero-ig-rotator{
+  padding: 0;
+  display:block;
+  min-height: 420px;
+  overflow:hidden;
+}
+@media (max-width: 900px){
+  .hero-ig-rotator{ min-height: 360px; }
+}
+.hero-ig-rotator .hero-ig-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+  opacity: 1;
+  transition: opacity .45s ease;
+}
+.hero-ig-rotator .hero-ig-img.is-fading{ opacity: 0; }
+@media (prefers-reduced-motion: reduce){
+  .hero-ig-rotator .hero-ig-img{ transition: none !important; }
+}
 /* === Hero Brand Card (original look, subtle movement, fully clickable to Instagram) === */
 .hero-brand-link{
   display:block;
@@ -1203,19 +1226,11 @@
 </div>
 </div>
 <div class="card hero-right">
-<a aria-label="Open Urban Time Vienna on Instagram" class="hero-brand-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
-<div class="hero-brand-inner">
-<div aria-hidden="true" class="premium-micro">URBAN • TIME • VIENNA</div>
-<div aria-label="Urban Time Vienna" class="slide-brand">
-<img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
-<div class="slide-brand-text">
-<div class="slide-brand-top">URBAN TIME</div>
-<div class="slide-brand-bottom">VIENNA</div>
-</div>
-</div>
-<div class="slide-text">Curated · Refined · Style with character</div>
-</div>
-</a>
+  <a aria-label="Urban Time Vienna auf Instagram öffnen" class="hero-brand-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
+    <div class="hero-brand-inner hero-ig-rotator" data-images="../assets/ig-slide-1.jpg,../assets/ig-slide-2.jpg">
+      <img class="hero-ig-img" src="../assets/ig-slide-1.jpg" alt="Urban Time Vienna – Instagram" loading="eager"/>
+    </div>
+  </a>
 </div></section>
 <section class="section" id="highlights">
 <div class="section-head">
@@ -2110,6 +2125,37 @@ function setIndex(i){
         });
       } catch (e) {}
     })();
+
+    // ===== Hero Instagram Rotator (swap images every 7s; link always to Instagram) =====
+    (function initHeroInstagramRotator(){
+      try {
+        var rotator = document.querySelector('.hero-ig-rotator[data-images]');
+        if(!rotator) return;
+        var img = rotator.querySelector('img.hero-ig-img');
+        if(!img) return;
+        var raw = rotator.getAttribute('data-images') || '';
+        var images = raw.split(',').map(function(x){ return (x||'').trim(); }).filter(Boolean);
+        if(images.length < 2) return;
+
+        // Preload
+        images.forEach(function(src){ var i = new Image(); i.src = src; });
+
+        var idx = 0;
+        var intervalMs = 7000;
+
+        setInterval(function(){
+          idx = (idx + 1) % images.length;
+          img.classList.add('is-fading');
+          window.setTimeout(function(){
+            img.src = images[idx];
+          }, 220);
+          window.setTimeout(function(){
+            img.classList.remove('is-fading');
+          }, 420);
+        }, intervalMs);
+      } catch (e) {}
+    })();
+
 </script>
 <div aria-hidden="true" class="modal terms-modal" id="privTermsModal">
 <div class="modal-card">
