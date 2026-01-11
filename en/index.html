@@ -1169,6 +1169,38 @@
 }
 .ig-slide.is-active{ opacity: 1; }
 
+
+/* Autoplay via CSS (robust even when JS is blocked) */
+.ig-hero-rotator{ --ig-cycle: 14s; }
+.ig-hero-rotator .ig-slide-1{ animation: igFadeSlide1 var(--ig-cycle) infinite; }
+.ig-hero-rotator .ig-slide-2{ animation: igFadeSlide2 var(--ig-cycle) infinite; }
+
+/* JS fallback: ensure rotation works even when CSS animations are disabled */
+.ig-hero-rotator.is-js .ig-slide-1,
+.ig-hero-rotator.is-js .ig-slide-2{
+  animation: none !important;
+}
+
+
+@keyframes igFadeSlide1{
+  0%{ opacity: 1; }
+  45%{ opacity: 1; }
+  50%{ opacity: 0; }
+  95%{ opacity: 0; }
+  100%{ opacity: 1; }
+}
+@keyframes igFadeSlide2{
+  0%{ opacity: 0; }
+  45%{ opacity: 0; }
+  50%{ opacity: 1; }
+  95%{ opacity: 1; }
+  100%{ opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .ig-hero-rotator .ig-slide{ animation: none !important; transition: none !important; }
+}
+
 .ig-tagline{ margin-top: 8px; }
 
 .ig-lines{
@@ -1305,7 +1337,7 @@
       <div aria-hidden="true" class="ig-micro-top">URBAN • TIME • VIENNA</div>
 
       <!-- Slide 1 -->
-      <div class="ig-slide is-active" aria-hidden="false">
+      <div class="ig-slide ig-slide-1 is-active" aria-hidden="false">
         <div aria-label="Urban Time Vienna" class="slide-brand">
           <img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
           <div class="slide-brand-text">
@@ -1317,7 +1349,7 @@
       </div>
 
       <!-- Slide 2 -->
-      <div class="ig-slide" aria-hidden="true">
+      <div class="ig-slide ig-slide-2" aria-hidden="true">
         <div aria-label="Urban Time Vienna" class="slide-brand">
           <img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
           <div class="slide-brand-text">
@@ -1679,6 +1711,44 @@
 <script>
     // Jahr im Footer
     document.getElementById("year").textContent = new Date().getFullYear();
+
+// ===== Instagram Hero Rotator (reliable 7s swap) =====
+(function(){
+  const rotator = document.getElementById("igHeroRotator");
+  if(!rotator) return;
+
+  const slides = Array.from(rotator.querySelectorAll(".ig-slide"));
+  if(slides.length < 2) return;
+
+  // Use JS to rotate (works even if CSS animations are blocked / reduced motion is on)
+  rotator.classList.add("is-js");
+
+  const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const intervalMs = 7000;
+
+  let idx = slides.findIndex(s => s.classList.contains("is-active"));
+  if(idx < 0) idx = 0;
+
+  function setActive(newIdx){
+    slides.forEach((s,i)=>{
+      const active = i === newIdx;
+      s.classList.toggle("is-active", active);
+      s.setAttribute("aria-hidden", active ? "false" : "true");
+    });
+  }
+
+  // If reduced motion: swap without fade
+  if(prefersReduced){
+    slides.forEach(s => { s.style.transition = "none"; });
+  }
+
+  setActive(idx);
+
+  setInterval(() => {
+    idx = (idx + 1) % slides.length;
+    setActive(idx);
+  }, intervalMs);
+})();
 
 
 // ===== Privatverkaufsbedingungen (Popup) =====
@@ -2205,59 +2275,6 @@ function setIndex(i){
 
 // ===== Language Dropdown (DE / EN) =====
 
-// ===== Instagram Hero Rotator (2 Slides, 7s, Crossfade) =====
-    (function(){
-      try{
-        var rotator = document.getElementById('igHeroRotator');
-        if(!rotator) return;
-        var slides = Array.prototype.slice.call(rotator.querySelectorAll('.ig-slide'));
-        if(!slides || slides.length < 2) return;
-
-        // Respect reduced motion
-        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-        var current = 0;
-        var intervalMs = 7000;
-        var timer = null;
-
-        function show(i){
-          slides.forEach(function(s, idx){
-            var active = idx === i;
-            s.classList.toggle('is-active', active);
-            s.setAttribute('aria-hidden', active ? 'false' : 'true');
-          });
-          current = i;
-        }
-
-        // Initialize ARIA
-        slides.forEach(function(s, idx){
-          s.setAttribute('role','group');
-          s.setAttribute('aria-label','Slide ' + (idx+1) + ' of ' + slides.length);
-          s.setAttribute('aria-hidden', idx === 0 ? 'false' : 'true');
-        });
-
-        function start(){
-          if(timer) return;
-          timer = setInterval(function(){
-            show((current + 1) % slides.length);
-          }, intervalMs);
-        }
-
-        function stop(){
-          if(!timer) return;
-          clearInterval(timer);
-          timer = null;
-        }
-
-        start();
-
-        // Pause when tab is hidden
-        document.addEventListener('visibilitychange', function(){
-          if(document.hidden) stop();
-          else start();
-        });
-      }catch(e){}
-    })();
     (function () {
       try {
         var dd = document.getElementById("langDropdown");
@@ -2291,6 +2308,175 @@ function setIndex(i){
         });
       } catch (e) {}
     })();
+
+
+// ===== Bestellformular: Anfrage wirklich senden (Apps Script + Fallback) =====
+(function(){
+  const orderForm = document.getElementById("orderForm");
+  if(!orderForm) return;
+
+  // Google Apps Script Web-App (sendet Admin-Mail + Kundenbestätigung)
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyFppgJ02rlkF34bMitHHSkPVxDREqywXZk18PGddRR_mmQsjN9Kqhvrcz5MIwLsJKP/exec";
+  const APPS_SCRIPT_TOKEN = "uTv_2026!9xA#kP3zQ1";
+
+  // Fallback: öffnet Mailprogramm, falls Webhook in der lokalen Vorschau geblockt ist
+  const FALLBACK_MAIL_TO = "urbantimevienna@gmail.com";
+
+  const btn = document.getElementById("orderEmailBtn");
+  const noteEl = document.getElementById("formNote");
+
+  const isEN = (document.documentElement.lang || "de").toLowerCase().startsWith("en");
+  const T = {
+    sending: isEN ? "Sending…" : "Sende…",
+    sendNow: isEN ? "Send request via email" : "Anfrage per E‑Mail senden",
+    sent: isEN ? "Sent ✅" : "Gesendet ✅",
+    noteSending: isEN ? "Sending request…" : "Sende Anfrage…",
+    noteSent: isEN ? "Request sent ✅ You'll receive a confirmation email." : "Anfrage gesendet ✅ Du bekommst eine Bestätigung per E‑Mail.",
+    noteChecks: isEN ? "Please tick both confirmations." : "Bitte beide Bestätigungen anhaken.",
+    noteFail: isEN ? "Sending failed. Please use Instagram DM or send via your email app." : "Senden fehlgeschlagen. Bitte nutze Instagram DM oder sende über dein E‑Mail‑Programm."
+  };
+
+  function setNote(t){ if(noteEl) noteEl.textContent = t; }
+
+  function v(id){
+    const el = document.getElementById(id);
+    return el ? String(el.value || "").trim() : "";
+  }
+  function checked(id){
+    const el = document.getElementById(id);
+    return !!(el && el.checked);
+  }
+  function safeAbsUrl(src){
+    if(!src) return "";
+    try{
+      return new URL(src, window.location.href).href;
+    }catch(e){
+      return src;
+    }
+  }
+
+  function getSelectedMeta(){
+    const imgEl = document.getElementById("selectedVariantImg");
+    const capEl = document.getElementById("selectedVariantCaption");
+    const imgSrc = imgEl ? (imgEl.getAttribute("src") || "") : "";
+    const imageUrl = safeAbsUrl(imgSrc);
+    const imageLabel = capEl ? String(capEl.textContent || "").trim() : "";
+    return { imageUrl, imageLabel };
+  }
+
+  function buildMailtoBody(payload){
+    const lines = [];
+    lines.push(isEN ? "Order request (web form)" : "Bestellanfrage (Webformular)");
+    lines.push("");
+    if(payload.model) lines.push((isEN ? "Model: " : "Modell: ") + payload.model);
+    if(payload.deliveryMethod) lines.push((isEN ? "Delivery/Pickup: " : "Lieferung/Abholung: ") + payload.deliveryMethod);
+    if(payload.imageLabel) lines.push((isEN ? "Selected: " : "Auswahl: ") + payload.imageLabel);
+    if(payload.imageUrl) lines.push((isEN ? "Image URL: " : "Bild-URL: ") + payload.imageUrl);
+    lines.push("");
+    lines.push("---");
+    lines.push((isEN ? "Name: " : "Name: ") + payload.name);
+    lines.push((isEN ? "Email: " : "E‑Mail: ") + payload.email);
+    if(payload.street || payload.postal || payload.city || payload.country){
+      lines.push(isEN ? "Address:" : "Adresse:");
+      if(payload.street) lines.push(payload.street);
+      const pc = (payload.postal + " " + payload.city).trim();
+      if(pc) lines.push(pc);
+      if(payload.country) lines.push(payload.country);
+    }
+    if(payload.instagram) lines.push("Instagram: " + payload.instagram);
+    if(payload.phone) lines.push((isEN ? "Phone: " : "Telefon: ") + payload.phone);
+    if(payload.message){
+      lines.push("");
+      lines.push(isEN ? "Message:" : "Nachricht:");
+      lines.push(payload.message);
+    }
+    return lines.join("\n");
+  }
+
+  async function send(){
+    // HTML validation + Checkbox-Doublecheck
+    if(!orderForm.checkValidity()){
+      orderForm.reportValidity();
+      return;
+    }
+    if(!checked("of_terms") || !checked("of_privterms")){
+      setNote(T.noteChecks);
+      return;
+    }
+
+    const payloadBase = {
+      token: APPS_SCRIPT_TOKEN,
+      name: v("of_name"),
+      email: v("of_email"),
+      instagram: v("of_instagram"),
+      phone: v("of_phone"),
+      deliveryMethod: v("of_delivery"),
+      street: v("of_street"),
+      postal: v("of_postal"),
+      city: v("of_city"),
+      country: v("of_country"),
+      address: [v("of_street"), (v("of_postal")+" "+v("of_city")).trim(), v("of_country")].filter(Boolean).join("\n"),
+      model: v("of_model"),
+      variant: "", // optional
+      message: v("of_message")
+    };
+    const meta = getSelectedMeta();
+    const payload = Object.assign({}, payloadBase, meta);
+
+    if(btn){ btn.disabled = true; btn.textContent = T.sending; }
+    setNote(T.noteSending);
+
+    // In der lokalen Vorschau (file://) blockieren manche Browser Fetch → direkt Fallback anbieten.
+    const isFile = (location && location.protocol === "file:");
+    if(isFile){
+      try{
+        const subject = encodeURIComponent((isEN ? "Order request – " : "Bestellanfrage – ") + (payload.model || "Urban Time Vienna"));
+        const body = encodeURIComponent(buildMailtoBody(payload));
+        window.location.href = "mailto:" + FALLBACK_MAIL_TO + "?subject=" + subject + "&body=" + body;
+        setNote(T.noteSent);
+        if(btn){ btn.textContent = T.sent; }
+        return;
+      }catch(e){
+        // continue to fetch attempt
+      }
+    }
+
+    try{
+      if(!APPS_SCRIPT_URL){
+        throw new Error("Missing APPS_SCRIPT_URL");
+      }
+      // no-cors => kein Preflight, stabil auf Static Hosting. Response bleibt opaque.
+      await fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+      });
+
+      setNote(T.noteSent);
+      if(btn){ btn.textContent = T.sent; }
+    }catch(err){
+      console.error(err);
+      setNote(T.noteFail);
+      if(btn){ btn.disabled = false; btn.textContent = T.sendNow; }
+
+      // Fallback: Mail-App öffnen
+      try{
+        const subject = encodeURIComponent((isEN ? "Order request – " : "Bestellanfrage – ") + (payload.model || "Urban Time Vienna"));
+        const body = encodeURIComponent(buildMailtoBody(payload));
+        window.location.href = "mailto:" + FALLBACK_MAIL_TO + "?subject=" + subject + "&body=" + body;
+      }catch(e){}
+    }
+  }
+
+  // Wichtig: Submit abfangen, damit die Seite NICHT nach oben springt.
+  orderForm.addEventListener("submit", function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    send();
+  });
+})();
+
 </script>
 <div aria-hidden="true" class="modal terms-modal" id="privTermsModal">
 <div class="modal-card">
