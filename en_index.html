@@ -286,7 +286,66 @@
     .section-head h2{ margin:0; font-size: 24px; }
     .section-head p{ margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 
-    /* Highlights */
+    
+    .accent{ color: var(--pop-cyan); font-weight: 850; }
+
+    /* About (Glass Look) */
+    .about-card{
+      padding: 22px 26px;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before{
+      content:"";
+      position:absolute; inset:-40px -60px auto -60px;
+      height: 180px;
+      background: radial-gradient(420px 180px at 30% 40%, rgba(45,226,255,0.16), transparent 60%);
+      pointer-events:none;
+    }
+    .about-head{
+      position: relative;
+      display:flex;
+      gap: 14px;
+      align-items:center;
+      margin-bottom: 10px;
+    }
+    .about-crown{
+      width: 44px; height: 44px;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 14px 30px rgba(0,0,0,.45));
+      opacity: .95;
+    }
+    .about-eyebrow{
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.62);
+      font-weight: 850;
+      margin-bottom: 4px;
+    }
+    .about-title h2{
+      margin:0;
+      font-size: 24px;
+      letter-spacing: -.2px;
+    }
+    .about-text{
+      position: relative;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.7;
+      max-width: 920px;
+    }
+    .about-text:first-of-type{ margin-top: 6px; }
+
+    @media (max-width: 520px){
+      .about-section{ margin-top: 26px; }
+      .about-card{ padding: 18px 16px; }
+      .about-crown{ width: 38px; height: 38px; }
+      .about-title h2{ font-size: 22px; }
+      .about-text{ font-size: 14px; }
+    }
+/* Highlights */
     .highlights{
       display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
     }
@@ -1244,7 +1303,8 @@
 }
 
 @media (max-width: 520px){
-  .ig-slide{ padding: 56px 18px 52px; }
+  .ig-micro-top{ display:none; }
+  .ig-slide{ padding: 60px 18px 52px; }
   .ig-lines{ font-size: 20px; }
 }
 
@@ -1377,30 +1437,31 @@
     </div>
   </a>
 </div></section>
-<section class="section" id="highlights">
-<div class="section-head">
-<div>
-<h2>Highlights</h2>
-<p>Curated, checked, and ready for your wrist game.</p>
-</div>
-</div>
-<div class="highlights">
-<div class="hl">
-<div class="icon">✓</div>
-<h3>Picked with taste</h3>
-<p>Clean designs, strong details — watches that fit Vienna just as well as anywhere.</p>
-</div>
-<div class="hl">
-<div class="icon">✦</div>
-<h3>Pop Art accents</h3>
-<p>Elegance stays clean — with a modern edge in cyan &amp; neon.</p>
-</div>
-<div class="hl">
-<div class="icon">↗</div>
-<h3>Always live on Instagram</h3>
-<p>New drops, wrist shots and reels: everything straight from @urbantimevienna.</p>
-</div>
-</div>
+
+<section class="section about-section" id="about">
+  <div class="card about-card">
+    <div class="about-head">
+      <img class="about-crown" src="assets/crown-logo.png" alt="" aria-hidden="true"/>
+      <div class="about-title">
+        <div class="about-eyebrow">Welcome to <span class="accent">Urban Time Vienna</span></div>
+        <h2>About us</h2>
+      </div>
+    </div>
+
+    <p class="about-text">
+      For years, we’ve worked closely with selected <span class="accent">watch factories</span>. Over time, we defined our own
+      <span class="accent">quality tiers</span> — focused on excellent <span class="accent">materials</span>, <span class="accent">precision</span>,
+      and consistent QC checks.
+    </p>
+
+    <p class="about-text">
+      Here, <span class="accent">quality</span> matters more than quantity: we offer curated pieces — detail‑driven, refined, and carefully checked.
+    </p>
+
+    <p class="about-text">
+      Every watch is delivered as a <span class="accent">full set</span> — including box, model card, manual, and bag.
+    </p>
+  </div>
 </section>
 <section class="section" id="kollektion">
 <div class="section-head">
@@ -1531,6 +1592,32 @@
 </article>
 </div>
 </section>
+<section class="section" id="highlights">
+<div class="section-head">
+<div>
+<h2>Highlights</h2>
+<p>Curated, checked, and ready for your wrist game.</p>
+</div>
+</div>
+<div class="highlights">
+<div class="hl">
+<div class="icon">✓</div>
+<h3>Picked with taste</h3>
+<p>Clean designs, strong details — watches that fit Vienna just as well as anywhere.</p>
+</div>
+<div class="hl">
+<div class="icon">✦</div>
+<h3>Pop Art accents</h3>
+<p>Elegance stays clean — with a modern edge in cyan &amp; neon.</p>
+</div>
+<div class="hl">
+<div class="icon">↗</div>
+<h3>Always live on Instagram</h3>
+<p>New drops, wrist shots and reels: everything straight from @urbantimevienna.</p>
+</div>
+</div>
+</section>
+
 <section class="section" id="kaufablauf">
 <div class="section-head">
 <div>
