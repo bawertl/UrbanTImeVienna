@@ -791,6 +791,21 @@
   opacity: .96;
   filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(255,255,255,.14)) drop-shadow(0 0 18px rgba(120,255,240,.12));
 }
+
+/* Crown animation (only on Instagram Hero Slide 1) */
+.ig-slide-1 .slide-crown{
+  /* subtle 3D swivel left <-> right (premium, not too strong) */
+  transform-origin: 50% 50%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  animation: utvCrownSway 5.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes utvCrownSway{
+  0%, 100%{ transform: perspective(900px) rotateY(-14deg) translateY(0); }
+  50%{ transform: perspective(900px) rotateY(14deg) translateY(-2px); }
+}
 .slide-brand-top{
   font-size: 30px;
   font-weight: 900;
@@ -1249,8 +1264,7 @@
 
 @media (prefers-reduced-motion: reduce){
   .hero-brand-inner::before,
-  .hero-brand-inner::after,
-  .hero-brand-inner .slide-crown{ animation: none !important; }
+  .hero-brand-inner::after{ animation: none !important; transform: none !important; }
 }
 
 @media (max-width: 520px){
@@ -1285,9 +1299,9 @@
 /* UTV motion accessibility */
 @media (prefers-reduced-motion: reduce){
   .hero-brand-inner::before,
-  .hero-brand-inner::after,
-  .hero-brand-inner .slide-crown{
+  .hero-brand-inner::after{
     animation: none !important;
+    transform: none !important;
   }
 }
 </style>
