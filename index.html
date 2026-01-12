@@ -286,7 +286,66 @@
     .section-head h2{ margin:0; font-size: 24px; }
     .section-head p{ margin: 6px 0 0; color: var(--muted); font-size: 14px; }
 
-    /* Highlights */
+    
+    .accent{ color: var(--pop-cyan); font-weight: 850; }
+
+    /* About (Glass Look) */
+    .about-card{
+      padding: 22px 26px;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before{
+      content:"";
+      position:absolute; inset:-40px -60px auto -60px;
+      height: 180px;
+      background: radial-gradient(420px 180px at 30% 40%, rgba(45,226,255,0.16), transparent 60%);
+      pointer-events:none;
+    }
+    .about-head{
+      position: relative;
+      display:flex;
+      gap: 14px;
+      align-items:center;
+      margin-bottom: 10px;
+    }
+    .about-crown{
+      width: 44px; height: 44px;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 14px 30px rgba(0,0,0,.45));
+      opacity: .95;
+    }
+    .about-eyebrow{
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.62);
+      font-weight: 850;
+      margin-bottom: 4px;
+    }
+    .about-title h2{
+      margin:0;
+      font-size: 24px;
+      letter-spacing: -.2px;
+    }
+    .about-text{
+      position: relative;
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14.5px;
+      line-height: 1.7;
+      max-width: 920px;
+    }
+    .about-text:first-of-type{ margin-top: 6px; }
+
+    @media (max-width: 520px){
+      .about-section{ margin-top: 26px; }
+      .about-card{ padding: 18px 16px; }
+      .about-crown{ width: 38px; height: 38px; }
+      .about-title h2{ font-size: 22px; }
+      .about-text{ font-size: 14px; }
+    }
+/* Highlights */
     .highlights{
       display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
     }
@@ -791,21 +850,6 @@
   opacity: .96;
   filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(255,255,255,.14)) drop-shadow(0 0 18px rgba(120,255,240,.12));
 }
-
-/* Crown animation (only on Instagram Hero Slide 1) */
-.ig-slide-1 .slide-crown{
-  /* subtle 3D swivel left <-> right (premium, not too strong) */
-  transform-origin: 50% 50%;
-  transform-style: preserve-3d;
-  backface-visibility: hidden;
-  animation: utvCrownSway 5.6s ease-in-out infinite;
-  will-change: transform;
-}
-
-@keyframes utvCrownSway{
-  0%, 100%{ transform: perspective(900px) rotateY(-14deg) translateY(0); }
-  50%{ transform: perspective(900px) rotateY(14deg) translateY(-2px); }
-}
 .slide-brand-top{
   font-size: 30px;
   font-weight: 900;
@@ -1258,13 +1302,15 @@
 }
 
 @media (max-width: 520px){
-  .ig-slide{ padding: 56px 18px 52px; }
+  .ig-micro-top{ display:none; }
+  .ig-slide{ padding: 60px 18px 52px; }
   .ig-lines{ font-size: 20px; }
 }
 
 @media (prefers-reduced-motion: reduce){
   .hero-brand-inner::before,
-  .hero-brand-inner::after{ animation: none !important; transform: none !important; }
+  .hero-brand-inner::after,
+  .hero-brand-inner .slide-crown{ animation: none !important; }
 }
 
 @media (max-width: 520px){
@@ -1299,9 +1345,9 @@
 /* UTV motion accessibility */
 @media (prefers-reduced-motion: reduce){
   .hero-brand-inner::before,
-  .hero-brand-inner::after{
+  .hero-brand-inner::after,
+  .hero-brand-inner .slide-crown{
     animation: none !important;
-    transform: none !important;
   }
 }
 </style>
@@ -1390,30 +1436,31 @@
     </div>
   </a>
 </div></section>
-<section class="section" id="highlights">
-<div class="section-head">
-<div>
-<h2>Highlights</h2>
-<p>Kuratiert, geprüft und ready für deinen Wrist-Game.</p>
-</div>
-</div>
-<div class="highlights">
-<div class="hl">
-<div class="icon">✓</div>
-<h3>Ausgewählt mit Geschmack</h3>
-<p>Klare Designs, starke Details — Uhren, die in Wien genauso passen wie überall.</p>
-</div>
-<div class="hl">
-<div class="icon">✦</div>
-<h3>Pop‑Art Akzente</h3>
-<p>Eleganz bleibt clean – aber mit einem modernen Edge in Cyan &amp; Neon.</p>
-</div>
-<div class="hl">
-<div class="icon">↗</div>
-<h3>Immer live auf Instagram</h3>
-<p>Neue Drops, Wrist‑Shots und Reels: alles direkt auf @urbantimevienna.</p>
-</div>
-</div>
+
+<section class="section about-section" id="ueber-uns">
+  <div class="card about-card">
+    <div class="about-head">
+      <img class="about-crown" src="assets/crown-logo.png" alt="" aria-hidden="true"/>
+      <div class="about-title">
+        <div class="about-eyebrow">Willkommen bei <span class="accent">Urban Time Vienna</span></div>
+        <h2>Über uns</h2>
+      </div>
+    </div>
+
+    <p class="about-text">
+      Seit Jahren arbeiten wir eng mit ausgewählten <span class="accent">Uhren‑Factorys</span> zusammen. Gemeinsam haben wir im Laufe der Zeit eigene
+      <span class="accent">Qualitätsstufen</span> entwickelt – mit Fokus auf exzellente <span class="accent">Materialien</span>, <span class="accent">Präzision</span>
+      und konsequente QC‑Kontrollen.
+    </p>
+
+    <p class="about-text">
+      Hier zählt <span class="accent">Qualität</span> vor Quantität: Wir führen ausschließlich kuratierte Modelle – detailverliebt, hochwertig und sauber geprüft.
+    </p>
+
+    <p class="about-text">
+      Jede Uhr wird selbstverständlich im <span class="accent">Fullset</span> geliefert und ist ein <span class="accent">SUPERCLONE</span> – inklusive Box, Modellkarte, Handbuch und Tragetasche (Sackerl).
+    </p>
+  </div>
 </section>
 <section class="section" id="kollektion">
 <div class="section-head">
@@ -1544,6 +1591,32 @@
 </article>
 </div>
 </section>
+<section class="section" id="highlights">
+<div class="section-head">
+<div>
+<h2>Highlights</h2>
+<p>Kuratiert, geprüft und ready für deinen Wrist-Game.</p>
+</div>
+</div>
+<div class="highlights">
+<div class="hl">
+<div class="icon">✓</div>
+<h3>Ausgewählt mit Geschmack</h3>
+<p>Klare Designs, starke Details — Uhren, die in Wien genauso passen wie überall.</p>
+</div>
+<div class="hl">
+<div class="icon">✦</div>
+<h3>Pop‑Art Akzente</h3>
+<p>Eleganz bleibt clean – aber mit einem modernen Edge in Cyan &amp; Neon.</p>
+</div>
+<div class="hl">
+<div class="icon">↗</div>
+<h3>Immer live auf Instagram</h3>
+<p>Neue Drops, Wrist‑Shots und Reels: alles direkt auf @urbantimevienna.</p>
+</div>
+</div>
+</section>
+
 <section class="section" id="kaufablauf">
 <div class="section-head">
 <div>
