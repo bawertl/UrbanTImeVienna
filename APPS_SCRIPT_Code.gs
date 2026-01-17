@@ -36,6 +36,10 @@ const BANK_IBAN = "AT89 1200 0100 0604 7442";
 const BANK_BIC  = "BKAUATWWXXX";
 const BANK_BENEFICIARY = "Stefan Schütz";
 
+// PayPal (Käuferschutz)
+// Trage hier deine PayPal-Info ein (Name/PayPal-Mail oder PayPal.me-Link)
+const PAYPAL_RECIPIENT = "DEIN_PAYPAL_NAME_ODER_MAIL";
+
 // OPTIONAL: Wenn du in Gmail "Senden als" Alias eingerichtet hast (z.B. info@deinedomain.at), kannst du den hier eintragen:
 // const FROM_ALIAS = "info@urbanokay.de";
 const FROM_ALIAS = "";
@@ -73,6 +77,7 @@ function doPost(e){
 
     // Choice
     const deliveryMethod = (data.deliveryMethod || "").trim(); // "Versand (Nachnahme)" | "Abholung"
+    const paymentMethod  = (data.paymentMethod || "").trim();  // "Überweisung" | "PayPal (Käuferschutz)" | ...
 
     // Watch
     const model      = (data.model || "").trim();
@@ -95,6 +100,7 @@ function doPost(e){
         customerName, customerEmail, instagram, phone,
         street, postal, city, country, address,
         deliveryMethod,
+        paymentMethod,
         model, variant, imageLabel, imageUrl,
         message
       }))
@@ -124,6 +130,7 @@ function doPost(e){
       customerName, customerEmail, instagram, phone,
       street, postal, city, country, address,
       deliveryMethod,
+      paymentMethod,
       model, variant, imageLabel, imageUrl,
       message,
       hasInlineImage: !!(inlineWatch && inlineWatch.blob),
@@ -146,6 +153,7 @@ function doPost(e){
         customerName, customerEmail,
         street, postal, city, country, address,
         deliveryMethod,
+        paymentMethod,
         model, variant, imageLabel, imageUrl,
         hasInlineImage: !!(inlineWatch && inlineWatch.blob),
         hasLogo: !!logoBlob
@@ -274,6 +282,7 @@ function buildAdminEmailHtml(p){
             <div><b>Variante:</b> ${escapeHtml(p.variant || "-")}</div>
             <div><b>Bildlabel:</b> ${escapeHtml(p.imageLabel || "-")}</div>
             <div><b>Lieferung/Abholung:</b> ${escapeHtml(p.deliveryMethod || "-")}</div>
+            <div><b>Zahlungsmethode:</b> ${escapeHtml(p.paymentMethod || "-")}</div>
           </div>
         </div>
 
@@ -322,6 +331,10 @@ function buildCustomerEmailHtml(p){
     ? `<div><b>Ausgewählte Option:</b> ${escapeHtml(p.deliveryMethod)}</div>`
     : ``;
 
+  const paymentLine = p.paymentMethod
+    ? `<div><b>Zahlungsmethode:</b> ${escapeHtml(p.paymentMethod)}</div>`
+    : ``;
+
   const restPayment = (p.deliveryMethod || "").toLowerCase().includes("abholung")
     ? `Der <b>Restbetrag</b> wird bei <b>Abholung</b> beglichen. Bitte antworten Sie auf diese E-Mail mit einem gewünschten Abholtermin (Datum/Uhrzeit).`
     : `Der <b>Restbetrag</b> wird bei Zustellung per <b>Nachnahme</b> direkt an den Zusteller bezahlt. <span style="color:#666;font-size:12px;">(Je nach Versanddienstleister können zusätzliche Nachnahmegebühren anfallen.)</span>`;
@@ -351,6 +364,7 @@ function buildCustomerEmailHtml(p){
           <div style="font-weight:700;margin-bottom:8px;">Bestelldetails</div>
           <div><b>Modell:</b> ${escapeHtml(p.model || "-")}</div>
           ${deliveryLine}
+          ${paymentLine}
         </div>
 
         ${watchBlock}
@@ -373,14 +387,7 @@ function buildCustomerEmailHtml(p){
           <div>Für die Reservierung und Vorbereitung Ihrer Bestellung ist eine <b>Anzahlung in Höhe von ${DEPOSIT_AMOUNT_EUR} €</b> erforderlich.</div>
           <div style="margin-top:6px;"><b>Ohne Eingang der Anzahlung</b> kann die Bestellung nicht versendet bzw. zur Abholung bereitgestellt werden.</div>
 
-          <div style="margin-top:10px;">
-            <div style="font-weight:700;margin-bottom:6px;">Bankverbindung für die Anzahlung</div>
-            <div><b>Empfänger:</b> ${escapeHtml(BANK_BENEFICIARY)}</div>
-            <div><b>Bank:</b> ${escapeHtml(BANK_NAME)}</div>
-            <div><b>IBAN:</b> ${escapeHtml(BANK_IBAN)}</div>
-            <div><b>BIC:</b> ${escapeHtml(BANK_BIC)}</div>
-            <div><b>Verwendungszweck:</b> ${escapeHtml(p.customerEmail || "[Ihre E-Mail]")}</div>
-          </div>
+          ${buildDepositPaymentHtml(p)}
         </div>
 
         <div style="margin-top:12px;">
@@ -426,6 +433,7 @@ function buildPdfHtml(p){
     <div><b>Modell:</b> ${escapeHtml(p.model || "-")}</div>
     <div><b>Variante:</b> ${escapeHtml(p.variant || "-")}</div>
     <div><b>Lieferung/Abholung:</b> ${escapeHtml(p.deliveryMethod || "-")}</div>
+    <div><b>Zahlungsmethode:</b> ${escapeHtml(p.paymentMethod || "-")}</div>
     <div style="margin-top:10px;"><b>Bild:</b> ${escapeHtml(p.imageLabel || p.imageUrl || "-")}</div>
 
     <h2 style="font-size:14px;margin:14px 0 8px 0;">Kundendaten</h2>
@@ -444,8 +452,7 @@ function buildPdfHtml(p){
 
     <h2 style="font-size:14px;margin:14px 0 8px 0;">Anzahlung</h2>
     <div>Anzahlung: <b>${DEPOSIT_AMOUNT_EUR} €</b></div>
-    <div>IBAN: <b>${escapeHtml(BANK_IBAN)}</b></div>
-    <div>Verwendungszweck: <b>${escapeHtml(p.customerEmail || "")}</b></div>
+    <div style="white-space:pre-wrap;margin-top:6px;">${escapeHtml(buildDepositPaymentPlain(p))}</div>
 
     <div style="margin-top:18px;color:#666;font-size:11px;">
       ${escapeHtml(BRAND_NAME)} • ${escapeHtml(WEBSITE_URL)}
@@ -493,6 +500,56 @@ function formatAddressPlain(p){
   if(p.country) parts.push(p.country);
   if(parts.length) return parts.join("\n");
   return (p.address || "");
+}
+
+function isPayPalMethod(method){
+  return /paypal/i.test(String(method || ""));
+}
+
+// HTML block for deposit payment details (bank or PayPal)
+function buildDepositPaymentHtml(p){
+  const method = String(p.paymentMethod || "").trim();
+  const purpose = escapeHtml(p.customerEmail || "[Ihre E-Mail]");
+  if(isPayPalMethod(method)){
+    return `
+      <div style="margin-top:10px;">
+        <div style="font-weight:700;margin-bottom:6px;">PayPal (Käuferschutz)</div>
+        <div><b>PayPal:</b> ${escapeHtml(PAYPAL_RECIPIENT)}</div>
+        <div><b>Verwendungszweck:</b> ${purpose}</div>
+      </div>
+    `;
+  }
+
+  return `
+    <div style="margin-top:10px;">
+      <div style="font-weight:700;margin-bottom:6px;">Bankverbindung für die Anzahlung</div>
+      <div><b>Empfänger:</b> ${escapeHtml(BANK_BENEFICIARY)}</div>
+      <div><b>Bank:</b> ${escapeHtml(BANK_NAME)}</div>
+      <div><b>IBAN:</b> ${escapeHtml(BANK_IBAN)}</div>
+      <div><b>BIC:</b> ${escapeHtml(BANK_BIC)}</div>
+      <div><b>Verwendungszweck:</b> ${purpose}</div>
+    </div>
+  `;
+}
+
+function buildDepositPaymentPlain(p){
+  const method = String(p.paymentMethod || "").trim();
+  const purpose = p.customerEmail || "[Ihre E-Mail]";
+  if(isPayPalMethod(method)){
+    return [
+      "PayPal (Käuferschutz)",
+      `PayPal: ${PAYPAL_RECIPIENT}`,
+      `Verwendungszweck: ${purpose}`
+    ].join("\n");
+  }
+  return [
+    "Bankverbindung für die Anzahlung",
+    `Empfänger: ${BANK_BENEFICIARY}`,
+    `Bank: ${BANK_NAME}`,
+    `IBAN: ${BANK_IBAN}`,
+    `BIC: ${BANK_BIC}`,
+    `Verwendungszweck: ${purpose}`
+  ].join("\n");
 }
 
 function escapeHtml(str){

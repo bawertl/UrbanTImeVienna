@@ -1689,6 +1689,14 @@
 <option value="Pickup">Pickup</option>
 </select>
 </div>
+<div class="field field-full">
+<label for="of_payment">Payment method</label>
+<select id="of_payment" name="paymentMethod" required="">
+<option disabled="" selected="" value="">Please choose…</option>
+<option value="Bank transfer">Bank transfer</option>
+<option value="PayPal (Buyer Protection)">PayPal (Buyer Protection)</option>
+</select>
+</div>
 <div class="field">
 <label for="of_name">Name</label>
 <input id="of_name" name="name" placeholder="First and last name" required="" type="text"/>
@@ -2451,6 +2459,7 @@ function setIndex(i){
     lines.push("");
     if(payload.model) lines.push((isEN ? "Model: " : "Modell: ") + payload.model);
     if(payload.deliveryMethod) lines.push((isEN ? "Delivery/Pickup: " : "Lieferung/Abholung: ") + payload.deliveryMethod);
+    if(payload.paymentMethod) lines.push((isEN ? "Payment method: " : "Zahlungsmethode: ") + payload.paymentMethod);
     if(payload.imageLabel) lines.push((isEN ? "Selected: " : "Auswahl: ") + payload.imageLabel);
     if(payload.imageUrl) lines.push((isEN ? "Image URL: " : "Bild-URL: ") + payload.imageUrl);
     lines.push("");
@@ -2492,6 +2501,7 @@ function setIndex(i){
       instagram: v("of_instagram"),
       phone: v("of_phone"),
       deliveryMethod: v("of_delivery"),
+      paymentMethod: v("of_payment"),
       street: v("of_street"),
       postal: v("of_postal"),
       city: v("of_city"),

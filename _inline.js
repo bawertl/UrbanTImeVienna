@@ -449,6 +449,7 @@ const APPS_SCRIPT_TOKEN = "uTv_2026!9xA#kP3zQ1";
       const city = (document.getElementById("of_city")?.value || "").trim();
       const country = (document.getElementById("of_country")?.value || "").trim();
       const deliveryMethod = (document.getElementById("of_delivery")?.value || "").trim();
+      const paymentMethod = (document.getElementById("of_payment")?.value || "").trim();
 
     
       const instagram = (document.getElementById("of_instagram")?.value || "").trim();
@@ -463,6 +464,7 @@ const APPS_SCRIPT_TOKEN = "uTv_2026!9xA#kP3zQ1";
       lines.push("");
       if(model) lines.push(`Modell: ${model}`);
       if(deliveryMethod) lines.push(`Lieferung/Abholung: ${deliveryMethod}`);
+      if(paymentMethod) lines.push(`Zahlungsmethode: ${paymentMethod}`);
       if(imgFile) lines.push(`Bildreferenz: ${imgFile}`);
       lines.push("");
       if(message) lines.push(message);
@@ -636,6 +638,9 @@ function buildReceiptHtml({ mode }){
     const customerEmail = (document.getElementById("of_email")?.value || "").trim();
     const customerName = (document.getElementById("of_name")?.value || "").trim();
 
+    const deliveryMethod = (document.getElementById("of_delivery")?.value || "").trim();
+    const paymentMethod  = (document.getElementById("of_payment")?.value || "").trim();
+
     const street = (document.getElementById("of_street")?.value || "").trim();
     const postal = (document.getElementById("of_postal")?.value || "").trim();
     const city = (document.getElementById("of_city")?.value || "").trim();
@@ -676,6 +681,7 @@ function buildReceiptHtml({ mode }){
         instagram,
         phone,
         deliveryMethod,
+        paymentMethod,
         // Adresse (getrennt + zusammen)
         street,
         postal,
