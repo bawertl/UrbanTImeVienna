@@ -2458,6 +2458,7 @@ function setIndex(i){
     lines.push("");
     if(payload.model) lines.push((isEN ? "Model: " : "Modell: ") + payload.model);
     if(payload.deliveryMethod) lines.push((isEN ? "Delivery/Pickup: " : "Lieferung/Abholung: ") + payload.deliveryMethod);
+    if(payload.paymentMethod) lines.push((isEN ? "Payment: " : "Zahlung: ") + payload.paymentMethod);
     if(payload.imageLabel) lines.push((isEN ? "Selected: " : "Auswahl: ") + payload.imageLabel);
     if(payload.imageUrl) lines.push((isEN ? "Image URL: " : "Bild-URL: ") + payload.imageUrl);
     lines.push("");
@@ -2499,6 +2500,7 @@ function setIndex(i){
       instagram: v("of_instagram"),
       phone: v("of_phone"),
       deliveryMethod: v("of_delivery"),
+      paymentMethod: v("of_payment"),
       street: v("of_street"),
       postal: v("of_postal"),
       city: v("of_city"),
