@@ -675,6 +675,19 @@ function buildReceiptHtml({ mode }){
 
       const payload = {
         token: APPS_SCRIPT_TOKEN,
+        // Sprache (de|en) – damit Kundenmail passend ist
+        language: (function(){
+          try {
+            const h = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+            if(h.startsWith('en')) return 'en';
+            if(h.startsWith('de')) return 'de';
+          } catch(e) {}
+          // Fallback nach URL
+          try {
+            return (location.pathname || '').toLowerCase().includes('/en') ? 'en' : 'de';
+          } catch(e) {}
+          return 'de';
+        })(),
         // Kunde
         name: customerName,
         email: customerEmail,
