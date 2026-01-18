@@ -78,6 +78,7 @@ function doPost(e){
     // Choice
     const deliveryMethod = (data.deliveryMethod || "").trim(); // "Versand (Nachnahme)" | "Abholung"
     const paymentMethod  = (data.paymentMethod || "").trim();  // "Überweisung" | "PayPal (Käuferschutz)" | ...
+    const language = normalizeLang(data.language || data.lang || data.locale || "de");
 
     // Watch
     const model      = (data.model || "").trim();
@@ -122,7 +123,9 @@ function doPost(e){
 
     // Subjects
     const subjectAdmin = `Neue Bestellung ${orderNo}${model ? " – " + model : ""}`;
-    const subjectCustomer = `Bestellbestätigung – ${BRAND_NAME} | Bestellnummer ${orderNo}`;
+    const subjectCustomer = (language === "en")
+      ? `Order confirmation – ${BRAND_NAME} | Order number ${orderNo}`
+      : `Bestellbestätigung – ${BRAND_NAME} | Bestellnummer ${orderNo}`;
 
     // HTML bodies
     const adminHtml = buildAdminEmailHtml({
@@ -148,7 +151,7 @@ function doPost(e){
 
     // Customer confirmation
     if(customerEmail){
-      const customerHtml = buildCustomerEmailHtml({
+      const customerHtml = (language === "en" ? buildCustomerEmailHtmlEN : buildCustomerEmailHtml)({
         ts, orderNo,
         customerName, customerEmail,
         street, postal, city, country, address,
@@ -416,6 +419,107 @@ function buildCustomerEmailHtml(p){
 }
 
 /***************
+ * Customer email HTML (EN)
+ ***************/
+function buildCustomerEmailHtmlEN(p){
+  const dt = Utilities.formatDate(p.ts, "Europe/Vienna", "dd.MM.yyyy HH:mm");
+  const addr = formatAddress(p);
+  const greeting = p.customerName ? `Hello ${escapeHtml(p.customerName)},` : `Hello,`;
+
+  const logoBlock = p.hasLogo
+    ? `<img src="cid:logo" alt="${escapeHtml(BRAND_NAME)}" style="height:44px;display:block" />`
+    : `<div style="font-size:18px;font-weight:800;letter-spacing:.3px;">${escapeHtml(BRAND_NAME)}</div>`;
+
+  const watchBlock = p.hasInlineImage
+    ? `<div style="margin-top:14px;">
+         <div style="font-weight:700;margin-bottom:8px;">Selected model</div>
+         <img src="cid:watchimg" style="max-width:420px;border-radius:12px;border:1px solid #eee;display:block"/>
+         <div style="color:#666;font-size:12px;margin-top:6px;">Note: The photo is also attached.</div>
+       </div>`
+    : (p.imageUrl ? `<div style="margin-top:10px;font-size:12px;color:#666;">Image URL: ${escapeHtml(p.imageUrl)}</div>` : "");
+
+  const deliveryLine = p.deliveryMethod ? `<div><b>Delivery / pickup:</b> ${escapeHtml(p.deliveryMethod)}</div>` : ``;
+  const paymentLine  = p.paymentMethod ? `<div><b>Payment method:</b> ${escapeHtml(p.paymentMethod)}</div>` : ``;
+
+  const restPayment = (p.deliveryMethod || "").toLowerCase().includes("abholung")
+    ? `The <b>remaining amount</b> is paid on <b>pickup</b>. Please reply to this email with your preferred pickup time (date/time).`
+    : `The <b>remaining amount</b> is paid <b>cash on delivery</b> to the courier. <span style="color:#666;font-size:12px;">(Cash-on-delivery fees may apply depending on the carrier.)</span>`;
+
+  return `
+  <div style="font-family:Arial,sans-serif;line-height:1.5;color:#111">
+    <div style="max-width:720px;margin:0 auto;border:1px solid #eee;border-radius:14px;overflow:hidden">
+      <div style="padding:14px 16px;border-bottom:1px solid #eee;background:#fafafa">
+        ${logoBlock}
+        <div style="color:#666;font-size:12px;margin-top:6px;">Order confirmation • ${dt}</div>
+      </div>
+
+      <div style="padding:16px">
+        <p style="margin:0 0 10px 0;">${greeting}</p>
+
+        <p style="margin:0 0 12px 0;">
+          Thank you for your order with <b>${escapeHtml(BRAND_NAME)}</b>. We confirm receipt of your order.
+        </p>
+
+        <div style="padding:12px;border:1px solid #eee;border-radius:12px;">
+          <div style="font-weight:700;margin-bottom:8px;">Your order number</div>
+          <div style="font-size:16px;font-weight:800;">${escapeHtml(p.orderNo)}</div>
+        </div>
+
+        <div style="margin-top:12px;padding:12px;border:1px solid #eee;border-radius:12px;">
+          <div style="font-weight:700;margin-bottom:8px;">Order details</div>
+          <div><b>Model:</b> ${escapeHtml(p.model || "-")}</div>
+          ${deliveryLine}
+          ${paymentLine}
+        </div>
+
+        ${watchBlock}
+
+        <div style="margin-top:12px;padding:12px;border:1px solid #eee;border-radius:12px;">
+          <div style="font-weight:700;margin-bottom:6px;">Important (shipping address)</div>
+          <div style="white-space:pre-wrap">${addr.replace(/<br\s*\/?\s*>/g, "\n")}</div>
+          <div style="color:#666;font-size:12px;margin-top:6px;">
+            Please check your address for completeness and correctness. If any correction is needed, reply to this email as soon as possible.
+          </div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div style="font-weight:700;margin-bottom:6px;">Processing & delivery time</div>
+          <div>Processing takes up to <b>14 business days</b> <b>after the deposit has been received</b>.</div>
+        </div>
+
+        <div style="margin-top:12px;padding:12px;border:1px solid #eee;border-radius:12px;">
+          <div style="font-weight:700;margin-bottom:8px;">Deposit (${DEPOSIT_AMOUNT_EUR} €)</div>
+          <div>A <b>deposit of ${DEPOSIT_AMOUNT_EUR} €</b> is required to reserve and prepare your order.</div>
+          <div style="margin-top:6px;"><b>Without the deposit</b>, the order cannot be shipped or prepared for pickup.</div>
+          ${buildDepositPaymentHtml(p, "en")}
+        </div>
+
+        <div style="margin-top:12px;">
+          <div style="font-weight:700;margin-bottom:6px;">Remaining amount</div>
+          <div>${restPayment}</div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div style="font-weight:700;margin-bottom:6px;">Shipping & tracking</div>
+          <div>Once your order has been shipped, you will automatically receive an email with your <b>tracking number</b>.</div>
+        </div>
+
+        <div style="margin-top:14px;color:#666;font-size:12px">
+          If you have any questions, simply reply to this email.
+        </div>
+
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid #eee;color:#444;font-size:13px">
+          <div style="font-weight:800;">${escapeHtml(BRAND_NAME)}</div>
+          <div>Email: <a href="mailto:${escapeHtml(ADMIN_EMAIL)}">${escapeHtml(ADMIN_EMAIL)}</a></div>
+          <div>Website: <a href="${escapeHtml(WEBSITE_URL)}">${escapeHtml(BRAND_NAME)}</a></div>
+          <div>Instagram: <a href="${escapeHtml(INSTAGRAM_URL)}">@urbantimevienna</a></div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/***************
  * PDF HTML (Summary)
  ***************/
 function buildPdfHtml(p){
@@ -506,35 +610,44 @@ function isPayPalMethod(method){
   return /paypal/i.test(String(method || ""));
 }
 
+function normalizeLang(v){
+  const s = String(v || "").trim().toLowerCase();
+  if(s.startsWith("en")) return "en";
+  return "de";
+}
+
 // HTML block for deposit payment details (bank or PayPal)
-function buildDepositPaymentHtml(p){
+// lang: "de" | "en" (default: de)
+function buildDepositPaymentHtml(p, lang){
+  const L = normalizeLang(lang || "de");
   const method = String(p.paymentMethod || "").trim();
-  const purpose = escapeHtml(p.customerEmail || "[Ihre E-Mail]");
+  // Verwendungszweck soll NUR die Bestellnummer sein
+  const purpose = escapeHtml(p.orderNo || "");
   if(isPayPalMethod(method)){
     return `
       <div style="margin-top:10px;">
-        <div style="font-weight:700;margin-bottom:6px;">PayPal (Käuferschutz)</div>
+        <div style="font-weight:700;margin-bottom:6px;">${L === "en" ? "PayPal (buyer protection)" : "PayPal (Käuferschutz)"}</div>
         <div><b>PayPal:</b> ${escapeHtml(PAYPAL_RECIPIENT)}</div>
-        <div><b>Verwendungszweck:</b> ${purpose}</div>
+        <div><b>${L === "en" ? "Reference" : "Verwendungszweck"}:</b> ${purpose}</div>
       </div>
     `;
   }
 
   return `
     <div style="margin-top:10px;">
-      <div style="font-weight:700;margin-bottom:6px;">Bankverbindung für die Anzahlung</div>
-      <div><b>Empfänger:</b> ${escapeHtml(BANK_BENEFICIARY)}</div>
+      <div style="font-weight:700;margin-bottom:6px;">${L === "en" ? "Bank transfer for deposit" : "Bankverbindung für die Anzahlung"}</div>
+      <div><b>${L === "en" ? "Beneficiary" : "Empfänger"}:</b> ${escapeHtml(BANK_BENEFICIARY)}</div>
       <div><b>Bank:</b> ${escapeHtml(BANK_NAME)}</div>
       <div><b>IBAN:</b> ${escapeHtml(BANK_IBAN)}</div>
       <div><b>BIC:</b> ${escapeHtml(BANK_BIC)}</div>
-      <div><b>Verwendungszweck:</b> ${purpose}</div>
+      <div><b>${L === "en" ? "Reference" : "Verwendungszweck"}:</b> ${purpose}</div>
     </div>
   `;
 }
 
 function buildDepositPaymentPlain(p){
   const method = String(p.paymentMethod || "").trim();
-  const purpose = p.customerEmail || "[Ihre E-Mail]";
+  const purpose = p.orderNo || "";
   if(isPayPalMethod(method)){
     return [
       "PayPal (Käuferschutz)",
