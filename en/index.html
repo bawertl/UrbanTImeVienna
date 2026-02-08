@@ -684,10 +684,33 @@
     }
 
     @media (max-width: 850px){
-      .modal-body{ grid-template-columns: 1fr; }
-      .modal-side{ padding-left: 0; }
-      .media-stage{ min-height: 260px; }
-    }
+  /* Mobile: alles in EINEM Scrollbereich (wie DE) */
+  .modal-body{
+    grid-template-columns: 1fr;
+    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-side{
+    max-height: none;
+    overflow: visible;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .modal-side-scroll{
+    overflow: visible;
+    flex: none;
+    padding-right: 0;
+  }
+  .modal-actions-sticky{
+    position: static;
+    background: none;
+    border-top: 0;
+    padding-top: 12px;
+  }
+  .media-stage{ min-height: 260px; }
+}
 
 
     @media (max-width: 900px){
