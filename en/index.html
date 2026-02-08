@@ -2745,8 +2745,9 @@ let currentImages = [];
 
       const mv = getSelectedMovement();
       const mvLine = mv ? `Movement: ${mv.code}` : "";
-      const effectivePrice = mv && typeof mv.price === "number" && mv.price > 0 ? mv.price : currentBasePrice;
-      const priceLine = effectivePrice ? `Price: ${effectivePrice} €` : "";
+      const unitPrice = mv && typeof mv.price === "number" && mv.price > 0 ? mv.price : currentBasePrice;
+      const totalPrice = (typeof unitPrice === "number" && unitPrice > 0) ? (unitPrice * orderQty) : null;
+      const priceLine = totalPrice ? `Price: ${totalPrice} €` : "";
 
       const msg = `Order request: ${currentTitle}
 Variant: ${hasVariants ? variantNo : "-"}
@@ -2761,7 +2762,7 @@ Please send the price, delivery time and availability.`;
 
       // Keep modal summary in sync
       if(modalPrice){
-        modalPrice.textContent = effectivePrice ? `${effectivePrice} €` : "On request";
+        modalPrice.textContent = totalPrice ? `${totalPrice} €` : "On request";
       }
       if(modalPriceHint){
         modalPriceHint.textContent = (currentStatus === "in_stock")
