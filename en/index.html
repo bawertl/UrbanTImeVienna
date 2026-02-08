@@ -1473,7 +1473,388 @@
   color:#dcdcdc;
 }
 
+/* ===== Modal CTA Sanierung (Variante A: Apple-clean + Amazon-Logik) ===== */
+    .modal-actions-sticky{
+      padding-top: 14px;
+      margin-top: 10px;
+      background: linear-gradient(180deg, rgba(7,7,10,0) 0%, rgba(7,7,10,0.72) 22%, rgba(7,7,10,0.92) 100%);
+    }
+    .modal-actions-sticky .cta-panel{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+    }
+    .modal-actions-sticky .modal-cta{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight: 850;
+      letter-spacing: .2px;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      user-select:none;
+    }
+    .modal-actions-sticky .modal-cta:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.22);
+      transform: translateY(-1px);
+    }
+    .modal-actions-sticky .modal-cta:active{
+      transform: translateY(0px);
+    }
+    .modal-actions-sticky .modal-cta.primary{
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
+    }
+    .modal-actions-sticky .modal-cta.primary:hover{
+      background: rgba(255,255,255,.18);
+      border-color: rgba(45,226,255,.38);
+      box-shadow: 0 16px 34px rgba(0,0,0,.42);
+    }
+    .modal-actions-sticky .cta-sep{
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .modal-actions-sticky .cta-sep:before,
+    .modal-actions-sticky .cta-sep:after{
+      content:"";
+      height:1px;
+      flex:1;
+      background: rgba(255,255,255,.10);
+    }
+    .modal-actions-sticky .cta-row{
+      display:flex;
+      gap: 10px;
+    }
+    .modal-actions-sticky .modal-cta.secondary{
+      flex:1;
+      padding: 11px 12px;
+      background: rgba(255,255,255,.03);
+    }
+    .modal-actions-sticky .modal-cta.link{
+      margin-top: 10px;
+      padding: 10px 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      justify-content:flex-start;
+      font-weight: 750;
+      color: rgba(255,255,255,.82);
+    }
+    .modal-actions-sticky .modal-cta.link:hover{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.94);
+      transform:none;
+    }
+    .modal-actions-sticky .order-note{
+      margin: 8px 2px 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.62);
+      line-height: 1.35;
+    }
+    @media (max-width: 420px){
+      .modal-actions-sticky .cta-row{ flex-direction: column; }
+    }
 
+    
+.modal-media{
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0e0e12;
+  display:flex;
+  flex-direction:column;
+}
+.media-stage{
+  position: relative;
+  min-height: 300px;
+  /* stable viewport units, damit das Bild auf Mobile nicht "springt" */
+  height: min(calc(68vh - 90px), 560px);
+  height: min(calc(68svh - 90px), 560px);
+  display:flex; align-items:center; justify-content:center;
+}
+    .main-image{
+      width: 100%; height: 100%;
+      object-fit: contain; /* schärfer & nichts abschneiden */
+      display:block;
+      transition: transform 160ms ease;
+      transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+      will-change: transform;
+    }
+@media (prefers-reduced-motion: reduce){
+      .main-image{ transition: none; }
+    }
+    .nav-btn{
+      position: absolute; top: 50%;
+      transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.35);
+      color: #fff;
+      cursor: pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size: 22px; font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
+    .nav-btn:hover{ border-color: rgba(45,226,255,0.55); }
+    #galleryPrev{ left: 12px; }
+    #galleryNext{ right: 12px; }
+
+    .modal-side{
+      padding-left: 0;
+      max-height: min(68vh, 560px);
+      max-height: min(68svh, 560px);
+      /* Desktop: rechter Bereich bleibt im Modal, Inhalt scrollt */
+      overflow: hidden;
+      display:flex; flex-direction: column;
+      gap: 12px;
+    
+      min-height: 0;}
+    .modal-side-scroll{
+      flex: 1 1 auto;
+      overflow: auto;
+      padding-right: 2px;
+      display:flex; flex-direction: column;
+      gap: 12px;
+      -webkit-overflow-scrolling: touch;
+    
+      min-height: 0;
+      padding-bottom: 22px;}
+    .thumbs{
+      display:flex; flex-wrap: wrap; gap: 10px;
+      align-content: flex-start;
+    }
+    .thumb-btn{
+      width: 54px; height: 54px; /* kompakter */
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      padding: 0;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .thumb-btn img{ width: 100%; height: 100%; object-fit: cover; display:block; }
+    .thumb-btn.active{
+      border-color: var(--pop-cyan);
+      box-shadow: 0 0 0 2px rgba(45,226,255,.18);
+    }
+
+
+/* Thumbnails unter dem Bild (Desktop + Mobile) */
+.thumbs.thumbs-under{
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  gap: 10px;
+  padding: 10px 10px 12px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+  scroll-snap-type: x mandatory;
+}
+.thumbs.thumbs-under .thumb-btn{ scroll-snap-align: start; }    .modal-hint{
+      margin: 0;
+      color: rgba(255,255,255,0.35);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .order-box{
+      margin-top: 4px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+    }
+    .order-box .btn{ width: 100%; justify-content: center; }
+    .order-note{
+      margin: 10px 0 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.35;
+    }
+
+    @media (max-width: 850px){
+      .modal-body{ grid-template-columns: 1fr; }
+      .modal-side{ padding-left: 0; }
+      .media-stage{ min-height: 260px; }
+    }
+
+
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+      .highlights{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 550px){
+      .grid{ grid-template-columns: 1fr; }
+      .header-inner{ flex-direction: column; align-items: stretch; }
+      .nav{ justify-content: flex-start; }
+      .hero-left{ padding: 34px 24px; }
+    }
+  
+.order-btn{
+  display:inline-block;
+  margin-top:12px;
+  padding:8px 14px;
+  border-radius:999px;
+  background: var(--pop-cyan);
+  color:#050507;
+  font-size:12px;
+  font-weight:700;
+}
+.order-btn:hover{opacity:.9}
+
+
+    /* Subtle crown pattern background */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background-image: url("assets/crown-logo.png");
+      background-repeat: repeat;
+      background-size: 110px 110px;
+      background-position: 0 0;
+      opacity: .03; /* subtle */
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > *{
+      position: relative;
+      z-index: 1;
+    }
+
+
+/* Kaufablauf */
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:16px;
+  margin-top:18px;
+}
+.step{
+  padding:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(10,10,10,.55);
+  border-radius:16px;
+  backdrop-filter: blur(8px);
+}
+.step h3{ margin:8px 0 6px; }
+.step p{ margin:0; opacity:.92; }
+.step-num{
+  width:34px; height:34px;
+  display:grid; place-items:center;
+  border-radius:999px;
+  background:rgba(0, 188, 212, .16);
+  color:var(--pop-cyan);
+  font-weight:800;
+}
+.notice{ margin-top:18px; padding: 24px 26px 26px; }
+.notice h3{ margin:0 0 14px; }
+.notice ul{
+  list-style:none;
+  padding:0;
+  margin: 0 0 18px;
+  display:grid;
+  gap:10px;
+}
+.notice li{ margin:0; display:flex; gap:14px; align-items:flex-start; }
+.notice li strong{ flex: 0 0 130px; }
+.notice li span{ flex:1; color: rgba(255,255,255,.78); line-height: 1.45; }
+.notice .order-btn{ margin: 6px 0 0; display:inline-flex; }
+
+
+
+
+/* --- Order actions & form --- */
+.order-actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+.order-actions .btn{flex:1; min-width:200px;}
+.order-actions .movement-picker{flex:1 1 100%; width:100%;}
+
+.order-box .order-note{margin-top:8px;}
+
+.order-form{margin-top:16px;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field label{font-weight:600;}
+.field input,.field textarea,.field select{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  color:var(--text);
+  border-radius:12px;
+  padding:12px 12px;
+  outline:none;
+}
+.field select:invalid{ color: var(--muted); }
+/* Dropdown-Liste: bei manchen Browsern ist der Hintergrund hell (weiß).
+   Deshalb Option-Text dunkel setzen, damit er immer lesbar ist. */
+.field select option{ color:#111; background:#fff; }
+.field select option[value=""]{ color:#777; }
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(255,255,255,0.28);}
+.field-full{grid-column:1 / -1;}
+.hint{color:var(--muted); font-size:0.9rem; margin-top:6px;}
+.check{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:0.95rem;}
+.check input{margin-top:4px;}
+.form-buttons{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+.form-buttons .btn{min-width:220px;}
+.form-note{margin-top:10px; color:var(--muted);}
+
+/* --- Selected variant preview in order form --- */
+.variant-preview{
+  display:none;
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  border-radius: 16px;
+}
+.variant-preview-inner{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.variant-preview img{
+  width: 120px;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.35);
+}
+.variant-preview .vp-text{
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.variant-preview .vp-text b{ color: var(--text); }
+
+@media (max-width: 760px){
+  .form-grid{grid-template-columns:1fr;}
+  .order-actions .btn{min-width:0;}
+  .form-buttons .btn{min-width:0; flex:1;}
+}
+
+
+    /* Modal: zwei Buttons gleich breit und kompakt */
+    .order-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .order-actions .btn{ flex:1 1 220px; text-align:center; }
 </style>
 </head>
 <body class="lang-en" id="top">
@@ -1935,14 +2316,21 @@
           <div class="trust" aria-label="Trust">
             <div class="trust-row">✅ Secure & discreet</div>
             <div class="trust-row">✅ QC before shipping</div>
-            <div class="trust-row">✅ Support via DM
+            <div class="trust-row">✅ Support via DM</div>
+          </div>
 
           <div class="modal-actions-sticky">
-            <a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">Order: Instagram DM</a>
-<p class="order-note" id="orderNote">On click, the model text is copied — just paste it into Instagram.</p>
+            <div class="cta-panel">
+              <a class="modal-cta primary" href="#bestellformular" id="orderPrimaryBtn">Order now</a>
+
+              <div class="cta-sep">Or order via</div>
+              <div class="cta-row">
+                <a class="modal-cta secondary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">Instagram</a>
+                <a class="modal-cta secondary" href="#" id="orderTelegramBtn" rel="noopener" target="_blank">Telegram</a>
+              </div>
+              <p class="order-note" id="orderNote">Model &amp; quantity are copied automatically.</p>
+            </div>
           </div>
-        </div>
-        </div>
 
         <p class="modal-hint">Tip: Arrow keys ← → switch • ESC closes</p>
       </div>
@@ -2035,7 +2423,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = document.getElementById("galleryClose");
     const prevBtn = document.getElementById("galleryPrev");
     const nextBtn = document.getElementById("galleryNext");
+    const orderPrimaryBtn = document.getElementById("orderPrimaryBtn");
     const orderInstaBtn = document.getElementById("orderInstaBtn");
+    const orderTelegramBtn = document.getElementById("orderTelegramBtn");
     const orderFormBtn = document.getElementById("orderFormBtn");
     const orderNote = document.getElementById("orderNote");
 
@@ -2062,6 +2452,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Instagram DM-Link (anpassen, falls dein Username anders ist)
     const IG_DM_LINK = "https://ig.me/m/urbantimevienna";
+    const TG_LINK = "https://t.me/urbantimevienna";
     
     function preloadImages(list){
       (list||[]).forEach((src)=>{ const im=new Image(); im.src=src; });
@@ -2370,11 +2761,23 @@ Please send the price, delivery time and availability.`;
       orderInstaBtn.setAttribute("aria-label", `Open Instagram DM — ${currentTitle}`);
       orderInstaBtn.textContent = "Order: Instagram DM";
 
+      if(orderTelegramBtn){
+        orderTelegramBtn.href = TG_LINK;
+        orderTelegramBtn.setAttribute("aria-label", `Open Telegram — ${currentTitle}`);
+        orderTelegramBtn.textContent = "Telegram";
+      }
+
+      if(orderPrimaryBtn){
+        orderPrimaryBtn.setAttribute("aria-label", `Order now — ${currentTitle}`);
+        orderPrimaryBtn.textContent = "Order now";
+      }
+
+
       if(orderFormBtn){
         orderFormBtn.setAttribute("aria-label", `Go to form — ${currentTitle}`);
       }
 
-      orderNote.textContent = "On click, the model text is copied — just paste it into Instagram.";
+      orderNote.textContent = "Model & quantity are copied automatically.";
 
       // keep movement info in sync
       updateMovementDescription();
