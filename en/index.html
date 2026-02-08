@@ -72,8 +72,7 @@
       border: 1px solid rgba(255,255,255,0.2);
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       transition: transform 0.3s ease;
-      flex: 0 0 auto;
-    }
+      }
     .brand:hover .brand-badge{ transform: scale(1.05) rotate(-3deg); }
 
     .brand-text{
@@ -311,7 +310,6 @@
     }
     .about-crown{
       width: 44px; height: 44px;
-      flex: 0 0 auto;
       filter: drop-shadow(0 14px 30px rgba(0,0,0,.45));
       opacity: .95;
     }
@@ -1441,6 +1439,41 @@
     animation: none !important;
   }
 }
+
+/* === Variant B Glass Buttons === */
+
+.order-actions{
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.order-actions .btn,
+.order-actions .order-btn{
+  padding:11px 18px;
+  font-size:14px;
+  font-weight:500;
+  border-radius:14px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:1px solid rgba(0,255,255,0.28);
+  color:#eafafa;
+  transition: all .25s ease;
+}
+.order-actions .btn:hover,
+.order-actions .order-btn:hover,
+.order-actions .btn:active{
+  background: rgba(0,255,255,0.12);
+  box-shadow: 0 0 14px rgba(0,255,255,0.25), inset 0 0 8px rgba(0,255,255,0.15);
+  transform: translateY(-1px);
+}
+.order-actions .form{
+  border-color: rgba(255,255,255,0.25);
+  color:#dcdcdc;
+}
+
+
 </style>
 </head>
 <body class="lang-en" id="top">
@@ -1902,14 +1935,13 @@
           <div class="trust" aria-label="Trust">
             <div class="trust-row">✅ Secure & discreet</div>
             <div class="trust-row">✅ QC before shipping</div>
-            <div class="trust-row">✅ Support via DM</div>
-          </div>
+            <div class="trust-row">✅ Support via DM
 
           <div class="modal-actions-sticky">
             <a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">Order: Instagram DM</a>
-            <a class="btn" href="#bestellformular" id="orderFormBtn">Request via form</a>
-            <p class="order-note" id="orderNote">On click, the model text is copied — just paste it into Instagram.</p>
+<p class="order-note" id="orderNote">On click, the model text is copied — just paste it into Instagram.</p>
           </div>
+        </div>
         </div>
 
         <p class="modal-hint">Tip: Arrow keys ← → switch • ESC closes</p>
@@ -2858,6 +2890,41 @@ function setIndex(i){
     .utv-float-btn{ width:48px; height:48px; }
     .utv-float-btn svg{ width:24px; height:24px; }
   }
+
+/* === Variant B Glass Buttons === */
+
+.order-actions{
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.order-actions .btn,
+.order-actions .order-btn{
+  padding:11px 18px;
+  font-size:14px;
+  font-weight:500;
+  border-radius:14px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:1px solid rgba(0,255,255,0.28);
+  color:#eafafa;
+  transition: all .25s ease;
+}
+.order-actions .btn:hover,
+.order-actions .order-btn:hover,
+.order-actions .btn:active{
+  background: rgba(0,255,255,0.12);
+  box-shadow: 0 0 14px rgba(0,255,255,0.25), inset 0 0 8px rgba(0,255,255,0.15);
+  transform: translateY(-1px);
+}
+.order-actions .form{
+  border-color: rgba(255,255,255,0.25);
+  color:#dcdcdc;
+}
+
+
 </style>
 <!-- /Floating Contact Buttons -->
 </body>

@@ -72,8 +72,7 @@
       border: 1px solid rgba(255,255,255,0.2);
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       transition: transform 0.3s ease;
-      flex: 0 0 auto;
-    }
+      }
     .brand:hover .brand-badge{ transform: scale(1.05) rotate(-3deg); }
 
     .brand-text{
@@ -311,7 +310,6 @@
     }
     .about-crown{
       width: 44px; height: 44px;
-      flex: 0 0 auto;
       filter: drop-shadow(0 14px 30px rgba(0,0,0,.45));
       opacity: .95;
     }
@@ -568,13 +566,111 @@
     .trust-row{ padding: 4px 0; }
 
     .modal-actions-sticky{
-      position: sticky;
-      bottom: 0;
+      position: relative;
       padding-top: 10px;
       margin-top: 4px;
       background: linear-gradient(180deg, rgba(7,7,10,0) 0%, rgba(7,7,10,0.85) 22%, rgba(7,7,10,0.95) 100%);
       border-top: 1px solid rgba(255,255,255,.10);
+      }
+
+    /* ===== Modal CTA Sanierung (Variante A: Apple-clean + Amazon-Logik) ===== */
+    .modal-actions-sticky{
+      padding-top: 14px;
+      margin-top: 10px;
+      background: linear-gradient(180deg, rgba(7,7,10,0) 0%, rgba(7,7,10,0.72) 22%, rgba(7,7,10,0.92) 100%);
     }
+    .modal-actions-sticky .cta-panel{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.45);
+    }
+    .modal-actions-sticky .modal-cta{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight: 850;
+      letter-spacing: .2px;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease, box-shadow .15s ease;
+      user-select:none;
+    }
+    .modal-actions-sticky .modal-cta:hover{
+      background: rgba(255,255,255,.06);
+      border-color: rgba(255,255,255,.22);
+      transform: translateY(-1px);
+    }
+    .modal-actions-sticky .modal-cta:active{
+      transform: translateY(0px);
+    }
+    .modal-actions-sticky .modal-cta.primary{
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.22);
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
+    }
+    .modal-actions-sticky .modal-cta.primary:hover{
+      background: rgba(255,255,255,.18);
+      border-color: rgba(45,226,255,.38);
+      box-shadow: 0 16px 34px rgba(0,0,0,.42);
+    }
+    .modal-actions-sticky .cta-sep{
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .modal-actions-sticky .cta-sep:before,
+    .modal-actions-sticky .cta-sep:after{
+      content:"";
+      height:1px;
+      flex:1;
+      background: rgba(255,255,255,.10);
+    }
+    .modal-actions-sticky .cta-row{
+      display:flex;
+      gap: 10px;
+    }
+    .modal-actions-sticky .modal-cta.secondary{
+      flex:1;
+      padding: 11px 12px;
+      background: rgba(255,255,255,.03);
+    }
+    .modal-actions-sticky .modal-cta.link{
+      margin-top: 10px;
+      padding: 10px 8px;
+      background: transparent;
+      border: 1px solid transparent;
+      justify-content:flex-start;
+      font-weight: 750;
+      color: rgba(255,255,255,.82);
+    }
+    .modal-actions-sticky .modal-cta.link:hover{
+      background: rgba(255,255,255,.04);
+      border-color: rgba(255,255,255,.10);
+      color: rgba(255,255,255,.94);
+      transform:none;
+    }
+    .modal-actions-sticky .order-note{
+      margin: 8px 2px 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.62);
+      line-height: 1.35;
+    }
+    @media (max-width: 420px){
+      .modal-actions-sticky .cta-row{ flex-direction: column; }
+    }
+
     
 .modal-media{
   position: relative;
@@ -625,11 +721,22 @@
       padding-left: 0;
       max-height: min(68vh, 560px);
       max-height: min(68svh, 560px);
+      /* Desktop: rechter Bereich bleibt im Modal, Inhalt scrollt */
+      overflow: hidden;
+      display:flex; flex-direction: column;
+      gap: 12px;
+    
+      min-height: 0;}
+    .modal-side-scroll{
+      flex: 1 1 auto;
       overflow: auto;
       padding-right: 2px;
       display:flex; flex-direction: column;
       gap: 12px;
-    }
+      -webkit-overflow-scrolling: touch;
+    
+      min-height: 0;
+      padding-bottom: 22px;}
     .thumbs{
       display:flex; flex-wrap: wrap; gap: 10px;
       align-content: flex-start;
@@ -877,6 +984,18 @@
     max-height: none;
     overflow: visible;
     padding-right: 0;
+  }
+  /* Mobile: Footer darf mit scrollen (wie von dir gewünscht) */
+  .modal-side-scroll{
+    overflow: visible;
+    flex: none;
+    padding-right: 0;
+  }
+  .modal-actions-sticky{
+    position: static;
+    background: none;
+    border-top: 0;
+    padding-top: 12px;
   }
 }
 
@@ -1440,6 +1559,41 @@
     animation: none !important;
   }
 }
+
+/* === Variant B Glass Buttons === */
+
+.order-actions{
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.order-actions .btn,
+.order-actions .order-btn{
+  padding:11px 18px;
+  font-size:14px;
+  font-weight:500;
+  border-radius:14px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:1px solid rgba(0,255,255,0.28);
+  color:#eafafa;
+  transition: all .25s ease;
+}
+.order-actions .btn:hover,
+.order-actions .order-btn:hover,
+.order-actions .btn:active{
+  background: rgba(0,255,255,0.12);
+  box-shadow: 0 0 14px rgba(0,255,255,0.25), inset 0 0 8px rgba(0,255,255,0.15);
+  transform: translateY(-1px);
+}
+.order-actions .form{
+  border-color: rgba(255,255,255,0.25);
+  color:#dcdcdc;
+}
+
+
 </style>
 </head>
 <body class="lang-de" id="top">
@@ -1754,7 +1908,7 @@
       Du kannst direkt per Instagram bestellen oder das Formular nutzen. Beim Öffnen aus einem Modell werden die Felder automatisch vorausgefüllt.
     </p>
 <div class="form-actions-top">
-<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Bestellen: Instagram DM</a>
+<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Instagram</a>
 </div>
 <form class="order-form" id="orderForm" novalidate="">
 <div aria-live="polite" class="variant-preview" id="selectedVariantPreview">
@@ -1876,6 +2030,7 @@
       </div>
 
       <div class="modal-side">
+        <div class="modal-side-scroll">
         <div class="order-box">
           <div class="price-box" aria-label="Preis">
             <div class="price-kicker">Preis</div>
@@ -1908,11 +2063,20 @@
             <div class="trust-row">✅ Support via DM</div>
           </div>
 
+        
+
           <div class="modal-actions-sticky">
-            <a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">Bestellen: Instagram DM</a>
-            <a class="btn primary" href="#" id="orderTelegramBtn" rel="noopener" target="_blank">Bestellen: Telegram</a>
-            <a class="btn primary" href="#bestellformular" id="orderFormBtn">Anfrage per Formular</a>
-            <p class="order-note" id="orderNote">Beim Klick wird der Modelltext kopiert – dann im Chat einfach einfügen.</p>
+            <div class="cta-panel">
+              <a class="modal-cta primary" href="#bestellformular" id="orderPrimaryBtn">Jetzt bestellen</a>
+
+              <div class="cta-sep">Oder bestellen über</div>
+              <div class="cta-row">
+                <a class="modal-cta secondary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">Instagram</a>
+                <a class="modal-cta secondary" href="#" id="orderTelegramBtn" rel="noopener" target="_blank">Telegram</a>
+              </div>
+<p class="order-note" id="orderNote">Modell &amp; Menge werden automatisch kopiert.</p>
+            </div>
+        </div>
         </div>
         </div>
 
@@ -2006,6 +2170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeBtn = document.getElementById("galleryClose");
     const prevBtn = document.getElementById("galleryPrev");
     const nextBtn = document.getElementById("galleryNext");
+    const orderPrimaryBtn = document.getElementById("orderPrimaryBtn");
     const orderInstaBtn = document.getElementById("orderInstaBtn");
     const orderFormBtn = document.getElementById("orderFormBtn");
     const orderTelegramBtn = document.getElementById("orderTelegramBtn");
@@ -2355,23 +2520,44 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
         }
       }
 
+      if(orderPrimaryBtn){
+        orderPrimaryBtn.href = IG_DM_LINK;
+        orderPrimaryBtn.setAttribute("aria-label", `Jetzt bestellen – zum Formular – ${currentTitle}`);
+        orderPrimaryBtn.textContent = "Jetzt bestellen";
+      }
+
       orderInstaBtn.href = IG_DM_LINK;
-      orderInstaBtn.setAttribute("aria-label", `Instagram DM öffnen – ${currentTitle}`);
-      orderInstaBtn.textContent = "Bestellen: Instagram DM";
+      orderInstaBtn.setAttribute("aria-label", `Instagram öffnen – ${currentTitle}`);
+      orderInstaBtn.textContent = "Instagram";
 
       if(orderTelegramBtn){
         orderTelegramBtn.href = TG_LINK;
         orderTelegramBtn.setAttribute("aria-label", `Telegram öffnen – ${currentTitle}`);
-        orderTelegramBtn.textContent = "Bestellen: Telegram";
+        orderTelegramBtn.textContent = "Telegram";
       }
 
       if(orderFormBtn){
-        orderFormBtn.setAttribute("aria-label", `Zum Formular – ${currentTitle}`);
+        orderFormBtn.setAttribute("aria-label", `Anfrage per Formular – ${currentTitle}`);
       }
 
-      orderNote.textContent = "Beim Klick wird der Modelltext kopiert – in Instagram einfach einfügen.";
+      orderNote.textContent = "Modell & Menge werden automatisch kopiert.";
 
-      // keep movement info in sync
+      
+      const goToForm = (e) => {
+          if(e) e.preventDefault();
+          fillOrderFormFromSelection();
+          closeGallery();
+          const sec = document.getElementById("bestellformular");
+          if(sec){
+            sec.scrollIntoView({behavior:"smooth", block:"start"});
+            setTimeout(() => {
+              const f = document.getElementById("of_name") || document.getElementById("of_email");
+              if(f) f.focus({preventScroll:true});
+            }, 500);
+          }
+        };
+
+// keep movement info in sync
       updateMovementDescription();
 
       orderInstaBtn.onclick = async (e) => {
@@ -2392,6 +2578,11 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
 
         openInNewTab(IG_DM_LINK);
       };
+
+      if(orderPrimaryBtn){
+        orderPrimaryBtn.onclick = goToForm;
+      }
+
 
 
       if(orderTelegramBtn){
@@ -2908,6 +3099,41 @@ function setIndex(i){
     .utv-float-btn{ width:48px; height:48px; }
     .utv-float-btn svg{ width:24px; height:24px; }
   }
+
+/* === Variant B Glass Buttons === */
+
+.order-actions{
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.order-actions .btn,
+.order-actions .order-btn{
+  padding:11px 18px;
+  font-size:14px;
+  font-weight:500;
+  border-radius:14px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:1px solid rgba(0,255,255,0.28);
+  color:#eafafa;
+  transition: all .25s ease;
+}
+.order-actions .btn:hover,
+.order-actions .order-btn:hover,
+.order-actions .btn:active{
+  background: rgba(0,255,255,0.12);
+  box-shadow: 0 0 14px rgba(0,255,255,0.25), inset 0 0 8px rgba(0,255,255,0.15);
+  transform: translateY(-1px);
+}
+.order-actions .form{
+  border-color: rgba(255,255,255,0.25);
+  color:#dcdcdc;
+}
+
+
 </style>
 <!-- /Floating Contact Buttons -->
 
