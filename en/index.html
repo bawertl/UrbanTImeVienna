@@ -511,12 +511,6 @@
       gap: 12px;
       padding: 12px;
       align-items: start;
-
-      /* make the modal content reliably scrollable (desktop + mobile) */
-      max-height: calc(100svh - 120px);
-      max-height: calc(100vh - 120px);
-      overflow: auto;
-      -webkit-overflow-scrolling: touch;
     }
 
     .modal-side .order-box{ display:flex; flex-direction:column; gap: 10px; }
@@ -1853,11 +1847,6 @@
     /* Modal: zwei Buttons gleich breit und kompakt */
     .order-actions{ display:flex; gap:10px; flex-wrap:wrap; }
     .order-actions .btn{ flex:1 1 220px; text-align:center; }
-
-/* === EN hotfix: ensure modal body is scrollable like DE (iOS safe) === */
-.modal-card{ display:flex; flex-direction:column; }
-.modal-body{ flex: 1 1 auto; min-height: 0; overflow: auto; -webkit-overflow-scrolling: touch; }
-
 </style>
 </head>
 <body class="lang-en" id="top">
