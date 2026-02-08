@@ -510,8 +510,13 @@
       display: grid; grid-template-columns: 1fr 280px;
       gap: 12px;
       padding: 12px;
-    
       align-items: start;
+
+      /* make the modal content reliably scrollable (desktop + mobile) */
+      max-height: calc(100svh - 120px);
+      max-height: calc(100vh - 120px);
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .modal-side .order-box{ display:flex; flex-direction:column; gap: 10px; }
@@ -566,8 +571,8 @@
     .trust-row{ padding: 4px 0; }
 
     .modal-actions-sticky{
-      position: sticky;
-      bottom: 0;
+      position: relative;
+      bottom: auto;
       padding-top: 10px;
       margin-top: 4px;
       background: linear-gradient(180deg, rgba(7,7,10,0) 0%, rgba(7,7,10,0.85) 22%, rgba(7,7,10,0.95) 100%);
@@ -621,12 +626,14 @@
 
     .modal-side{
       padding-left: 0;
-      max-height: min(68vh, 560px);
-      max-height: min(68svh, 560px);
-      overflow: auto;
       padding-right: 2px;
-      display:flex; flex-direction: column;
+      display:flex;
+      flex-direction: column;
       gap: 12px;
+
+      /* let .modal-body handle scrolling */
+      max-height: none;
+      overflow: visible;
     }
     .thumbs{
       display:flex; flex-wrap: wrap; gap: 10px;
@@ -862,16 +869,7 @@
   }
 }
 
-/* ===== Mobile Modal Scroll Fix (ohne Layout zu verschieben) ===== */
-@media (max-width: 850px){
-  .modal-body{
-    grid-template-columns: 1fr;
-    max-height: calc(100vh - 120px);
-    max-height: calc(100dvh - 120px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .modal-side{
+.modal-side{
     max-height: none;
     overflow: visible;
     padding-right: 0;
@@ -1855,6 +1853,11 @@
     /* Modal: zwei Buttons gleich breit und kompakt */
     .order-actions{ display:flex; gap:10px; flex-wrap:wrap; }
     .order-actions .btn{ flex:1 1 220px; text-align:center; }
+
+/* === EN hotfix: ensure modal body is scrollable like DE (iOS safe) === */
+.modal-card{ display:flex; flex-direction:column; }
+.modal-body{ flex: 1 1 auto; min-height: 0; overflow: auto; -webkit-overflow-scrolling: touch; }
+
 </style>
 </head>
 <body class="lang-en" id="top">
@@ -2272,67 +2275,76 @@
       <div>
         <div class="modal-badges">
           <span class="badge" id="modalStatus">●</span>
-          <span class="badge ghost" id="modalDelivery">Delivery</span>
+          <span class="badge ghost" id="modalDelivery">Lieferzeit</span>
         </div>
-        <h3 id="galleryTitle">Watch</h3>
+        <h3 id="galleryTitle">Uhr</h3>
         <p class="meta" id="galleryMeta"></p>
       </div>
-      <button aria-label="Close" class="icon-btn" id="galleryClose" type="button">✕</button>
+      <button aria-label="Schließen" class="icon-btn" id="galleryClose" type="button">✕</button>
     </div>
 
     <div class="modal-body">
       <div class="modal-media">
         <div class="media-stage" id="mediaStage">
-          <button aria-label="Previous image" class="nav-btn" id="galleryPrev" type="button">‹</button>
+          <button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
           <img alt="" class="main-image" id="galleryMain" src=""/>
-          <button aria-label="Next image" class="nav-btn" id="galleryNext" type="button">›</button>
+          <button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
         </div>
         <div class="thumbs thumbs-under" id="galleryThumbs"></div>
       </div>
 
       <div class="modal-side">
+        <div class="modal-side-scroll">
         <div class="order-box">
-          <div class="price-box" aria-label="Price">
-            <div class="price-kicker">Price</div>
-            <div class="price-big" id="modalPrice">On request</div>
-            <div class="price-sub" id="modalPriceHint">incl. tier & movement</div>
+          <div class="price-box" aria-label="Preis">
+            <div class="price-kicker">Preis</div>
+            <div class="price-big" id="modalPrice">Auf Anfrage</div>
+            <div class="price-sub" id="modalPriceHint">inkl. Qualitätsstufe & Uhrwerk</div>
           </div>
+
+          
+
+          <div class="qty" aria-label="Menge">
+            <div>
+              <div class="qty-title">Menge</div>
+              <div class="qty-sub">Min. 1 Stück</div>
+            </div>
+            <div class="qty-controls" role="group" aria-label="Menge auswählen">
+              <button class="qty-btn" id="qtyDec" type="button" aria-label="Menge verringern">−</button>
+              <span class="qty-val" id="qtyVal" aria-live="polite">1</span>
+              <button class="qty-btn" id="qtyInc" type="button" aria-label="Menge erhöhen">+</button>
+            </div>
+          </div>
+
+          
 
           <div class="movement-picker" id="movementPicker"></div>
           <div aria-live="polite" class="movement-desc" id="movementDesc"></div>
 
-          <div class="qty" aria-label="Quantity">
-            <div>
-              <div class="qty-title">Quantity</div>
-              <div class="qty-sub">Min. 1</div>
-            </div>
-            <div class="qty-controls" role="group" aria-label="Select quantity">
-              <button class="qty-btn" id="qtyDec" type="button" aria-label="Decrease">−</button>
-              <span class="qty-val" id="qtyVal" aria-live="polite">1</span>
-              <button class="qty-btn" id="qtyInc" type="button" aria-label="Increase">+</button>
-            </div>
-          </div>
-
-          <div class="trust" aria-label="Trust">
-            <div class="trust-row">✅ Secure & discreet</div>
-            <div class="trust-row">✅ QC before shipping</div>
+          <div class="trust" aria-label="Sicherheit">
+            <div class="trust-row">✅ Sicher & diskret</div>
+            <div class="trust-row">✅ QC vor Versand</div>
             <div class="trust-row">✅ Support via DM</div>
           </div>
 
+        
+
           <div class="modal-actions-sticky">
             <div class="cta-panel">
-              <a class="modal-cta primary" href="#bestellformular" id="orderPrimaryBtn">Order now</a>
+              <a class="modal-cta primary" href="#bestellformular" id="orderPrimaryBtn">Jetzt bestellen</a>
 
-              <div class="cta-sep">Or order via</div>
+              <div class="cta-sep">Oder bestellen über</div>
               <div class="cta-row">
                 <a class="modal-cta secondary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">Instagram</a>
                 <a class="modal-cta secondary" href="#" id="orderTelegramBtn" rel="noopener" target="_blank">Telegram</a>
               </div>
-              <p class="order-note" id="orderNote">Model &amp; quantity are copied automatically.</p>
+<p class="order-note" id="orderNote">Modell &amp; Menge werden automatisch kopiert.</p>
             </div>
-          </div>
+        </div>
+        </div>
+        </div>
 
-        <p class="modal-hint">Tip: Arrow keys ← → switch • ESC closes</p>
+        <p class="modal-hint">Tipp: Pfeiltasten ← → wechseln • ESC schließt</p>
       </div>
     </div>
   </div>
@@ -2782,7 +2794,28 @@ Please send the price, delivery time and availability.`;
       // keep movement info in sync
       updateMovementDescription();
 
-      orderInstaBtn.onclick = async (e) => {
+      
+      if(orderPrimaryBtn){
+        orderPrimaryBtn.onclick = (e) => {
+          // Close modal and jump to order form (same behavior as DE)
+          e.preventDefault();
+          fillOrderFormFromSelection();
+          closeGallery();
+          const sec = document.getElementById("bestellformular");
+          if(sec){
+            sec.scrollIntoView({behavior:"smooth", block:"start"});
+            setTimeout(() => {
+              const f = document.getElementById("of_name") || document.getElementById("of_email");
+              if(f) f.focus({preventScroll:true});
+            }, 500);
+          }else{
+            // fallback: update hash
+            location.hash = "#bestellformular";
+          }
+        };
+      }
+
+orderInstaBtn.onclick = async (e) => {
         e.preventDefault();
 
         const srcNow = currentImages[currentIndex] || "";

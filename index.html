@@ -1594,6 +1594,21 @@
 }
 
 
+
+
+/* === FIX: CTA/Order Buttons sollen NICHT overlay/sticky sein, sondern im Scroll-Flow am Ende erscheinen (nur EN nutzt DE-Popup Copy) === */
+.modal-actions-sticky{
+  position: static !important;
+  inset: auto !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  z-index: auto !important;
+}
+.modal-actions-sticky .cta-panel{
+  position: static !important;
+}
 </style>
 </head>
 <body class="lang-de" id="top">
