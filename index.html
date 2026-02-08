@@ -428,6 +428,21 @@
     /* ===== Modal Gallery (Produktbilder) ===== */
     .product-card{ cursor: pointer; }
     .product-card .thumb{ position: relative; overflow: hidden; }
+    .product-card .card-badge{
+      position:absolute; top: 12px; left: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .3px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      z-index: 3;
+    }
+    .product-card .card-badge.good{ border-color: rgba(45,226,255,.45); background: rgba(45,226,255,.14); color: #eaffff; }
+    .product-card .card-badge.warn{ border-color: rgba(255,208,0,.45); background: rgba(255,208,0,.14); color: #fff7cc; }
     .product-card .thumb::after{
       content: "Mehr Bilder";
       position: absolute; left: 10px; bottom: 10px;
@@ -467,6 +482,21 @@
       padding: 12px 12px 0;
       gap: 16px;
     }
+    .modal-badges{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .3px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+    }
+    .badge.good{ border-color: rgba(45,226,255,.35); background: rgba(45,226,255,.10); color: #eaffff; }
+    .badge.warn{ border-color: rgba(255,208,0,.35); background: rgba(255,208,0,.10); color: #fff7cc; }
+    .badge.ghost{ border-color: rgba(255,255,255,.12); background: rgba(0,0,0,.10); color: var(--muted); font-weight:700; }
     .modal-top h3{ margin: 0; font-size: 18px; }
     .modal-top .meta{ margin: 6px 0 0; color: var(--muted); font-size: 13px; }
     .icon-btn{
@@ -484,6 +514,66 @@
       padding: 12px;
     
       align-items: start;
+    }
+
+    .modal-side .order-box{ display:flex; flex-direction:column; gap: 10px; }
+
+    .price-box{
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 16px;
+      padding: 12px;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+    }
+    .price-kicker{ font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; font-weight: 800; }
+    .price-big{ font-size: 22px; font-weight: 900; margin-top: 6px; }
+    .price-sub{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .qty{
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.14);
+    }
+    .qty-title{ font-weight: 900; font-size: 13px; }
+    .qty-sub{ font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .qty-controls{
+      display:flex; align-items:center;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 999px;
+      overflow:hidden;
+      background: rgba(255,255,255,.04);
+    }
+    .qty-btn{
+      width: 40px; height: 36px;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      cursor:pointer;
+      font-size: 18px;
+    }
+    .qty-btn:hover{ background: rgba(255,255,255,.06); }
+    .qty-val{ width: 44px; height: 36px; display:grid; place-items:center; font-weight: 900; }
+
+    .trust{
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 16px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size: 12.5px;
+    }
+    .trust-row{ padding: 4px 0; }
+
+    .modal-actions-sticky{
+      position: sticky;
+      bottom: 0;
+      padding-top: 10px;
+      margin-top: 4px;
+      background: linear-gradient(180deg, rgba(7,7,10,0) 0%, rgba(7,7,10,0.85) 22%, rgba(7,7,10,0.95) 100%);
+      border-top: 1px solid rgba(255,255,255,.10);
     }
     
 .modal-media{
@@ -1762,40 +1852,74 @@
 </footer>
 </main>
 <div aria-hidden="true" class="modal" id="galleryModal">
-<div aria-labelledby="galleryTitle" aria-modal="true" class="card modal-card" role="dialog">
-<div class="modal-top">
-<div>
-<h3 id="galleryTitle">Uhr</h3>
-<p class="meta" id="galleryMeta"></p>
-</div>
-<button aria-label="Schließen" class="icon-btn" id="galleryClose" type="button">✕</button>
-</div>
-<div class="modal-body">
-<div class="modal-media">
-<div class="media-stage" id="mediaStage">
-<button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
-<img alt="" class="main-image" id="galleryMain" src=""/>
-<button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
-</div>
-<div class="thumbs thumbs-under" id="galleryThumbs"></div>
-</div>
-<div class="modal-side">
-<div class="order-box">
-<div class="order-actions"><div class="movement-picker" id="movementPicker"></div>
-<div aria-live="polite" class="movement-desc" id="movementDesc"></div>
-<a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">
-                Bestellen: Instagram DM
-              </a>
-<a class="btn primary" href="#bestellformular" id="orderFormBtn">
-                Anfrage per Formular
-              </a>
-</div>
-<p class="order-note" id="orderNote">Instagram: Beim Klick wird der Modelltext kopiert – in Instagram einfach einfügen.</p>
-</div>
-<p class="modal-hint">Tipp: Pfeiltasten ← → wechseln • ESC schließt</p>
-</div>
-</div>
-</div>
+  <div aria-labelledby="galleryTitle" aria-modal="true" class="card modal-card" role="dialog">
+    <div class="modal-top">
+      <div>
+        <div class="modal-badges">
+          <span class="badge" id="modalStatus">●</span>
+          <span class="badge ghost" id="modalDelivery">Lieferzeit</span>
+        </div>
+        <h3 id="galleryTitle">Uhr</h3>
+        <p class="meta" id="galleryMeta"></p>
+      </div>
+      <button aria-label="Schließen" class="icon-btn" id="galleryClose" type="button">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-media">
+        <div class="media-stage" id="mediaStage">
+          <button aria-label="Vorheriges Bild" class="nav-btn" id="galleryPrev" type="button">‹</button>
+          <img alt="" class="main-image" id="galleryMain" src=""/>
+          <button aria-label="Nächstes Bild" class="nav-btn" id="galleryNext" type="button">›</button>
+        </div>
+        <div class="thumbs thumbs-under" id="galleryThumbs"></div>
+      </div>
+
+      <div class="modal-side">
+        <div class="order-box">
+          <div class="price-box" aria-label="Preis">
+            <div class="price-kicker">Preis</div>
+            <div class="price-big" id="modalPrice">Auf Anfrage</div>
+            <div class="price-sub" id="modalPriceHint">inkl. Qualitätsstufe & Uhrwerk</div>
+          </div>
+
+          
+
+          <div class="qty" aria-label="Menge">
+            <div>
+              <div class="qty-title">Menge</div>
+              <div class="qty-sub">Min. 1 Stück</div>
+            </div>
+            <div class="qty-controls" role="group" aria-label="Menge auswählen">
+              <button class="qty-btn" id="qtyDec" type="button" aria-label="Menge verringern">−</button>
+              <span class="qty-val" id="qtyVal" aria-live="polite">1</span>
+              <button class="qty-btn" id="qtyInc" type="button" aria-label="Menge erhöhen">+</button>
+            </div>
+          </div>
+
+          
+
+          <div class="movement-picker" id="movementPicker"></div>
+          <div aria-live="polite" class="movement-desc" id="movementDesc"></div>
+
+          <div class="trust" aria-label="Sicherheit">
+            <div class="trust-row">✅ Sicher & diskret</div>
+            <div class="trust-row">✅ QC vor Versand</div>
+            <div class="trust-row">✅ Support via DM</div>
+          </div>
+
+          <div class="modal-actions-sticky">
+            <a class="btn primary" href="#" id="orderInstaBtn" rel="noopener" target="_blank">Bestellen: Instagram DM</a>
+            <a class="btn primary" href="#" id="orderTelegramBtn" rel="noopener" target="_blank">Bestellen: Telegram</a>
+            <a class="btn primary" href="#bestellformular" id="orderFormBtn">Anfrage per Formular</a>
+            <p class="order-note" id="orderNote">Beim Klick wird der Modelltext kopiert – dann im Chat einfach einfügen.</p>
+        </div>
+        </div>
+
+        <p class="modal-hint">Tipp: Pfeiltasten ← → wechseln • ESC schließt</p>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
     // Jahr im Footer
@@ -1884,10 +2008,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtn = document.getElementById("galleryNext");
     const orderInstaBtn = document.getElementById("orderInstaBtn");
     const orderFormBtn = document.getElementById("orderFormBtn");
+    const orderTelegramBtn = document.getElementById("orderTelegramBtn");
     const orderNote = document.getElementById("orderNote");
+
+    // New UI bits (status/price/qty)
+    const modalStatus = document.getElementById("modalStatus");
+    const modalDelivery = document.getElementById("modalDelivery");
+    const modalPrice = document.getElementById("modalPrice");
+    const modalPriceHint = document.getElementById("modalPriceHint");
+    const qtyDec = document.getElementById("qtyDec");
+    const qtyInc = document.getElementById("qtyInc");
+    const qtyVal = document.getElementById("qtyVal");
+
+    let currentStatus = "";   // 'in_stock' | 'preorder'
+    let currentDelivery = "";
+    let currentBasePrice = null; // number | null
+    let orderQty = 1;
+
+    function syncQtyUI(){
+      if(qtyVal) qtyVal.textContent = String(orderQty);
+      // also reflect in hint text if needed
+    }
+    if(qtyDec) qtyDec.addEventListener("click", () => { orderQty = Math.max(1, orderQty - 1); syncQtyUI(); updateOrderText(); });
+    if(qtyInc) qtyInc.addEventListener("click", () => { orderQty = Math.min(99, orderQty + 1); syncQtyUI(); updateOrderText(); });
+    syncQtyUI();
 
     // Instagram DM-Link (anpassen, falls dein Username anders ist)
     const IG_DM_LINK = "https://ig.me/m/urbantimevienna";
+    const TG_LINK = "https://t.me/urbantimevienna";
     
     function preloadImages(list){
       (list||[]).forEach((src)=>{ const im=new Image(); im.src=src; });
@@ -2027,13 +2175,16 @@ function updateMovementDescription(){
 
       const mv = getSelectedMovement();
       const mvTxt = mv ? ` – Uhrwerk ${mv.code} – ${mv.price} €` : ``;
-      const modelText = hasVariants ? `${currentTitle} – Variante ${variantNo}${mvTxt}` : `${currentTitle}${mvTxt}`;
+      const qtyTxt = orderQty && orderQty > 1 ? ` – Menge ${orderQty}` : ``;
+      const statusTxt = currentStatus === "in_stock" ? " – Lagernd" : (currentStatus === "preorder" ? " – Bestellung" : "");
+      const modelText = hasVariants ? `${currentTitle} – Variante ${variantNo}${mvTxt}${qtyTxt}${statusTxt}` : `${currentTitle}${mvTxt}${qtyTxt}${statusTxt}`;
       if(modelEl) modelEl.value = modelText;
 
+      const deliveryLine = currentDelivery ? `Lieferzeit (Info): ${currentDelivery}\n\n` : "";
       const defaultMsg =
 `Bitte Preis, Lieferzeit und Verfügbarkeit senden.
 
-Hast du noch weitere Fragen? Schreibe sie hier rein.`;
+${deliveryLine}Hast du noch weitere Fragen? Schreibe sie hier rein.`;
 
       // Nachricht bleibt clean: Referenzen (Modell/Variante/Bild) werden separat mitgesendet.
       if(msgEl && !msgEl.value.trim()){
@@ -2157,21 +2308,62 @@ let currentImages = [];
       const variantNo = currentIndex + 1;
       const hasVariants = (currentImages.length || 0) > 1;
 
+      const qtyLine = `Menge: ${orderQty}`;
+
+      const statusLine = currentStatus === "in_stock"
+        ? "Status: Aktuell lagernd"
+        : (currentStatus === "preorder" ? "Status: Auf Bestellung verfügbar" : "");
+      const deliveryLine = currentDelivery ? `Lieferzeit: ${currentDelivery}` : "";
+
             const mv = getSelectedMovement();
       const mvLine = mv ? `Uhrwerk: ${mv.code}` : "";
-      const priceLine = mv ? `Preis: ${mv.price} €` : "";
+      const unitPrice = (mv && typeof mv.price === "number" && mv.price > 0) ? mv.price : currentBasePrice;
+      const totalPrice = (unitPrice && orderQty) ? (unitPrice * orderQty) : null;
+
+      const priceLine = unitPrice ? `Preis/Stück: ${unitPrice} €` : "";
+      const totalLine = totalPrice ? `Gesamt: ${totalPrice} €` : "";
 
       const msg = `Bestellanfrage: ${currentTitle}
 Variante: ${hasVariants ? variantNo : "-"}
 Bild: ${file}
+${qtyLine}
 ${mvLine}
 ${priceLine}
+${totalLine}
+${statusLine}
+${deliveryLine}
 
 Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
+
+      // Keep modal summary in sync
+      if(modalPrice){
+        if(totalPrice){
+          modalPrice.textContent = `${totalPrice} €`;
+        }else if(unitPrice){
+          modalPrice.textContent = `${unitPrice} €`;
+        }else{
+          modalPrice.textContent = "Auf Anfrage";
+        }
+      }
+      if(modalPriceHint){
+        modalPriceHint.textContent = (currentStatus === "in_stock")
+          ? "Abholung oder Versand möglich"
+          : "Vorauszahlung · Lieferzeit ca. 14 Werktage";
+
+        if(unitPrice && orderQty && orderQty > 1){
+          modalPriceHint.textContent += ` · ${orderQty}× ${unitPrice} €`;
+        }
+      }
 
       orderInstaBtn.href = IG_DM_LINK;
       orderInstaBtn.setAttribute("aria-label", `Instagram DM öffnen – ${currentTitle}`);
       orderInstaBtn.textContent = "Bestellen: Instagram DM";
+
+      if(orderTelegramBtn){
+        orderTelegramBtn.href = TG_LINK;
+        orderTelegramBtn.setAttribute("aria-label", `Telegram öffnen – ${currentTitle}`);
+        orderTelegramBtn.textContent = "Bestellen: Telegram";
+      }
 
       if(orderFormBtn){
         orderFormBtn.setAttribute("aria-label", `Zum Formular – ${currentTitle}`);
@@ -2200,6 +2392,28 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
 
         openInNewTab(IG_DM_LINK);
       };
+
+
+      if(orderTelegramBtn){
+        orderTelegramBtn.onclick = async (e) => {
+          e.preventDefault();
+
+          const srcNow = currentImages[currentIndex] || "";
+          orderNote.textContent = "Kopiere Modell…";
+
+          const res = await copyTextAndMaybeImage(msg, srcNow);
+
+          if(res.imageCopied){
+            orderNote.textContent = "Text + Bild kopiert ✅ In Telegram einfach einfügen (Strg+V).";
+          }else if(res.textCopied){
+            orderNote.textContent = "Text kopiert ✅ Öffne Telegram…";
+          }else{
+            orderNote.textContent = "Kopieren nicht möglich – bitte Text/Screenshot manuell senden.";
+          }
+
+          openInNewTab(TG_LINK);
+        };
+      }
 
       if(orderFormBtn){
         orderFormBtn.onclick = (e) => {
@@ -2232,6 +2446,16 @@ function setIndex(i){
     }
 
     function openGallery(card){
+      // Context (in stock vs preorder)
+      const section = card.closest("section");
+      const secId = section ? section.id : "";
+      currentStatus = (secId === "kollektion") ? "in_stock" : (secId === "bestellbar" ? "preorder" : "");
+      currentDelivery = (secId === "kollektion") ? "Sofort / nach Absprache" : (secId === "bestellbar" ? "ca. 14 Werktage" : "");
+
+      // Reset qty each time a product is opened
+      orderQty = 1;
+      syncQtyUI();
+
       const images = (card.dataset.images || "")
         .split(",")
         .map(s => s.trim())
@@ -2257,10 +2481,37 @@ function setIndex(i){
       const title = (card.querySelector("h3")?.textContent || "Uhr").trim();
       const meta = (card.querySelector(".tag")?.textContent || "").trim();
 
+      // Base price from tag (e.g. "Preis €580" or "Preis ab: 750 €")
+      currentBasePrice = null;
+      const pm = meta.match(/(\d+[\.,]?\d*)/);
+      if(pm){
+        const n = Number(String(pm[1]).replace(",","."));
+        if(!isNaN(n) && n > 0) currentBasePrice = Math.round(n);
+      }
+
       currentTitle = title;
 
       titleEl.textContent = title;
       metaEl.textContent = meta;
+
+      // Badges
+      if(modalStatus){
+        if(currentStatus === "in_stock"){
+          modalStatus.textContent = "🟢 Aktuell lagernd";
+          modalStatus.classList.remove("warn");
+          modalStatus.classList.add("good");
+        }else if(currentStatus === "preorder"){
+          modalStatus.textContent = "🟡 Auf Bestellung";
+          modalStatus.classList.remove("good");
+          modalStatus.classList.add("warn");
+        }else{
+          modalStatus.textContent = "●";
+          modalStatus.classList.remove("good","warn");
+        }
+      }
+      if(modalDelivery){
+        modalDelivery.textContent = currentDelivery ? `⏱️ ${currentDelivery}` : "";
+      }
 
       thumbsEl.innerHTML = "";
       images.forEach((src, idx) => {
@@ -2288,6 +2539,19 @@ function setIndex(i){
 
     // ===== Öffnen des Varianten/Bestell-Popups =====
     // Klick auf Karte oder Bild öffnet die Gallery/Bestell-Ansicht
+
+    // Add small status badges on cards (UX)
+    function addBadgeToCard(card, text, cls){
+      const thumb = card.querySelector(".thumb");
+      if(!thumb || thumb.querySelector(".card-badge")) return;
+      const b = document.createElement("span");
+      b.className = `card-badge ${cls||""}`;
+      b.textContent = text;
+      thumb.appendChild(b);
+    }
+    document.querySelectorAll("#kollektion .product-card").forEach(c => addBadgeToCard(c, "🟢 Lagernd", "good"));
+    document.querySelectorAll("#bestellbar .product-card").forEach(c => addBadgeToCard(c, "🟡 Bestellung", "warn"));
+
     document.querySelectorAll(".product-card").forEach((card) => {
       // Bild/Thumbnail
       const thumb = card.querySelector(".thumb");
