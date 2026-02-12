@@ -2962,7 +2962,7 @@ function setIndex(i){
     sent: isEN ? "Sent ✅" : "Gesendet ✅",
     noteSending: isEN ? "Sending request…" : "Sende Anfrage…",
     noteSent: isEN ? "Request sent ✅ You'll receive a confirmation email." : "Anfrage gesendet ✅ Du bekommst eine Bestätigung per E‑Mail.",
-    noteChecks: isEN ? "Please tick both confirmations." : "Bitte beide Bestätigungen anhaken.",
+    noteChecks: isEN ? "Please accept the private sale terms." : "Bitte Privatverkaufsbedingungen anhaken.",
     noteFail: isEN ? "Sending failed. Please use Instagram DM or send via your email app." : "Senden fehlgeschlagen. Bitte nutze Instagram DM oder sende über dein E‑Mail‑Programm."
   };
 
@@ -3030,7 +3030,7 @@ function setIndex(i){
       orderForm.reportValidity();
       return;
     }
-    if(!checked("of_terms") || !checked("of_privterms")){
+    if((document.getElementById("of_terms") && !checked("of_terms")) || (document.getElementById("of_privterms") && !checked("of_privterms"))){
       setNote(T.noteChecks);
       return;
     }
