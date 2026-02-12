@@ -312,9 +312,26 @@ function openGallery(card){
         .map(s => s.trim())
         .filter(Boolean);
 
-      if(!images.length) return;
+      const mediaStage = document.getElementById("mediaStage");
 
       currentImages = images;
+
+      // Wenn keine Bilder vorhanden sind, öffnen wir trotzdem das Pop-up (ohne Galerie)
+      const hasImages = images.length > 0;
+      if(mediaStage){
+        mediaStage.style.display = hasImages ? "" : "none";
+      }
+      if(thumbsEl){
+        thumbsEl.style.display = hasImages ? "" : "none";
+        thumbsEl.innerHTML = "";
+      }
+      if(prevBtn) prevBtn.style.display = hasImages ? "" : "none";
+      if(nextBtn) nextBtn.style.display = hasImages ? "" : "none";
+      if(mainImg){
+        mainImg.style.display = hasImages ? "" : "none";
+        mainImg.src = hasImages ? images[0] : "";
+      }
+
 
       const title = (card.querySelector("h3")?.textContent || "Uhr").trim();
       const meta = (card.querySelector(".tag")?.textContent || "").trim();
@@ -333,8 +350,9 @@ function openGallery(card){
       selectedMovement = null;
       renderMovementPicker();
 
-      thumbsEl.innerHTML = "";
-      images.forEach((src, idx) => {
+      if(hasImages){
+        thumbsEl.innerHTML = "";
+        images.forEach((src, idx) => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "thumb-btn";
@@ -349,8 +367,14 @@ function openGallery(card){
         btn.addEventListener("click", () => setIndex(idx));
         thumbsEl.appendChild(btn);
       });
+      }
 
-      setIndex(0);
+      if(hasImages){
+        setIndex(0);
+      } else {
+        // Kein Bild: sicherstellen, dass kein altes Bild angezeigt wird
+        if(mainImg) mainImg.src = "";
+      }
 
       modal.classList.add("open");
       modal.setAttribute("aria-hidden", "false");
@@ -375,6 +399,14 @@ function openGallery(card){
         });
       }
 
+
+
+      // Klick irgendwo auf der Karte öffnet ebenfalls das Pop-up (außer auf interaktiven Elementen)
+      card.addEventListener("click", (e) => {
+        const t = (e.target && e.target.nodeType === 1) ? e.target : (e.target && e.target.parentElement ? e.target.parentElement : null);
+        if(t && t.closest("details,summary,a,button")) return;
+        openGallery(card);
+      });
       // Optional: Enter/Space auf der Karte öffnet ebenfalls (für Tastatur)
       card.addEventListener("keydown", (e) => {
         const t = (e.target && e.target.nodeType === 1) ? e.target : (e.target && e.target.parentElement ? e.target.parentElement : null);
