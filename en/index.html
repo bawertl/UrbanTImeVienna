@@ -2826,7 +2826,7 @@ Please send the price, delivery time and availability.`;
         orderFormBtn.setAttribute("aria-label", `Go to form — ${currentTitle}`);
       }
 
-      orderNote.textContent = "Model & quantity are copied automatically.";
+      orderNote.textContent = "Click opens chat directly.";
 
       // keep movement info in sync
       updateMovementDescription();
@@ -2852,22 +2852,9 @@ Please send the price, delivery time and availability.`;
         };
       }
 
-orderInstaBtn.onclick = async (e) => {
+orderInstaBtn.onclick = (e) => {
         e.preventDefault();
-
-        const srcNow = currentImages[currentIndex] || "";
-        orderNote.textContent = "Copying model…";
-
-        const res = await copyTextAndMaybeImage(msg, srcNow);
-
-        if(res.imageCopied){
-          orderNote.textContent = "Text + image copied ✅ Just paste in Instagram (Ctrl+V).";
-        }else if(res.textCopied){
-          orderNote.textContent = "Text copied ✅ Open Instagram…";
-        }else{
-          orderNote.textContent = "Copying isn’t possible — please send the text/screenshot manually.";
-        }
-
+        closeGallery();
         openInNewTab(IG_DM_LINK);
       };
 

@@ -2564,7 +2564,7 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
         orderFormBtn.setAttribute("aria-label", `Anfrage per Formular – ${currentTitle}`);
       }
 
-      orderNote.textContent = "Modell & Menge werden automatisch kopiert.";
+      orderNote.textContent = "Beim Klick öffnet sich direkt der Chat.";
 
       
       const goToForm = (e) => {
@@ -2584,22 +2584,9 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
 // keep movement info in sync
       updateMovementDescription();
 
-      orderInstaBtn.onclick = async (e) => {
+      orderInstaBtn.onclick = (e) => {
         e.preventDefault();
-
-        const srcNow = currentImages[currentIndex] || "";
-        orderNote.textContent = "Kopiere Modell…";
-
-        const res = await copyTextAndMaybeImage(msg, srcNow);
-
-        if(res.imageCopied){
-          orderNote.textContent = "Text + Bild kopiert ✅ In Instagram einfach einfügen (Strg+V).";
-        }else if(res.textCopied){
-          orderNote.textContent = "Text kopiert ✅ Öffne Instagram…";
-        }else{
-          orderNote.textContent = "Kopieren nicht möglich – bitte Text/Screenshot manuell senden.";
-        }
-
+        closeGallery();
         openInNewTab(IG_DM_LINK);
       };
 
@@ -2610,22 +2597,9 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
 
 
       if(orderTelegramBtn){
-        orderTelegramBtn.onclick = async (e) => {
+        orderTelegramBtn.onclick = (e) => {
           e.preventDefault();
-
-          const srcNow = currentImages[currentIndex] || "";
-          orderNote.textContent = "Kopiere Modell…";
-
-          const res = await copyTextAndMaybeImage(msg, srcNow);
-
-          if(res.imageCopied){
-            orderNote.textContent = "Text + Bild kopiert ✅ In Telegram einfach einfügen (Strg+V).";
-          }else if(res.textCopied){
-            orderNote.textContent = "Text kopiert ✅ Öffne Telegram…";
-          }else{
-            orderNote.textContent = "Kopieren nicht möglich – bitte Text/Screenshot manuell senden.";
-          }
-
+          closeGallery();
           openInNewTab(TG_LINK);
         };
       }
