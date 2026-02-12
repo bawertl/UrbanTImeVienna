@@ -2986,11 +2986,30 @@ function setIndex(i){
   }
 
   function getSelectedMeta(){
-    const imgEl = document.getElementById("selectedVariantImg");
     const capEl = document.getElementById("selectedVariantCaption");
-    const imgSrc = imgEl ? (imgEl.getAttribute("src") || "") : "";
-    const imageUrl = safeAbsUrl(imgSrc);
-    const imageLabel = capEl ? String(capEl.textContent || "").trim() : "";
+
+    // 1) prefer selected variant preview (if present in markup)
+    const imgEl = document.getElementById("selectedVariantImg");
+    let imgSrc = imgEl ? (imgEl.getAttribute("data-fullsrc") || imgEl.getAttribute("src") || "") : "";
+
+    // 2) fallback: current modal main image
+    if(!imgSrc){
+      const modalImg = document.getElementById("galleryMain");
+      imgSrc = modalImg ? (modalImg.getAttribute("src") || "") : "";
+    }
+
+    let imageUrl = safeAbsUrl(imgSrc);
+
+    // prevent accidentally sending logo/placeholder as product image
+    if(/logo(\.|-|_)/i.test(imageUrl) || /utv-logo/i.test(imageUrl)){
+      imageUrl = "";
+    }
+
+    let imageLabel = capEl ? String(capEl.textContent || "").trim() : "";
+    if(!imageLabel){
+      imageLabel = v("of_model");
+    }
+
     return { imageUrl, imageLabel };
   }
 
