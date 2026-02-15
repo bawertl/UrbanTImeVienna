@@ -1641,6 +1641,17 @@
 .watch-details-code{margin-top:8px;font-size:.92rem;opacity:.9}
 .watch-details-code-label{opacity:.8;margin-right:6px}
 
+
+/* ===== Trust + FAQ + Footer polish ===== */
+.faq-card{ padding: 14px 16px; }
+.faq-item{ border:1px solid rgba(255,255,255,.10); border-radius:12px; background:rgba(255,255,255,.03); padding:12px 14px; margin:10px 0; }
+.faq-item summary{ cursor:pointer; font-weight:700; color:var(--text); }
+.faq-item p{ color:var(--muted); margin:10px 0 2px; line-height:1.55; }
+.footer-links{ margin-top:10px; font-size:12px; color:rgba(255,255,255,.58); }
+.footer-links a{ color:rgba(255,255,255,.72); }
+.footer-links a:hover{ color:var(--pop-cyan); }
+.order-actions .btn, .form-buttons .btn, .btn{ border-radius:12px; }
+
 </style>
 </head>
 <body class="lang-de" id="top">
@@ -2050,9 +2061,38 @@ Eine gewerbliche Weiterveräußerung ohne ausdrückliche Zustimmung ist nicht ge
 </form>
 </div>
 </section>
+
+
+<section class="section" id="vertrauen">
+  <div class="section-head">
+    <div>
+      <h2>Warum Urban Time Vienna</h2>
+      <p>Klare Abläufe, persönlicher Kontakt und transparente Kommunikation – vom ersten Klick bis zur Lieferung.</p>
+    </div>
+  </div>
+  <div class="highlights">
+    <article class="hl"><div class="icon">✓</div><h3>Persönlicher Support</h3><p>Direkter Kontakt per E‑Mail, Instagram oder Telegram – schnelle Rückmeldung und ehrliche Beratung.</p></article>
+    <article class="hl"><div class="icon">🛡</div><h3>Sichere Zahlungsoptionen</h3><p>Sie wählen die für Sie passende Methode. Mit PayPal (Käuferschutz) besteht zusätzlicher Schutz.</p></article>
+    <article class="hl"><div class="icon">📦</div><h3>Transparenter Ablauf</h3><p>Nach bestätigtem Zahlungseingang startet die Bearbeitung. Versand inkl. Tracking in der Regel innerhalb von ca. 14 Werktagen.</p></article>
+  </div>
+</section>
+
+
+<section class="section" id="faq">
+  <div class="section-head"><div><h2>Häufige Fragen</h2><p>Kurz und klar beantwortet – falls etwas offen bleibt, helfen wir Ihnen persönlich weiter.</p></div></div>
+  <div class="card about-card faq-card">
+    <details class="faq-item"><summary>Ist PayPal mit Käuferschutz möglich?</summary><p>Ja, PayPal (Käuferschutz) wird als Zahlungsart angeboten. Damit haben Sie zusätzlichen Schutz bei Ihrer Zahlung.</p></details>
+    <details class="faq-item"><summary>Wann startet die Bearbeitung meiner Bestellung?</summary><p>Sobald der vollständige Zahlungseingang bestätigt ist, wird Ihre Bestellung zur Bearbeitung freigegeben.</p></details>
+    <details class="faq-item"><summary>Wie lange dauert die Lieferung?</summary><p>Die Bearbeitung und Vorbereitung dauert in der Regel bis zu 14 Werktage. Danach erhalten Sie den Versand inkl. Tracking.</p></details>
+    <details class="faq-item"><summary>Welche Kontaktdaten sollte ich angeben?</summary><p>Bitte geben Sie Ihren Namen, eine erreichbare E‑Mail-Adresse und die vollständige Lieferadresse an. Optional auch Instagram/Telefon.</p></details>
+    <details class="faq-item"><summary>Kann ich vor der Bestellung Fragen stellen?</summary><p>Ja, jederzeit. Über den Kontakt-Button erreichen Sie uns direkt per E‑Mail, Instagram DM oder Telegram.</p></details>
+    <details class="faq-item"><summary>Bekomme ich eine Bestätigung?</summary><p>Ja. Nach Absenden erhalten Sie eine Bestätigung, und nach erfolgreicher Anfrage auch die Bestell-/Informationsmails.</p></details>
+  </div>
+</section>
+
 <footer>
 <div>© <span id="year"></span> Urban Time Vienna · Alle Rechte vorbehalten</div>
-</footer>
+<div class="footer-links"><a href="#vertrauen">Warum uns</a> · <a href="#kaufablauf">Kaufablauf</a> · <a href="#faq">FAQ</a> · <a class="open-contact-modal" href="#kontaktoptionen">Kontakt</a></div></footer>
 </main>
 <div aria-hidden="true" class="modal" id="galleryModal">
 <div aria-labelledby="galleryTitle" aria-modal="true" class="card modal-card" role="dialog">
