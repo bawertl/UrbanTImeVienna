@@ -1880,6 +1880,47 @@
 .watch-details-code{margin-top:8px;font-size:.92rem;opacity:.9}
 .watch-details-code-label{opacity:.8;margin-right:6px}
 
+
+/* Contact hub modal (EN) */
+.contact-modal-backdrop{
+  position:fixed; inset:0; background:rgba(8,12,20,.68);
+  display:none; align-items:center; justify-content:center; z-index:1200; padding:20px;
+}
+.contact-modal-backdrop.show{display:flex;}
+.contact-modal{
+  width:min(640px,94vw); background:rgba(12,18,30,.96);
+  border:1px solid rgba(80,200,255,.35); border-radius:16px;
+  box-shadow:0 20px 70px rgba(0,0,0,.55); color:#eaf6ff;
+}
+.contact-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 8px 20px;}
+.contact-modal-title{margin:0;font-size:1.35rem;line-height:1.2;color:#7fe8ff;font-weight:800;}
+.contact-modal-close{background:transparent;border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:1.1rem;}
+.contact-modal-body{padding:6px 20px 20px 20px;}
+.contact-modal-text{margin:0 0 14px 0;color:#d7e7f4}
+.contact-grid{display:grid;gap:10px}
+.contact-btn{
+  display:flex;align-items:center;justify-content:center;
+  padding:12px 14px;border-radius:12px;text-decoration:none;font-weight:700;
+  border:1px solid rgba(111,232,255,.4); color:#0e1a24;
+  background:linear-gradient(135deg,#9ff0ff,#6fe8ff); transition:transform .12s ease, box-shadow .18s ease;
+}
+.contact-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(111,232,255,.25);}
+.contact-note{margin-top:12px;font-size:.94rem;color:#b8c8d9}
+
+
+/* Anchor offset fixes (EN) */
+#zahlungsmethoden, #bestellbar{ scroll-margin-top: 110px; }
+
+</style>
+
+<style id="contactModalFixEN">
+#contactModal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(7,10,18,.72);z-index:9999;padding:20px;}
+#contactModal.is-open{display:flex;}
+#contactModal .modal-card{width:min(640px,94vw);background:#0f1424;color:#eaf2ff;border:1px solid rgba(120,170,255,.35);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.45);padding:22px;}
+#contactModal .contact-links{display:grid;gap:10px;margin-top:14px;}
+#contactModal .contact-link{display:flex;align-items:center;justify-content:center;padding:12px 14px;border-radius:12px;border:1px solid rgba(120,170,255,.35);background:rgba(20,28,48,.6);color:#ecf4ff;text-decoration:none;font-weight:700;}
+#contactModal .contact-link:hover{border-color:#62d5ff;transform:translateY(-1px);}
+#contactModal .modal-close{position:absolute;right:12px;top:10px;border:none;background:transparent;color:#d9e6ff;font-size:26px;cursor:pointer;}
 </style>
 </head>
 <body class="lang-en" id="top">
@@ -1890,11 +1931,11 @@
 <div class="brand-text">Urban Time <span>Vienna</span></div>
 </a>
 <nav aria-label="Main navigation" class="nav">
-<a href="#kollektion">Collection</a>
-<a href="#highlights">Highlights</a>
+<a href="#kollektion">Models</a>
+<a href="#zahlungsmethoden">Payment methods</a>
 <a href="#bestellbar">Made to order</a>
 <a href="#kaufablauf">How it works</a>
-<a href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Contact</a>
+<a data-open-contact-modal="1" href="#contact-hub">Contact</a>
 <a class="reels" href="https://www.instagram.com/urbantimevienna/reels/" rel="noopener" target="_blank">Reels</a>
 <div class="lang-dropdown" id="langDropdown">
 <button aria-expanded="false" aria-haspopup="menu" aria-label="Choose language" class="lang-current" type="button">
@@ -2117,7 +2158,7 @@
 <div class="section-head">
 <div>
 <h2>Highlights</h2>
-<p>Curated, checked, and ready for your wrist game.</p>
+<p>Clean, premium details for your wrist game.</p>
 </div>
 </div>
 <div class="highlights">
@@ -2160,8 +2201,7 @@
 <div class="step">
 <div class="step-num">3</div>
 <h3>Payment Processing (Advance Payment)</h3>
-<p>After binding order confirmation, full payment must be completed in advance using one of the methods listed below. 
-Orders are released for shipment only after confirmed receipt of payment.</p>
+<p>After your order confirmation, payment is made via one of the available methods. For payments with <strong>PayPal (Buyer Protection)</strong>, you are additionally protected. As soon as payment is confirmed, your order moves directly into processing. Processing and preparation usually take up to 14 business days.</p>
 </div>
 
 <div class="step">
@@ -2171,8 +2211,8 @@ Orders are released for shipment only after confirmed receipt of payment.</p>
 </div>
 </div>
 
-<div class="card notice" style="border:1px solid rgba(45,226,255,0.4); background:rgba(45,226,255,0.05);">
-<h3 style="color:#2de2ff;">Available Payment Methods</h3>
+<div id="zahlungsmethoden" class="card notice" style="border:1px solid rgba(45,226,255,0.4); background:rgba(45,226,255,0.05);">
+<h3 style="color:#2de2ff;">Payment methods</h3>
 
 <ul style="list-style:none; padding-left:0; line-height:1.8;">
 <li><strong>Credit Card</strong></li>
@@ -2299,6 +2339,23 @@ Commercial resale without explicit permission is prohibited.
 </form>
 </div>
 </section>
+
+      <section id="faq" class="container" style="margin-top:28px;">
+        <div class="glass" style="padding:18px;border-radius:18px;">
+          <h2 style="margin:0 0 6px 0;">Frequently Asked Questions</h2>
+          <p style="margin:0 0 14px 0;opacity:.9">Short and clear answers. If anything is still open, contact us and we’ll help personally.</p>
+
+          <details style="border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:rgba(255,255,255,.02)"><summary style="cursor:pointer;font-weight:700;">Is PayPal Buyer Protection available?</summary><div style="margin-top:8px;opacity:.95;">Yes. PayPal Buyer Protection is available when you choose PayPal.</div></details>
+          <details style="border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:rgba(255,255,255,.02)"><summary style="cursor:pointer;font-weight:700;">When does processing start?</summary><div style="margin-top:8px;opacity:.95;">Processing starts after confirmed full payment.</div></details>
+          <details style="border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:rgba(255,255,255,.02)"><summary style="cursor:pointer;font-weight:700;">How long does delivery take?</summary><div style="margin-top:8px;opacity:.95;">Usually up to 14 business days after payment confirmation.</div></details>
+          <details style="border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:rgba(255,255,255,.02)"><summary style="cursor:pointer;font-weight:700;">Which contact details should I provide?</summary><div style="margin-top:8px;opacity:.95;">Please provide your full name, email, phone number, and full delivery address.</div></details>
+          <details style="border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:rgba(255,255,255,.02)"><summary style="cursor:pointer;font-weight:700;">Can I ask questions before ordering?</summary><div style="margin-top:8px;opacity:.95;">Of course. Use Email, Instagram DM, or Telegram for advice before you order.</div></details>
+          <details style="border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;background:rgba(255,255,255,.02)"><summary style="cursor:pointer;font-weight:700;">Will I receive a confirmation?</summary><div style="margin-top:8px;opacity:.95;">Yes. You and the seller both receive an email confirmation with all details.</div></details>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;"><button type="button" class="btn btn-secondary" onclick="openContactModal()">Contact & advice</button><a href="#bestellbar" class="btn btn-primary" style="display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:12px;background:#2de2ff;color:#00131a;font-weight:700;text-decoration:none;">Order now</a></div>
+        </div>
+      </section>
+
 <footer>
 <div>© <span id="year"></span> Urban Time Vienna · All rights reserved</div>
 <div class="footer-note">Private sale: no returns, no warranty/guarantee.</div>
@@ -3486,5 +3543,75 @@ document.addEventListener("click", function(e){
 });
 </script>
 
+
+
+<div id="contactModalBackdrop" class="contact-modal-backdrop" aria-hidden="true">
+  <div class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <div class="contact-modal-head">
+      <h3 id="contactModalTitle" class="contact-modal-title">Contact &amp; Support</h3>
+      <button type="button" class="contact-modal-close" id="contactModalClose" aria-label="Close">×</button>
+    </div>
+    <div class="contact-modal-body">
+      <p class="contact-modal-text">Questions about model, size, shipping or payment? Choose your preferred contact channel:</p>
+      <div class="contact-grid">
+        <a class="contact-btn" href="mailto:urbantimevienna@gmail.com">Email</a>
+        <a class="contact-btn" href="https://ig.me/m/urbantimevienna" target="_blank" rel="noopener">Instagram DM</a>
+        <a class="contact-btn" href="https://t.me/urbantimevienna" target="_blank" rel="noopener">Telegram</a>
+      </div>
+      <div class="contact-note">PayPal Buyer Protection is available for additional security.</div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  const backdrop = document.getElementById('contactModalBackdrop');
+  const closeBtn = document.getElementById('contactModalClose');
+  if(!backdrop) return;
+
+  function openModal(e){
+    if(e) e.preventDefault();
+    backdrop.classList.add('show');
+    backdrop.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    backdrop.classList.remove('show');
+    backdrop.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  document.querySelectorAll('[data-open-contact-modal="1"]').forEach(el=>{
+    el.addEventListener('click', openModal);
+  });
+  closeBtn && closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function(e){
+    if(e.target === backdrop) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeModal();
+  });
+})();
+</script>
+
+
+<script>
+/* Footer CTA: open the EXISTING contact hub modal (no duplicate modal) */
+function openContactModal(){
+  const backdrop = document.getElementById('contactModalBackdrop');
+  if(!backdrop) return;
+  backdrop.classList.add('show');
+  backdrop.setAttribute('aria-hidden','false');
+  document.body.style.overflow='hidden';
+}
+function closeContactModal(){
+  const backdrop = document.getElementById('contactModalBackdrop');
+  if(!backdrop) return;
+  backdrop.classList.remove('show');
+  backdrop.setAttribute('aria-hidden','true');
+  document.body.style.overflow='';
+}
+</script>
 </body>
 </html>
