@@ -1652,6 +1652,63 @@
 .footer-links a:hover{ color:var(--pop-cyan); }
 .order-actions .btn, .form-buttons .btn, .btn{ border-radius:12px; }
 
+
+/* ===== Final Maximum Polish vMax ===== */
+:root{ --utv-sticky-h:64px; }
+#bestellbar .grid{ align-items:stretch; }
+#bestellbar .item{ height:100%; display:flex; flex-direction:column; }
+#bestellbar .item .order-btn{ margin-top:auto; }
+#bestellbar .item p, #bestellbar .item .teaser{ min-height:3.2em; }
+
+.section-updated{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:.2px;
+}
+.kauf-cta-wrap{
+  margin-top:16px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.kauf-cta-wrap .btn{ min-width:220px; justify-content:center; }
+
+.next-steps{
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid rgba(45,226,255,.35);
+  background:rgba(45,226,255,.08);
+  color:#eaffff;
+  display:none;
+}
+.next-steps h4{ margin:0 0 8px; font-size:15px; }
+.next-steps ul{ margin:0; padding-left:18px; }
+.next-steps li{ margin:4px 0; }
+
+@media (max-width:760px){
+  body{ padding-bottom: calc(var(--utv-sticky-h) + 14px); }
+  .mobile-sticky-cta{
+    position:fixed;
+    left:10px; right:10px; bottom:10px;
+    z-index:1100;
+    display:flex; gap:8px;
+    padding:8px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:rgba(7,7,10,.88);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 14px 32px rgba(0,0,0,.45);
+  }
+  .mobile-sticky-cta .btn{
+    flex:1;
+    justify-content:center;
+    padding:10px 12px;
+    font-size:13px;
+  }
+}
+
 </style>
 </head>
 <body class="lang-de" id="top">
@@ -1662,10 +1719,12 @@
 <div class="brand-text">Urban Time <span>Vienna</span></div>
 </a>
 <nav aria-label="Hauptnavigation" class="nav">
-<a href="#kollektion">Kollektion</a>
-<a href="#highlights">Highlights</a>
-<a href="#bestellbar">Auf Bestellung</a>
-<a href="#kaufablauf">Kaufablauf</a>
+
+<a href="#kollektion">Modelle</a>
+<a href="#bestellbar">Bestellen</a>
+<a href="#kaufablauf">Ablauf</a>
+<a href="#zahlungsarten">Zahlungsarten</a>
+<a href="#faq">FAQ</a>
 <a class="open-contact-modal" href="#kontaktoptionen">Kontakt</a>
 <a class="reels" href="https://www.instagram.com/urbantimevienna/reels/" rel="noopener" target="_blank">Reels</a>
 <div class="lang-dropdown" id="langDropdown">
@@ -1678,6 +1737,7 @@
 </a>
 </div>
 </div>
+
 </nav>
 </div>
 </header>
@@ -1843,7 +1903,7 @@
 <div class="section-head">
 <div>
 <h2>Auf Bestellung verfügbar</h2>
-<p>Vorauszahlung erforderlich · ca. 14 Werktage Lieferzeit</p>
+<p>Vorauszahlung erforderlich · ca. 14 Werktage Lieferzeit</p><div class="section-updated">Zuletzt aktualisiert: <span id="catalogDate">heute</span></div>
 </div>
 </div>
 <div class="grid">
@@ -1946,7 +2006,7 @@ Sobald der Zahlungseingang bestätigt ist, wird deine Bestellung bearbeitet und 
 </div>
 
 <div class="card notice" style="border:1px solid rgba(45,226,255,0.4); background:rgba(45,226,255,0.05);">
-<h3 style="color:#2de2ff;">Mögliche Zahlungsarten</h3>
+<h2 id="zahlungsarten">Mögliche Zahlungsarten</h2>
 
 <ul style="list-style:none; padding-left:0; line-height:1.8;">
 <li><strong>Kreditkarte</strong></li>
@@ -1967,6 +2027,10 @@ Eine gewerbliche Weiterveräußerung ohne ausdrückliche Zustimmung ist nicht ge
 </div>
 
 
+
+<div class="kauf-cta-wrap">
+  <a class="btn secondary open-contact-modal" href="#kontaktoptionen">Kontakt & Beratung</a>
+</div>
 </div>
 <h3 id="bestellformular-title" class="order-form-heading">Bestellformular</h3>
 <form class="order-form" id="orderForm" novalidate="">
@@ -2051,6 +2115,7 @@ Eine gewerbliche Weiterveräußerung ohne ausdrückliche Zustimmung ist nicht ge
 <p class="form-note" id="formNote">
         Hinweis: Die Anfrage wird direkt über das Formular gesendet (ohne E‑Mail‑Programm).
       </p>
+<div class="next-steps" id="nextStepsBox"><h4>Was passiert als Nächstes?</h4><ul><li>Du erhältst zeitnah eine Bestätigung per E‑Mail.</li><li>Nach bestätigtem Zahlungseingang startet die Bearbeitung deiner Bestellung.</li><li>Anschließend bekommst du eine Versandbestätigung mit Sendungsverfolgung.</li></ul></div>
 
 <div style="margin-top:15px;">
   <label style="font-size:0.9em; cursor:pointer;">
@@ -2090,6 +2155,7 @@ Eine gewerbliche Weiterveräußerung ohne ausdrückliche Zustimmung ist nicht ge
   </div>
 </section>
 
+<div class="mobile-sticky-cta"><a class="btn secondary open-contact-modal" href="#kontaktoptionen">Kontakt</a><a class="btn primary" href="#bestellbar">Jetzt bestellen</a></div>
 <footer>
 <div>© <span id="year"></span> Urban Time Vienna · Alle Rechte vorbehalten</div>
 <div class="footer-links"><a href="#vertrauen">Warum uns</a> · <a href="#kaufablauf">Kaufablauf</a> · <a href="#faq">FAQ</a> · <a class="open-contact-modal" href="#kontaktoptionen">Kontakt</a></div></footer>
@@ -3352,6 +3418,45 @@ document.addEventListener("click", function(e){
   if(closeBtn) closeBtn.addEventListener('click', closeModal);
   modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+})();
+</script>
+
+
+<script>
+(function(){
+  // catalog date (human friendly, local)
+  try{
+    var d=new Date(document.lastModified||Date.now());
+    var el=document.getElementById('catalogDate');
+    if(el){ el.textContent=d.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+  }catch(e){}
+
+  // smoother jump offset so heading is visible below sticky header
+  function smartScrollTo(el){
+    if(!el) return;
+    var y=el.getBoundingClientRect().top + window.pageYOffset - 90;
+    window.scrollTo({top:y, behavior:'smooth'});
+  }
+
+  var jump=document.getElementById('jumpToOrderFromFlow');
+  if(jump){
+    jump.addEventListener('click', function(e){
+      e.preventDefault();
+      smartScrollTo(document.getElementById('bestellformular-title'));
+    });
+  }
+
+  // form success helper message (best effort)
+  var form=document.getElementById('orderForm');
+  var box=document.getElementById('nextStepsBox');
+  if(form && box){
+    form.addEventListener('submit', function(){
+      setTimeout(function(){
+        box.style.display='block';
+        smartScrollTo(box);
+      }, 450);
+    });
+  }
 })();
 </script>
 
