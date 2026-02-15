@@ -1232,6 +1232,28 @@
 .terms-modal .terms-content li{ margin: 6px 0; color: var(--text); }
 
 
+
+/* ===== Kontakt-Modal ===== */
+.contact-modal .modal-card{ width:min(700px,100%); }
+.contact-modal .modal-body{ display:block; padding:18px; overflow:auto; }
+.contact-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.contact-opt{
+  display:flex; align-items:center; justify-content:center;
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.05);
+  font-weight:700;
+}
+.contact-opt:hover{ border-color:rgba(45,226,255,.45); background:rgba(45,226,255,.10); }
+.contact-help{ color:var(--muted); font-size:13px; line-height:1.5; margin-top:8px; }
+@media (max-width:760px){ .contact-grid{ grid-template-columns:1fr; } }
+
 /* ===== Premium Cards Variant A (Glass) ===== */
 .hero-right .hero-slide{ padding: 16px; }
 .hero-right .hero-slide .slide-inner{
@@ -1633,7 +1655,7 @@
 <a href="#highlights">Highlights</a>
 <a href="#bestellbar">Auf Bestellung</a>
 <a href="#kaufablauf">Kaufablauf</a>
-<a href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Kontakt</a>
+<a class="open-contact-modal" href="#kontaktoptionen">Kontakt</a>
 <a class="reels" href="https://www.instagram.com/urbantimevienna/reels/" rel="noopener" target="_blank">Reels</a>
 <div class="lang-dropdown" id="langDropdown">
 <button aria-expanded="false" aria-haspopup="menu" aria-label="Sprache wählen" class="lang-current" type="button">
@@ -1888,7 +1910,7 @@
 <div class="step">
 <div class="step-num">1</div>
 <h3>Bestellanfrage senden</h3>
-<p>Wähle ein Modell aus und sende deine Anfrage über das Formular oder per Instagram.<br>Oder klicke <a href="https://t.me/urbantimevienna" target="_blank" style="color:#2de2ff; font-weight:600;">hier</a> und du wirst automatisch zu meinem Telegram weitergeleitet.</p>
+<p>Wähle ein Modell aus und sende deine Anfrage über das Formular oder per Instagram.<br>Oder klicke <a href="#kontaktoptionen" class="terms-link open-contact-modal">hier</a> und du wirst automatisch zu meinem Telegram weitergeleitet.</p>
 </div>
 <div class="step">
 <div class="step-num">2</div>
@@ -1899,9 +1921,10 @@
 
 <div class="step">
 <div class="step-num">3</div>
-<h3>Zahlungsabwicklung (Vorauszahlung)</h3>
-<p>Nach verbindlicher Bestellbestätigung erfolgt die vollständige Zahlung im Voraus über eine der unten angeführten Zahlungsarten. 
-Erst nach bestätigtem Zahlungseingang wird die Bestellung zur Auslieferung freigegeben.</p>
+<h3>Zahlungsabwicklung (sicher &amp; transparent)</h3>
+<p>Nach deiner verbindlichen Bestellbestätigung erfolgt die Zahlung bequem über die angebotenen Zahlungsarten. 
+Bei Zahlung mit <strong>PayPal (Käuferschutz)</strong> bist du zusätzlich abgesichert. 
+Sobald der Zahlungseingang bestätigt ist, wird deine Bestellung bearbeitet und für den Versand vorbereitet (ca. 14 Werktage).</p>
 </div>
 
 <div class="step">
@@ -3253,6 +3276,44 @@ document.addEventListener("click", function(e){
   const sec = document.getElementById("bestellformular-title") || document.getElementById("bestellformular") || document.getElementById("orderForm") || document.querySelector("form#orderForm, .form-wrap form, .form-grid")?.closest("section, .form-wrap") || document.querySelector("form");
   if(sec){ sec.scrollIntoView({behavior:"smooth", block:"start"}); }
 });
+</script>
+
+
+<!-- Kontaktmöglichkeiten Modal -->
+<div aria-hidden="true" class="modal contact-modal" id="contactModal" role="dialog">
+  <div class="card modal-card">
+    <div class="modal-top">
+      <div>
+        <h3 id="contactModalTitle">Kontakt & Beratung</h3>
+        <p class="meta">Wählen Sie Ihren bevorzugten Kontaktweg – wir antworten schnell und persönlich.</p>
+      </div>
+      <button aria-label="Schließen" class="icon-btn" id="contactModalClose" type="button">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="contact-grid">
+        <a class="contact-opt" href="mailto:urbantimevienna@gmail.com">E-Mail</a>
+        <a class="contact-opt" href="https://ig.me/m/urbantimevienna" target="_blank" rel="noopener">Instagram DM</a>
+        <a class="contact-opt" href="https://t.me/urbantimevienna" target="_blank" rel="noopener">Telegram</a>
+      </div>
+      <p class="contact-help">Hinweis: Bei Zahlung mit <strong>PayPal (Käuferschutz)</strong> sind Sie zusätzlich abgesichert.</p>
+    </div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  const modal = document.getElementById('contactModal');
+  if(!modal) return;
+  const closeBtn = document.getElementById('contactModalClose');
+  const openers = document.querySelectorAll('.open-contact-modal');
+  function openModal(e){ if(e) e.preventDefault(); modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
+  function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+  openers.forEach(el=>el.addEventListener('click', openModal));
+  if(closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+})();
 </script>
 
 </body>
