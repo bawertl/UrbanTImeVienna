@@ -2595,6 +2595,10 @@ body{ font-family: var(--luxury-sans); }
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
 }
+.hero-video-wrap{
+  transition: transform .16s linear;
+  will-change: transform;
+}
 @media (max-width: 980px), (hover: none) and (pointer: coarse){
   .hero-cinematic.reveal,
   .hero-copy[data-reveal]{
@@ -4864,6 +4868,7 @@ document.addEventListener("click", function(e){
 
   const stage = document.getElementById('watchStage');
   const hero = document.querySelector('.hero-cinematic');
+  const heroVideoWrap = document.querySelector('.hero-video-wrap');
   const heroVideo = document.querySelector('.hero-video');
   const watchCards = document.querySelectorAll('.grid .item');
   const heroSlides = Array.from(document.querySelectorAll('#heroSlides .hero-slide'));
@@ -4946,6 +4951,13 @@ document.addEventListener("click", function(e){
           const shiftY = Math.min(scrolled * 0.008, 6);
           heroVideo.style.transform = `translate3d(0, ${shiftY}px, 0) scale(${scale})`;
         }
+      }
+
+      if (heroVideoWrap && reduceHeroMotion) {
+        const mobileShift = Math.min(scrolled * 0.08, 18);
+        heroVideoWrap.style.transform = `translate3d(0, ${mobileShift}px, 0)`;
+      } else if (heroVideoWrap) {
+        heroVideoWrap.style.transform = 'translate3d(0,0,0)';
       }
     }
 
