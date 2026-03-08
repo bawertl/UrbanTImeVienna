@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<html lang="de">
+<html lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <title>UrbanTimeVienna</title>
-<meta content="UrbanTimeVienna – elegante Uhrenkultur mit einem Hauch Pop Art." name="description"/>
+<meta content="UrbanTimeVienna – elegant watch culture with a hint of Pop Art." name="description"/>
 <script>
   // Language preference (DE default). Redirect based on stored choice.
   (function () {
@@ -214,10 +214,10 @@
     .btn.secondary{ background: rgba(255,255,255,0.05); border-color: var(--border); color: var(--text); }
     .btn:hover{ transform: translateY(-2px); }
 
-    /* Hero-right: Slider soll bis zum Rand gehen (kein innerer Rand durch padding) */
+    /* Hero-right: slider should reach the card edges (no inset padding) */
     .hero-right{ padding: 0; display:flex; flex-direction: column; gap: 15px; }
 
-    /* FIX: Der Slider (heller Bereich) soll die komplette Kartenhöhe ausfüllen */
+    /* FIX: Make the slider (lighter area) fill the full card height */
     .hero-right #heroSlider{
       flex: 1 1 auto;
       min-height: 320px;
@@ -275,7 +275,7 @@
 
     /* ===== Sections ===== */
     .section{ margin-top: 44px; }
-    /* Weniger Abstand zwischen Kaufablauf-CTA und Bestellformular */
+    /* Less spacing between purchase CTA and order form */
     #bestellformular.section{ margin-top: 24px; }
     .section-head{
       margin-bottom: 18px;
@@ -442,7 +442,7 @@
     .product-card .card-badge.good{ border-color: rgba(45,226,255,.45); background: rgba(45,226,255,.14); color: #eaffff; }
     .product-card .card-badge.warn{ border-color: rgba(255,208,0,.45); background: rgba(255,208,0,.14); color: #fff7cc; }
     .product-card .thumb::after{
-      content: "Mehr Bilder";
+      content: "More photos";
       position: absolute; left: 10px; bottom: 10px;
       padding: 6px 10px; border-radius: 999px;
       font-size: 11px; font-weight: 700; letter-spacing: .5px;
@@ -454,11 +454,11 @@
     .product-card:hover .thumb::after{ opacity: 1; transform: translateY(0); }
 
     /* Nur Urban Chrono: andere Overlay-Beschriftung */
-    .product-card.more-models .thumb::after{ content: "Weitere Modelle zur Auswahl"; }
+    .product-card.more-models .thumb::after{ content: "More models available"; }
 
     /* Abschnitt-spezifische Overlay-Beschriftungen */
-    #kollektion .product-card .thumb::after{ content: "Jetzt kaufen"; }
-    #bestellbar .product-card .thumb::after{ content: "Weitere Modelle zur Auswahl"; }
+    #kollektion .product-card .thumb::after{ content: "Buy now"; }
+    #bestellbar .product-card .thumb::after{ content: "More models available"; }
 
     .modal{
       position: fixed; inset: 0; z-index: 999;
@@ -470,7 +470,7 @@
     .modal.open{ display:flex; }
     .modal-card{
       width: min(920px, 100%);
-      /* mobile address-bar "vh" jump vermeiden */
+      /* avoid mobile address-bar "vh" jump */
       max-height: calc(100vh - 36px);
       max-height: calc(100svh - 36px);
       overflow: hidden;
@@ -510,7 +510,6 @@
       display: grid; grid-template-columns: 1fr 280px;
       gap: 12px;
       padding: 12px;
-    
       align-items: start;
     }
 
@@ -567,13 +566,930 @@
 
     .modal-actions-sticky{
       position: relative;
+      bottom: auto;
       padding-top: 10px;
       margin-top: 4px;
       background: linear-gradient(180deg, rgba(7,7,10,0) 0%, rgba(7,7,10,0.85) 22%, rgba(7,7,10,0.95) 100%);
       border-top: 1px solid rgba(255,255,255,.10);
-      }
+    }
+    
+.modal-media{
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #0e0e12;
+  display:flex;
+  flex-direction:column;
+}
+.media-stage{
+  position: relative;
+  min-height: 300px;
+  /* stable viewport units so the image doesn't "jump" on mobile */
+  height: min(calc(68vh - 90px), 560px);
+  height: min(calc(68svh - 90px), 560px);
+  display:flex; align-items:center; justify-content:center;
+}
+    .main-image{
+      width: 100%; height: 100%;
+      object-fit: contain; /* schärfer & nichts abschneiden */
+      display:block;
+      transition: transform 160ms ease;
+      transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
+      will-change: transform;
+    }
+@media (prefers-reduced-motion: reduce){
+      .main-image{ transition: none; }
+    }
+    .nav-btn{
+      position: absolute; top: 50%;
+      transform: translateY(-50%);
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,.35);
+      color: #fff;
+      cursor: pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size: 22px; font-weight: 800;
+      backdrop-filter: blur(8px);
+    }
+    .nav-btn:hover{ border-color: rgba(45,226,255,0.55); }
+    #galleryPrev{ left: 12px; }
+    #galleryNext{ right: 12px; }
 
-    /* ===== Modal CTA Sanierung (Variante A: Apple-clean + Amazon-Logik) ===== */
+    .modal-side{
+      padding-left: 0;
+      padding-right: 2px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+
+      /* let .modal-body handle scrolling */
+      max-height: none;
+      overflow: visible;
+    }
+    .thumbs{
+      display:flex; flex-wrap: wrap; gap: 10px;
+      align-content: flex-start;
+    }
+    .thumb-btn{
+      width: 54px; height: 54px; /* kompakter */
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      padding: 0;
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .thumb-btn img{ width: 100%; height: 100%; object-fit: cover; display:block; }
+    .thumb-btn.active{
+      border-color: var(--pop-cyan);
+      box-shadow: 0 0 0 2px rgba(45,226,255,.18);
+    }
+
+
+/* Thumbnails unter dem Bild (Desktop + Mobile) */
+.thumbs.thumbs-under{
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  gap: 10px;
+  padding: 10px 10px 12px;
+  border-top: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+  scroll-snap-type: x mandatory;
+}
+.thumbs.thumbs-under .thumb-btn{ scroll-snap-align: start; }    .modal-hint{
+      margin: 0;
+      color: rgba(255,255,255,0.35);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .order-box{
+      margin-top: 4px;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+    }
+    .order-box .btn{ width: 100%; justify-content: center; }
+    .order-note{
+      margin: 10px 0 0;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.35;
+    }
+
+    @media (max-width: 850px){
+  /* Mobile: alles in EINEM Scrollbereich (wie DE) */
+  .modal-body{
+    grid-template-columns: 1fr;
+    max-height: calc(100vh - 120px);
+    max-height: calc(100dvh - 120px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-side{
+    max-height: none;
+    overflow: visible;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .modal-side-scroll{
+    overflow: visible;
+    flex: none;
+    padding-right: 0;
+  }
+  .modal-actions-sticky{
+    position: static;
+    background: none;
+    border-top: 0;
+    padding-top: 12px;
+  }
+  .media-stage{ min-height: 260px; }
+}
+
+
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+      .highlights{ grid-template-columns: 1fr; }
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 550px){
+      .grid{ grid-template-columns: 1fr; }
+      .header-inner{ flex-direction: column; align-items: stretch; }
+      .nav{ justify-content: flex-start; }
+      .hero-left{ padding: 34px 24px; }
+    }
+  
+.order-btn{
+  display:inline-block;
+  margin-top:12px;
+  padding:8px 14px;
+  border-radius:999px;
+  background: var(--pop-cyan);
+  color:#050507;
+  font-size:12px;
+  font-weight:700;
+}
+.order-btn:hover{opacity:.9}
+
+
+    /* Subtle crown pattern background */
+    body::before{
+      content:"";
+      position: fixed;
+      inset: 0;
+      background-image: url("../assets/crown-logo.png");
+      background-repeat: repeat;
+      background-size: 110px 110px;
+      background-position: 0 0;
+      opacity: .03; /* subtle */
+      pointer-events: none;
+      z-index: 0;
+    }
+    body > *{
+      position: relative;
+      z-index: 1;
+    }
+
+
+/* Kaufablauf */
+.steps{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:16px;
+  margin-top:18px;
+}
+.step{
+  padding:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(10,10,10,.55);
+  border-radius:16px;
+  backdrop-filter: blur(8px);
+}
+.step h3{ margin:8px 0 6px; }
+.step p{ margin:0; opacity:.92; }
+.step-num{
+  width:34px; height:34px;
+  display:grid; place-items:center;
+  border-radius:999px;
+  background:rgba(0, 188, 212, .16);
+  color:var(--pop-cyan);
+  font-weight:800;
+}
+.notice{ margin-top:18px; padding: 24px 26px 26px; }
+.notice h3{ margin:0 0 14px; }
+.notice ul{
+  list-style:none;
+  padding:0;
+  margin: 0 0 18px;
+  display:grid;
+  gap:10px;
+}
+.notice li{ margin:0; display:flex; gap:14px; align-items:flex-start; }
+.notice li strong{ flex: 0 0 130px; }
+.notice li span{ flex:1; color: rgba(255,255,255,.78); line-height: 1.45; }
+.notice .order-btn{ margin: 6px 0 0; display:inline-flex; }
+
+
+
+
+/* --- Order actions & form --- */
+.order-actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+.order-actions .btn{flex:1; min-width:200px;}
+.order-actions .movement-picker{flex:1 1 100%; width:100%;}
+
+.order-box .order-note{margin-top:8px;}
+
+.order-form{margin-top:16px;}
+.order-form-heading{margin-top:28px; margin-bottom:12px; font-size:1.35rem; line-height:1.2;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field label{font-weight:600;}
+.field input,.field textarea,.field select{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  color:var(--text);
+  border-radius:12px;
+  padding:12px 12px;
+  outline:none;
+}
+.field select:invalid{ color: var(--muted); }
+/* Dropdown-Liste: bei manchen Browsern ist der Hintergrund hell (weiß).
+   Deshalb Option-Text dunkel setzen, damit er immer lesbar ist. */
+.field select option{ color:#111; background:#fff; }
+.field select option[value=""]{ color:#777; }
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(255,255,255,0.28);}
+.field-full{grid-column:1 / -1;}
+.hint{color:var(--muted); font-size:0.9rem; margin-top:6px;}
+.check{display:flex; gap:10px; align-items:flex-start; color:var(--muted); font-size:0.95rem;}
+.check input{margin-top:4px;}
+.form-buttons{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px;}
+.form-buttons .btn{min-width:220px;}
+.form-note{margin-top:10px; color:var(--muted);}
+
+/* --- Selected variant preview in order form --- */
+.variant-preview{
+  display:none;
+  margin: 0 0 14px;
+  padding: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.04);
+  border-radius: 16px;
+}
+.variant-preview-inner{
+  display:flex;
+  gap: 12px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.variant-preview img{
+  width: 120px;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(0,0,0,.35);
+}
+.variant-preview .vp-text{
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.variant-preview .vp-text b{ color: var(--text); }
+
+@media (max-width: 760px){
+  .form-grid{grid-template-columns:1fr;}
+  .order-actions .btn{min-width:0;}
+  .form-buttons .btn{min-width:0; flex:1;}
+}
+
+
+    /* Modal: zwei Buttons gleich breit und kompakt */
+    .order-actions{ display:flex; gap:10px; flex-wrap:wrap; }
+    .order-actions .btn{ flex:1 1 220px; text-align:center; }
+/* ===== Mobile / Touch Optimierung ===== */
+@media (hover: none), (pointer: coarse){
+  /* Kein "Hover-Shift" & kein zusätzliches Thumbnail-Zoom */
+  .item:hover{ transform: none; border-color: var(--border); }
+  .btn:hover{ transform: none; }
+  .thumb img{ transform: none; }
+
+  /* Tap fühlt sich cleaner an */
+  .product-card{ -webkit-user-select: none; user-select: none; }
+
+  .product-card, .btn, .thumb-btn, .nav-btn, .icon-btn, .order-btn{
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+}
+
+.modal-side{
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+  }
+}
+
+
+@media (max-width: 760px){
+  /* iOS Safari: verhindert das automatische "Reinzoomen" bei Formular-Fokus */
+  .field input, .field textarea{ font-size: 16px; }
+}
+
+
+
+    /* --- Product card description (cleaner layout) --- */
+    .product-card .teaser{margin:0 0 10px 0;color:var(--muted);line-height:1.45;}
+    .product-card .keypoints, .product-card .specs{margin:0;padding:0;list-style:none;display:grid;gap:6px;}
+    .product-card .keypoints li, .product-card .specs li{padding-left:12px;position:relative;line-height:1.35;}
+    .product-card .keypoints li::before, .product-card .specs li::before{content:"•";position:absolute;left:0;top:0;opacity:.7;}
+    .product-card details.more{margin-top:10px;}
+    .product-card details.more summary{cursor:pointer;color:rgba(120,255,240,.9);font-weight:600;list-style:none;}
+    .product-card details.more summary::-webkit-details-marker{display:none;}
+    .product-card details.more[open] summary{margin-bottom:8px;}
+
+
+/* --- Hero Slider (3 slides) --- */
+.hero-slider{
+  position:relative;
+  border-radius: var(--radius);
+  overflow:hidden;
+  min-height: 320px;
+  height: 100%;
+}
+.hero-slides{position:relative; height:100%;}
+.hero-slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transform: translateY(6px);
+  transition: opacity .35s ease, transform .35s ease;
+  pointer-events:none;
+}
+.hero-slide.is-active{
+  opacity:1;
+  transform: translateY(0);
+  pointer-events:auto;
+}
+/* Truly centered slide content (same top/bottom padding) */
+.slide-inner{height:100%; display:flex; flex-direction:column; justify-content:center; padding:78px 18px 78px 18px;}
+
+/* UPDATE: Margin oben auf 0, unten leicht reduziert */
+.slide-brand{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap: 8px;
+  margin: 0 auto 6px;
+  text-align:center;
+}
+.slide-crown{
+  width: 88px;
+  max-width: 100%;
+  height:auto;
+  opacity: .96;
+  filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(255,255,255,.14)) drop-shadow(0 0 18px rgba(120,255,240,.12));
+}
+.slide-brand-top{
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  line-height: 1.05;
+}
+.slide-brand-bottom{
+  margin-top: -4px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--pop-cyan);
+  text-transform: uppercase;
+}
+
+.slide-title{
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  margin: 6px 0 8px;
+  text-align:center;
+}
+.slide-text{
+  font-size: 13.5px; /* slightly smaller to match DE layout */
+  color: var(--muted);
+  line-height: 1.45;
+  text-align:center;
+  margin: 6px 0 10px;
+}
+.slide-list{
+  list-style:none;
+  padding:0;
+  margin: 10px 0 12px;
+  display:grid;
+  gap:8px;
+}
+.slide-list li{
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:12px;
+  background: rgba(0,0,0,.16);
+}
+.slide-actions{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top: 10px;
+  margin-bottom: 26px;
+}
+.hero-dots{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:5px; /* UPDATE: Tiefer gesetzt (vorher 8px) */
+  z-index:10;
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  padding:8px 12px;
+  border-radius:999px;
+  background: rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.10);
+  z-index:10;
+}
+.dotnav{
+  width:12px; height:12px;
+  border-radius:999px;
+  border:1px solid rgba(120,255,240,.65);
+  background: rgba(255,255,255,.12);
+  cursor:pointer;
+  box-shadow: 0 0 12px rgba(120,255,240,.18);
+}
+.dotnav.is-active{
+  background: rgba(120,255,240,.95);
+  border-color: rgba(120,255,240,.95);
+  box-shadow: 0 0 16px rgba(120,255,240,.35);
+}
+.hero-right .hero-slider{background: rgba(255,255,255,.02);}
+
+
+/* ===== Movement picker (Uhrwerk Auswahl) ===== */
+.movement-picker{
+  margin: 12px 0 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  background: rgba(0,0,0,.18);
+  backdrop-filter: blur(8px);
+}
+.movement-picker .mp-title{
+  font-weight: 600;
+  font-size: 13px;
+  opacity: .9;
+  margin-bottom: 8px;
+}
+.movement-picker .mp-grid{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.movement-picker .mp-item{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  cursor: pointer;
+  user-select: none;
+}
+.movement-picker .mp-item input{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(120,255,240,.55);
+  background: rgba(0,0,0,.18);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.35);
+  transform: translateY(0.5px);
+  cursor: pointer;
+}
+.movement-picker .mp-item input:checked{
+  background: rgba(120,255,240,.95);
+  border-color: rgba(120,255,240,.95);
+  box-shadow: 0 0 14px rgba(120,255,240,.35);
+}
+.movement-picker .mp-item.is-selected{
+  border-color: rgba(120,255,240,.55);
+  background: rgba(120,255,240,.08);
+}
+.movement-picker .mp-item:hover{
+  border-color: rgba(120,255,240,.45);
+}
+
+.movement-picker .mp-label{
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+
+.movement-desc{
+  margin: 6px 0 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 14px;
+  background: rgba(0,0,0,.14);
+  color: var(--muted);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.movement-desc strong{ color: var(--text); font-weight: 800; }
+.movement-desc ul{ margin: 8px 0 0 18px; padding: 0; }
+.movement-desc li{ margin: 4px 0; }
+
+
+
+/* ===== Privatverkaufsbedingungen (Popup) ===== */
+.terms-link{
+  color: var(--pop-cyan);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.terms-link:hover{ opacity: .9; }
+
+.terms-modal .modal-card{ width: min(760px, 100%); }
+.terms-modal .modal-body{ display:block; padding: 18px; overflow:auto; }
+.terms-modal .terms-content p{ margin: 0 0 12px; color: var(--text); }
+.terms-modal .terms-content ul{ margin: 0 0 12px 18px; padding: 0; color: var(--text); }
+.terms-modal .terms-content li{ margin: 6px 0; color: var(--text); }
+
+
+/* ===== Premium Cards Variant A (Glass) ===== */
+.hero-right .hero-slide{ padding: 16px; }
+.hero-right .hero-slide .slide-inner{
+  height: 100%;
+  padding: 64px 22px 56px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(900px 420px at 12% 0%, rgba(45,226,255,.22), transparent 55%),
+    radial-gradient(700px 420px at 88% 18%, rgba(255,59,212,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  box-shadow: 0 26px 80px rgba(0,0,0,.55),
+              inset 0 0 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+.hero-right .hero-slide .slide-inner::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background-image: url('../assets/pattern-crown.svg');
+  background-size: 280px 280px;
+  background-repeat: repeat;
+  opacity: .06;
+  transform: rotate(8deg) scale(1.05);
+  pointer-events:none;
+}
+.hero-right .hero-slide .slide-inner::after{
+  content:"";
+  position:absolute;
+  top:-55%;
+  left:-35%;
+  width: 110%;
+  height: 110%;
+  background: linear-gradient(135deg, rgba(255,255,255,.22), transparent 55%);
+  transform: rotate(18deg);
+  opacity: .10;
+  pointer-events:none;
+}
+.hero-right .slide-inner > *{ position: relative; z-index: 2; }
+
+.premium-micro{
+  position:absolute;
+  bottom: 14px; right: 18px;
+  font-size: 10px;
+  letter-spacing: 2.4px;
+  color: rgba(255,255,255,.42);
+  text-transform: uppercase;
+}
+
+.hero-right .slide-actions{ margin-top: 14px; margin-bottom: 0; }
+.hero-right .slide-text{ margin: 8px 0 14px; }
+.hero-right .hero-dots{
+  bottom: 10px;
+  background: rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 520px){
+  .hero-right .hero-slide{ padding: 12px; }
+  .hero-right .hero-slide .slide-inner{ padding: 60px 18px 54px; }
+}
+
+@media (hover:hover) and (pointer:fine){
+  .hero-right .hero-slide.is-active .slide-inner{
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .hero-right .hero-slide.is-active .slide-inner:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 32px 92px rgba(0,0,0,.62), 0 0 26px rgba(45,226,255,.10);
+  }
+}
+
+
+
+/* === Hero Brand Card (original look, subtle movement, fully clickable to Instagram) === */
+.hero-brand-link{
+  display:block;
+  width:100%;
+  height:100%;
+  padding: 16px;
+  text-decoration:none;
+  color: inherit;
+}
+.hero-brand-link:focus-visible{
+  outline: 3px solid rgba(45,226,255,.65);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+.hero-brand-inner{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:78px 18px 78px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.16);
+  background:
+    radial-gradient(900px 420px at 12% 0%, rgba(45,226,255,.22), transparent 55%),
+    radial-gradient(700px 420px at 88% 18%, rgba(255,59,212,.14), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
+  box-shadow: 0 26px 80px rgba(0,0,0,.55),
+              inset 0 0 0 1px rgba(255,255,255,.06);
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+.hero-brand-inner::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background-image: url('../assets/pattern-crown.svg');
+  background-size: 280px 280px;
+  background-repeat: repeat;
+  opacity: .10;
+  transform: rotate(8deg) scale(1.05);
+  pointer-events:none;
+  animation: utvPatternDrift 10s linear infinite;
+}
+.hero-brand-inner::after{
+  content:"";
+  position:absolute;
+  top:-30%;
+  left:-140%;
+  width: 90%;
+  height: 170%;
+  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.18) 45%, rgba(255,255,255,.10) 50%, transparent 60%);
+  transform: rotate(18deg);
+  opacity: 0;
+  pointer-events:none;
+  animation: utvShineSweep 6.2s ease-in-out infinite;
+}
+.hero-brand-inner > *{ position: relative; z-index: 2; }
+
+@keyframes utvPatternDrift{
+  from{ background-position: 0 0; }
+  to{ background-position: 240px 160px; }
+}
+@keyframes utvShineSweep{
+  0%{ transform: translateX(0) rotate(18deg); opacity: 0; }
+  15%{ opacity: .18; }
+  50%{ opacity: .18; }
+  85%{ opacity: 0; }
+  100%{ transform: translateX(320%) rotate(18deg); opacity: 0; }
+}
+  to{ transform: translate(2%, 2%) rotate(18deg); }
+}
+@keyframes utvFloat{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-3px); }
+}
+.hero-brand-inner .slide-crown{ animation: utvFloat 6s ease-in-out infinite; }
+
+
+/* === Instagram Hero Rotator (integrated like the left hero card) === */
+.ig-hero-link{
+  display:block;
+  width:100%;
+  height:100%;
+  padding:0;
+  text-decoration:none;
+  color: inherit;
+  border-radius: var(--radius);
+  overflow:hidden;
+}
+.ig-hero-link:focus-visible{
+  outline: 3px solid rgba(45,226,255,.65);
+  outline-offset: 3px;
+  border-radius: var(--radius);
+}
+
+.ig-hero-rotator{
+  position: relative;
+  height: 100%;
+  min-height: 320px;
+}
+
+.ig-micro-top{
+  position:absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,.46);
+  text-transform: uppercase;
+  pointer-events:none;
+}
+
+.ig-slide{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  /* More top padding so the crown does not collide with the micro title */
+  padding: 74px 30px 54px;
+  opacity: 0;
+  transition: opacity .85s ease;
+}
+.ig-slide.is-active{ opacity: 1; }
+
+
+/* Autoplay via CSS (robust even when JS is blocked) */
+.ig-hero-rotator{ --ig-cycle: 14s; }
+.ig-hero-rotator .ig-slide-1{ animation: igFadeSlide1 var(--ig-cycle) infinite; }
+.ig-hero-rotator .ig-slide-2{ animation: igFadeSlide2 var(--ig-cycle) infinite; }
+
+/* JS fallback: ensure rotation works even when CSS animations are disabled */
+.ig-hero-rotator.is-js .ig-slide-1,
+.ig-hero-rotator.is-js .ig-slide-2{
+  animation: none !important;
+}
+
+
+@keyframes igFadeSlide1{
+  0%{ opacity: 1; }
+  45%{ opacity: 1; }
+  50%{ opacity: 0; }
+  95%{ opacity: 0; }
+  100%{ opacity: 1; }
+}
+@keyframes igFadeSlide2{
+  0%{ opacity: 0; }
+  45%{ opacity: 0; }
+  50%{ opacity: 1; }
+  95%{ opacity: 1; }
+  100%{ opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .ig-hero-rotator .ig-slide{ animation: none !important; transition: none !important; }
+}
+
+.ig-tagline{ margin-top: 8px; }
+
+.ig-lines{
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: .2px;
+  line-height: 1.22;
+  color: rgba(255,255,255,.92);
+  text-shadow: 0 14px 40px rgba(0,0,0,.45);
+}
+
+.ig-btn{
+  margin-top: 18px;
+  display:inline-flex;
+  align-items:center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 12px 28px rgba(0,0,0,.35);
+  font-weight: 800;
+  color: rgba(255,255,255,.88);
+}
+.ig-btn .ig-badge{
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display:grid;
+  place-items:center;
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  box-shadow: 0 0 0 1px rgba(255,255,255,.14) inset;
+}
+.ig-btn .ig-badge svg{ width: 18px; height: 18px; fill: #fff; }
+
+@media (hover:hover) and (pointer:fine){
+  .ig-hero-link:hover .ig-btn{ transform: translateY(-1px); }
+}
+
+@media (max-width: 520px){
+  .ig-micro-top{ display:none; }
+  .ig-slide{ padding: 60px 18px 52px; }
+  .ig-lines{ font-size: 20px; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .hero-brand-inner::before,
+  .hero-brand-inner::after,
+  .hero-brand-inner .slide-crown{ animation: none !important; }
+}
+
+@media (max-width: 520px){
+  .hero-brand-link{ padding: 12px; }
+  .hero-brand-inner{ padding: 60px 18px 54px; }
+}
+
+@media (hover:hover) and (pointer:fine){
+  .hero-brand-inner{ transition: transform .25s ease, box-shadow .25s ease; }
+  .hero-brand-inner:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 32px 92px rgba(0,0,0,.62), 0 0 26px rgba(45,226,255,.10);
+  }
+}
+
+/* Thumbnails – smoother snap on mobile */
+.thumbs.thumbs-under{
+  scroll-behavior: smooth;
+  scroll-padding: 10px;
+  scrollbar-width: none;
+}
+.thumbs.thumbs-under::-webkit-scrollbar{ display:none; }
+.thumb-btn{ flex: 0 0 auto; }
+
+/* Modal: keep perfectly centered & scrollable on small screens */
+.modal{
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-card{ margin: auto; }
+
+/* UTV motion accessibility */
+@media (prefers-reduced-motion: reduce){
+  .hero-brand-inner::before,
+  .hero-brand-inner::after,
+  .hero-brand-inner .slide-crown{
+    animation: none !important;
+  }
+}
+
+/* === Variant B Glass Buttons === */
+
+.order-actions{
+  margin-top:26px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.order-actions .btn,
+.order-actions .order-btn{
+  padding:11px 18px;
+  font-size:14px;
+  font-weight:500;
+  border-radius:14px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border:1px solid rgba(0,255,255,0.28);
+  color:#eafafa;
+  transition: all .25s ease;
+}
+.order-actions .btn:hover,
+.order-actions .order-btn:hover,
+.order-actions .btn:active{
+  background: rgba(0,255,255,0.12);
+  box-shadow: 0 0 14px rgba(0,255,255,0.25), inset 0 0 8px rgba(0,255,255,0.15);
+  transform: translateY(-1px);
+}
+.order-actions .form{
+  border-color: rgba(255,255,255,0.25);
+  color:#dcdcdc;
+}
+
+/* ===== Modal CTA Sanierung (Variante A: Apple-clean + Amazon-Logik) ===== */
     .modal-actions-sticky{
       padding-top: 14px;
       margin-top: 10px;
@@ -806,11 +1722,7 @@
     @media (max-width: 550px){
       .grid{ grid-template-columns: 1fr; }
       .header-inner{ flex-direction: column; align-items: stretch; }
-      .nav{ justify-content: flex-start; gap: 6px; }
-      .nav a{ font-size: 13px; padding: 6px 10px; }
-      .nav a.reels{ padding: 6px 12px; }
-      .lang-current{ padding: 6px 10px; }
-      .lang-current img{ width: 22px; height: 22px; }
+      .nav{ justify-content: flex-start; }
       .hero-left{ padding: 34px 24px; }
     }
   
@@ -895,7 +1807,6 @@
 .order-box .order-note{margin-top:8px;}
 
 .order-form{margin-top:16px;}
-.order-form-heading{margin-top:28px; margin-bottom:12px; font-size:1.35rem; line-height:1.2;}
 .form-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
 .field{display:flex; flex-direction:column; gap:6px;}
 .field label{font-weight:600;}
@@ -960,682 +1871,6 @@
     /* Modal: zwei Buttons gleich breit und kompakt */
     .order-actions{ display:flex; gap:10px; flex-wrap:wrap; }
     .order-actions .btn{ flex:1 1 220px; text-align:center; }
-/* ===== Mobile / Touch Optimierung ===== */
-@media (hover: none), (pointer: coarse){
-  /* Kein "Hover-Shift" & kein zusätzliches Thumbnail-Zoom */
-  .item:hover{ transform: none; border-color: var(--border); }
-  .btn:hover{ transform: none; }
-  .thumb img{ transform: none; }
-
-  /* Tap fühlt sich cleaner an */
-  .product-card{ -webkit-user-select: none; user-select: none; }
-
-  .product-card, .btn, .thumb-btn, .nav-btn, .icon-btn, .order-btn{
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-  }
-}
-
-/* ===== Mobile Modal Scroll Fix (ohne Layout zu verschieben) ===== */
-@media (max-width: 850px){
-  .modal-body{
-    grid-template-columns: 1fr;
-    max-height: calc(100vh - 120px);
-    max-height: calc(100dvh - 120px);
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .modal-side{
-    max-height: none;
-    overflow: visible;
-    padding-right: 0;
-  }
-  /* Mobile: Footer darf mit scrollen (wie von dir gewünscht) */
-  .modal-side-scroll{
-    overflow: visible;
-    flex: none;
-    padding-right: 0;
-  }
-  .modal-actions-sticky{
-    position: static;
-    background: none;
-    border-top: 0;
-    padding-top: 12px;
-  }
-}
-
-
-@media (max-width: 760px){
-  /* iOS Safari: verhindert das automatische "Reinzoomen" bei Formular-Fokus */
-  .field input, .field textarea{ font-size: 16px; }
-}
-
-
-
-    /* --- Product card description (cleaner layout) --- */
-    .product-card .teaser{margin:0 0 10px 0;color:var(--muted);line-height:1.45;}
-    .product-card .keypoints, .product-card .specs{margin:0;padding:0;list-style:none;display:grid;gap:6px;}
-    .product-card .keypoints li, .product-card .specs li{padding-left:12px;position:relative;line-height:1.35;}
-    .product-card .keypoints li::before, .product-card .specs li::before{content:"•";position:absolute;left:0;top:0;opacity:.7;}
-    .product-card details.more{margin-top:10px;}
-    .product-card details.more summary{cursor:pointer;color:rgba(120,255,240,.9);font-weight:600;list-style:none;}
-    .product-card details.more summary::-webkit-details-marker{display:none;}
-    .product-card details.more[open] summary{margin-bottom:8px;}
-
-
-/* --- Hero Slider (3 slides) --- */
-.hero-slider{
-  position:relative;
-  border-radius: var(--radius);
-  overflow:hidden;
-  min-height: 320px;
-  height: 100%;
-}
-.hero-slides{position:relative; height:100%;}
-.hero-slide{
-  position:absolute;
-  inset:0;
-  opacity:0;
-  transform: translateY(6px);
-  transition: opacity .35s ease, transform .35s ease;
-  pointer-events:none;
-}
-.hero-slide.is-active{
-  opacity:1;
-  transform: translateY(0);
-  pointer-events:auto;
-}
-/* Slide-Inhalt wirklich mittig im Kasten (oben/unten gleicher Abstand) */
-.slide-inner{height:100%; display:flex; flex-direction:column; justify-content:center; padding:78px 18px 78px 18px;}
-
-/* UPDATE: Margin oben auf 0, unten leicht reduziert */
-.slide-brand{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap: 8px;
-  margin: 0 auto 6px;
-  text-align:center;
-}
-.slide-crown{
-  width: 88px;
-  max-width: 100%;
-  height:auto;
-  opacity: .96;
-  filter: brightness(0) invert(1) drop-shadow(0 0 14px rgba(255,255,255,.14)) drop-shadow(0 0 18px rgba(120,255,240,.12));
-}
-.slide-brand-top{
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  line-height: 1.05;
-}
-.slide-brand-bottom{
-  margin-top: -4px;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 8px;
-  color: var(--pop-cyan);
-  text-transform: uppercase;
-}
-
-.slide-title{
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: .2px;
-  margin: 6px 0 8px;
-  text-align:center;
-}
-.slide-text{
-  color: var(--muted);
-  line-height: 1.45;
-  text-align:center;
-  margin: 6px 0 10px;
-}
-.slide-list{
-  list-style:none;
-  padding:0;
-  margin: 10px 0 12px;
-  display:grid;
-  gap:8px;
-}
-.slide-list li{
-  padding:10px 12px;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:12px;
-  background: rgba(0,0,0,.16);
-}
-.slide-actions{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top: 10px;
-  margin-bottom: 26px;
-}
-.hero-dots{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  bottom:5px; /* UPDATE: Tiefer gesetzt (vorher 8px) */
-  z-index:10;
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  padding:8px 12px;
-  border-radius:999px;
-  background: rgba(0,0,0,.35);
-  border:1px solid rgba(255,255,255,.10);
-  z-index:10;
-}
-.dotnav{
-  width:12px; height:12px;
-  border-radius:999px;
-  border:1px solid rgba(120,255,240,.65);
-  background: rgba(255,255,255,.12);
-  cursor:pointer;
-  box-shadow: 0 0 12px rgba(120,255,240,.18);
-}
-.dotnav.is-active{
-  background: rgba(120,255,240,.95);
-  border-color: rgba(120,255,240,.95);
-  box-shadow: 0 0 16px rgba(120,255,240,.35);
-}
-.hero-right .hero-slider{background: rgba(255,255,255,.02);}
-
-
-/* ===== Movement picker (Uhrwerk Auswahl) ===== */
-.movement-picker{
-  margin: 12px 0 10px;
-  padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 14px;
-  background: rgba(0,0,0,.18);
-  backdrop-filter: blur(8px);
-}
-.movement-picker .mp-title{
-  font-weight: 600;
-  font-size: 13px;
-  opacity: .9;
-  margin-bottom: 8px;
-}
-.movement-picker .mp-grid{
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.movement-picker .mp-item{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.14);
-  cursor: pointer;
-  user-select: none;
-}
-.movement-picker .mp-item input{
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid rgba(120,255,240,.55);
-  background: rgba(0,0,0,.18);
-  box-shadow: inset 0 0 0 2px rgba(0,0,0,.35);
-  transform: translateY(0.5px);
-  cursor: pointer;
-}
-.movement-picker .mp-item input:checked{
-  background: rgba(120,255,240,.95);
-  border-color: rgba(120,255,240,.95);
-  box-shadow: 0 0 14px rgba(120,255,240,.35);
-}
-.movement-picker .mp-item.is-selected{
-  border-color: rgba(120,255,240,.55);
-  background: rgba(120,255,240,.08);
-}
-.movement-picker .mp-item:hover{
-  border-color: rgba(120,255,240,.45);
-}
-
-.movement-picker .mp-label{
-  font-size: 13px;
-  white-space: nowrap;
-}
-
-
-.movement-desc{
-  margin: 6px 0 12px;
-  padding: 10px 12px;
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 14px;
-  background: rgba(0,0,0,.14);
-  color: var(--muted);
-  font-size: 12.5px;
-  line-height: 1.45;
-}
-.movement-desc strong{ color: var(--text); font-weight: 800; }
-.movement-desc ul{ margin: 8px 0 0 18px; padding: 0; }
-.movement-desc li{ margin: 4px 0; }
-
-
-
-/* ===== Privatverkaufsbedingungen (Popup) ===== */
-.terms-link{
-  color: var(--pop-cyan);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-.terms-link:hover{ opacity: .9; }
-
-.terms-modal .modal-card{ width: min(760px, 100%); }
-.terms-modal .modal-body{ display:block; padding: 18px; overflow:auto; }
-.terms-modal .terms-content p{ margin: 0 0 12px; color: var(--text); }
-.terms-modal .terms-content ul{ margin: 0 0 12px 18px; padding: 0; color: var(--text); }
-.terms-modal .terms-content li{ margin: 6px 0; color: var(--text); }
-
-
-
-/* ===== Kontakt-Modal ===== */
-.contact-modal .modal-card{ width:min(700px,100%); }
-.contact-modal .modal-body{ display:block; padding:18px; overflow:auto; }
-.contact-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-  margin-top:12px;
-}
-.contact-opt{
-  display:flex; align-items:center; justify-content:center;
-  padding:12px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.05);
-  font-weight:700;
-}
-.contact-opt:hover{ border-color:rgba(45,226,255,.45); background:rgba(45,226,255,.10); }
-.contact-help{ color:var(--muted); font-size:13px; line-height:1.5; margin-top:8px; }
-@media (max-width:760px){ .contact-grid{ grid-template-columns:1fr; } }
-
-/* ===== Premium Cards Variant A (Glass) ===== */
-.hero-right .hero-slide{ padding: 16px; }
-.hero-right .hero-slide .slide-inner{
-  height: 100%;
-  padding: 64px 22px 56px;
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,.16);
-  background:
-    radial-gradient(900px 420px at 12% 0%, rgba(45,226,255,.22), transparent 55%),
-    radial-gradient(700px 420px at 88% 18%, rgba(255,59,212,.14), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-  box-shadow: 0 26px 80px rgba(0,0,0,.55),
-              inset 0 0 0 1px rgba(255,255,255,.06);
-  backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-}
-.hero-right .hero-slide .slide-inner::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background-image: url('assets/pattern-crown.svg');
-  background-size: 280px 280px;
-  background-repeat: repeat;
-  opacity: .06;
-  transform: rotate(8deg) scale(1.05);
-  pointer-events:none;
-}
-.hero-right .hero-slide .slide-inner::after{
-  content:"";
-  position:absolute;
-  top:-55%;
-  left:-35%;
-  width: 110%;
-  height: 110%;
-  background: linear-gradient(135deg, rgba(255,255,255,.22), transparent 55%);
-  transform: rotate(18deg);
-  opacity: .10;
-  pointer-events:none;
-}
-.hero-right .slide-inner > *{ position: relative; z-index: 2; }
-
-.premium-micro{
-  position:absolute;
-  bottom: 14px; right: 18px;
-  font-size: 10px;
-  letter-spacing: 2.4px;
-  color: rgba(255,255,255,.42);
-  text-transform: uppercase;
-}
-
-.hero-right .slide-actions{ margin-top: 14px; margin-bottom: 0; }
-.hero-right .slide-text{ margin: 8px 0 14px; }
-.hero-right .hero-dots{
-  bottom: 10px;
-  background: rgba(0,0,0,.30);
-  backdrop-filter: blur(10px);
-}
-
-@media (max-width: 520px){
-  .hero-right .hero-slide{ padding: 12px; }
-  .hero-right .hero-slide .slide-inner{ padding: 60px 18px 54px; }
-}
-
-@media (hover:hover) and (pointer:fine){
-  .hero-right .hero-slide.is-active .slide-inner{
-    transition: transform .25s ease, box-shadow .25s ease;
-  }
-  .hero-right .hero-slide.is-active .slide-inner:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 32px 92px rgba(0,0,0,.62), 0 0 26px rgba(45,226,255,.10);
-  }
-}
-
-
-
-/* === Hero Brand Card (original look, subtle movement, fully clickable to Instagram) === */
-.hero-brand-link{
-  display:block;
-  width:100%;
-  height:100%;
-  padding: 16px;
-  text-decoration:none;
-  color: inherit;
-}
-.hero-brand-link:focus-visible{
-  outline: 3px solid rgba(45,226,255,.65);
-  outline-offset: 3px;
-  border-radius: var(--radius);
-}
-.hero-brand-inner{
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding:78px 18px 78px 18px;
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,.16);
-  background:
-    radial-gradient(900px 420px at 12% 0%, rgba(45,226,255,.22), transparent 55%),
-    radial-gradient(700px 420px at 88% 18%, rgba(255,59,212,.14), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.04));
-  box-shadow: 0 26px 80px rgba(0,0,0,.55),
-              inset 0 0 0 1px rgba(255,255,255,.06);
-  backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-}
-.hero-brand-inner::before{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background-image: url('assets/pattern-crown.svg');
-  background-size: 280px 280px;
-  background-repeat: repeat;
-  opacity: .10;
-  transform: rotate(8deg) scale(1.05);
-  pointer-events:none;
-  animation: utvPatternDrift 10s linear infinite;
-}
-.hero-brand-inner::after{
-  content:"";
-  position:absolute;
-  top:-30%;
-  left:-140%;
-  width: 90%;
-  height: 170%;
-  background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,.18) 45%, rgba(255,255,255,.10) 50%, transparent 60%);
-  transform: rotate(18deg);
-  opacity: 0;
-  pointer-events:none;
-  animation: utvShineSweep 6.2s ease-in-out infinite;
-}
-.hero-brand-inner > *{ position: relative; z-index: 2; }
-
-@keyframes utvPatternDrift{
-  from{ background-position: 0 0; }
-  to{ background-position: 240px 160px; }
-}
-@keyframes utvShineSweep{
-  0%{ transform: translateX(0) rotate(18deg); opacity: 0; }
-  15%{ opacity: .18; }
-  50%{ opacity: .18; }
-  85%{ opacity: 0; }
-  100%{ transform: translateX(320%) rotate(18deg); opacity: 0; }
-}
-  to{ transform: translate(2%, 2%) rotate(18deg); }
-}
-@keyframes utvFloat{
-  0%,100%{ transform: translateY(0); }
-  50%{ transform: translateY(-3px); }
-}
-.hero-brand-inner .slide-crown{ animation: utvFloat 6s ease-in-out infinite; }
-
-
-/* === Instagram Hero Rotator (integrated like the left hero card) === */
-.ig-hero-link{
-  display:block;
-  width:100%;
-  height:100%;
-  padding:0;
-  text-decoration:none;
-  color: inherit;
-  border-radius: var(--radius);
-  overflow:hidden;
-}
-.ig-hero-link:focus-visible{
-  outline: 3px solid rgba(45,226,255,.65);
-  outline-offset: 3px;
-  border-radius: var(--radius);
-}
-
-.ig-hero-rotator{
-  position: relative;
-  height: 100%;
-  min-height: 320px;
-}
-
-.ig-micro-top{
-  position:absolute;
-  top: 18px;
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: 11px;
-  letter-spacing: 3px;
-  color: rgba(255,255,255,.46);
-  text-transform: uppercase;
-  pointer-events:none;
-}
-
-.ig-slide{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  /* Mehr Luft nach oben, damit die Kronenspitzen nicht in den Micro-Text laufen */
-  padding: 74px 30px 54px;
-  opacity: 0;
-  transition: opacity .85s ease;
-}
-.ig-slide.is-active{ opacity: 1; }
-
-
-/* Autoplay via CSS (robust even when JS is blocked) */
-.ig-hero-rotator{ --ig-cycle: 14s; }
-.ig-hero-rotator .ig-slide-1{ animation: igFadeSlide1 var(--ig-cycle) infinite; }
-.ig-hero-rotator .ig-slide-2{ animation: igFadeSlide2 var(--ig-cycle) infinite; }
-
-/* JS fallback: ensure rotation works even when CSS animations are disabled */
-.ig-hero-rotator.is-js .ig-slide-1,
-.ig-hero-rotator.is-js .ig-slide-2{
-  animation: none !important;
-}
-
-
-@keyframes igFadeSlide1{
-  0%{ opacity: 1; }
-  45%{ opacity: 1; }
-  50%{ opacity: 0; }
-  95%{ opacity: 0; }
-  100%{ opacity: 1; }
-}
-@keyframes igFadeSlide2{
-  0%{ opacity: 0; }
-  45%{ opacity: 0; }
-  50%{ opacity: 1; }
-  95%{ opacity: 1; }
-  100%{ opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .ig-hero-rotator .ig-slide{ animation: none !important; transition: none !important; }
-}
-
-.ig-tagline{ margin-top: 8px; }
-
-.ig-lines{
-  margin-top: 6px;
-  font-size: 22px;
-  font-weight: 750;
-  letter-spacing: .2px;
-  line-height: 1.22;
-  color: rgba(255,255,255,.92);
-  text-shadow: 0 14px 40px rgba(0,0,0,.45);
-}
-
-.ig-btn{
-  margin-top: 18px;
-  display:inline-flex;
-  align-items:center;
-  gap: 12px;
-  padding: 12px 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.22);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 12px 28px rgba(0,0,0,.35);
-  font-weight: 800;
-  color: rgba(255,255,255,.88);
-}
-.ig-btn .ig-badge{
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  display:grid;
-  place-items:center;
-  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-  box-shadow: 0 0 0 1px rgba(255,255,255,.14) inset;
-}
-.ig-btn .ig-badge svg{ width: 18px; height: 18px; fill: #fff; }
-
-@media (hover:hover) and (pointer:fine){
-  .ig-hero-link:hover .ig-btn{ transform: translateY(-1px); }
-}
-
-@media (max-width: 520px){
-  .ig-micro-top{ display:none; }
-  .ig-slide{ padding: 60px 18px 52px; }
-  .ig-lines{ font-size: 20px; }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .hero-brand-inner::before,
-  .hero-brand-inner::after,
-  .hero-brand-inner .slide-crown{ animation: none !important; }
-}
-
-@media (max-width: 520px){
-  .hero-brand-link{ padding: 12px; }
-  .hero-brand-inner{ padding: 60px 18px 54px; }
-}
-
-@media (hover:hover) and (pointer:fine){
-  .hero-brand-inner{ transition: transform .25s ease, box-shadow .25s ease; }
-  .hero-brand-inner:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 32px 92px rgba(0,0,0,.62), 0 0 26px rgba(45,226,255,.10);
-  }
-}
-
-/* Thumbnails – smoother snap on mobile */
-.thumbs.thumbs-under{
-  scroll-behavior: smooth;
-  scroll-padding: 10px;
-  scrollbar-width: none;
-}
-.thumbs.thumbs-under::-webkit-scrollbar{ display:none; }
-.thumb-btn{ flex: 0 0 auto; }
-
-/* Modal: keep perfectly centered & scrollable on small screens */
-.modal{
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-.modal-card{ margin: auto; }
-
-/* UTV motion accessibility */
-@media (prefers-reduced-motion: reduce){
-  .hero-brand-inner::before,
-  .hero-brand-inner::after,
-  .hero-brand-inner .slide-crown{
-    animation: none !important;
-  }
-}
-
-/* === Variant B Glass Buttons === */
-
-.order-actions{
-  margin-top:26px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-.order-actions .btn,
-.order-actions .order-btn{
-  padding:11px 18px;
-  font-size:14px;
-  font-weight:500;
-  border-radius:14px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border:1px solid rgba(0,255,255,0.28);
-  color:#eafafa;
-  transition: all .25s ease;
-}
-.order-actions .btn:hover,
-.order-actions .order-btn:hover,
-.order-actions .btn:active{
-  background: rgba(0,255,255,0.12);
-  box-shadow: 0 0 14px rgba(0,255,255,0.25), inset 0 0 8px rgba(0,255,255,0.15);
-  transform: translateY(-1px);
-}
-.order-actions .form{
-  border-color: rgba(255,255,255,0.25);
-  color:#dcdcdc;
-}
-
-
-
-
-/* === FIX: CTA/Order Buttons sollen NICHT overlay/sticky sein, sondern im Scroll-Flow am Ende erscheinen (nur EN nutzt DE-Popup Copy) === */
-.modal-actions-sticky{
-  position: static !important;
-  inset: auto !important;
-  top: auto !important;
-  right: auto !important;
-  bottom: auto !important;
-  left: auto !important;
-  z-index: auto !important;
-}
-.modal-actions-sticky .cta-panel{
-  position: static !important;
-}
 
 /* Watch details block (between price and quantity) */
 .watch-details{margin:14px 0 10px;padding:12px 12px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.03)}
@@ -1646,80 +1881,58 @@
 .watch-details-code-label{opacity:.8;margin-right:6px}
 
 
-/* ===== Trust + FAQ + Footer polish ===== */
-.faq-card{ padding: 14px 16px; }
-.faq-item{ border:1px solid rgba(255,255,255,.10); border-radius:12px; background:rgba(255,255,255,.03); padding:12px 14px; margin:10px 0; }
-.faq-item summary{ cursor:pointer; font-weight:700; color:var(--text); }
-.faq-item p{ color:var(--muted); margin:10px 0 2px; line-height:1.55; }
-.footer-links{ margin-top:10px; font-size:12px; color:rgba(255,255,255,.58); }
-.footer-links a{ color:rgba(255,255,255,.72); }
-.footer-links a:hover{ color:var(--pop-cyan); }
-.order-actions .btn, .form-buttons .btn, .btn{ border-radius:12px; }
-
-
-/* ===== Final Maximum Polish vMax ===== */
-:root{ --utv-sticky-h:64px; }
-#bestellbar .grid{ align-items:stretch; }
-#bestellbar .item{ height:100%; display:flex; flex-direction:column; }
-#bestellbar .item .order-btn{ margin-top:auto; }
-#bestellbar .item p, #bestellbar .item .teaser{ min-height:3.2em; }
-
-.section-updated{
-  margin-top:8px;
-  font-size:12px;
-  color:var(--muted);
-  letter-spacing:.2px;
+/* Contact hub modal (EN) */
+.contact-modal-backdrop{
+  position:fixed; inset:0; background:rgba(8,12,20,.68);
+  display:none; align-items:center; justify-content:center; z-index:1200; padding:20px;
 }
-.kauf-cta-wrap{
-  margin-top:16px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+.contact-modal-backdrop.show{display:flex;}
+.contact-modal{
+  width:min(640px,94vw); background:rgba(12,18,30,.96);
+  border:1px solid rgba(80,200,255,.35); border-radius:16px;
+  box-shadow:0 20px 70px rgba(0,0,0,.55); color:#eaf6ff;
 }
-.kauf-cta-wrap .btn{ min-width:220px; justify-content:center; }
-
-.next-steps{
-  margin-top:12px;
-  padding:12px 14px;
-  border-radius:14px;
-  border:1px solid rgba(45,226,255,.35);
-  background:rgba(45,226,255,.08);
-  color:#eaffff;
-  display:none;
+.contact-modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 8px 20px;}
+.contact-modal-title{margin:0;font-size:1.35rem;line-height:1.2;color:#7fe8ff;font-weight:800;}
+.contact-modal-close{background:transparent;border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:1.1rem;}
+.contact-modal-body{padding:6px 20px 20px 20px;}
+.contact-modal-text{margin:0 0 14px 0;color:#d7e7f4}
+.contact-grid{display:grid;gap:10px}
+.contact-btn{
+  display:flex;align-items:center;justify-content:center;
+  padding:12px 14px;border-radius:12px;text-decoration:none;font-weight:700;
+  border:1px solid rgba(111,232,255,.4); color:#0e1a24;
+  background:linear-gradient(135deg,#9ff0ff,#6fe8ff); transition:transform .12s ease, box-shadow .18s ease;
 }
-.next-steps h4{ margin:0 0 8px; font-size:15px; }
-.next-steps ul{ margin:0; padding-left:18px; }
-.next-steps li{ margin:4px 0; }
+.contact-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(111,232,255,.25);}
+.contact-note{margin-top:12px;font-size:.94rem;color:#b8c8d9}
 
 </style>
 </head>
-<body class="lang-de" id="top">
+<body class="lang-en" id="top">
 <header class="header">
 <div class="header-inner">
-<a aria-label="Zur Startseite" class="brand" href="#top">
+<a aria-label="Back to top" class="brand" href="#top">
 <div aria-label="UrbanTimeVienna Logo" class="brand-badge"></div>
 <div class="brand-text">Urban Time <span>Vienna</span></div>
 </a>
-<nav aria-label="Hauptnavigation" class="nav">
-
-<a href="#kollektion">Modelle</a>
-<a href="#bestellbar">Bestellen</a>
-<a href="#kaufablauf">Ablauf</a>
-<a href="#zahlungsarten">Zahlungsarten</a>
-<a href="#faq">FAQ</a>
-<a class="open-contact-modal" href="#kontaktoptionen">Kontakt</a>
+<nav aria-label="Main navigation" class="nav">
+<a href="#kollektion">Models</a>
+<a href="#zahlungsarten">Payment methods</a>
+<a href="#bestellbar">Made to order</a>
+<a href="#kaufablauf">How it works</a>
+<a data-open-contact-modal="1" href="#contact-hub">Contact</a>
 <a class="reels" href="https://www.instagram.com/urbantimevienna/reels/" rel="noopener" target="_blank">Reels</a>
 <div class="lang-dropdown" id="langDropdown">
-<button aria-expanded="false" aria-haspopup="menu" aria-label="Sprache wählen" class="lang-current" type="button">
-<img alt="Deutsch" src="assets/flag-de.svg"/>
+<button aria-expanded="false" aria-haspopup="menu" aria-label="Choose language" class="lang-current" type="button">
+<img alt="English" src="../assets/flag-gb.svg"/>
 </button>
-<div aria-label="Sprache" class="lang-menu" role="menu">
-<a aria-label="English" class="lang-option" data-lang="en" href="en/" role="menuitem">
-<img alt="English" src="assets/flag-gb.svg"/>
+<div aria-label="Language" class="lang-menu" role="menu">
+<a aria-label="Deutsch" class="lang-option" data-lang="de" href="../index.html" role="menuitem">
+<img alt="Deutsch" src="../assets/flag-de.svg"/>
 </a>
 </div>
 </div>
-
 </nav>
 </div>
 </header>
@@ -1727,42 +1940,42 @@
 <section class="hero">
 <div class="card hero-left">
 <div class="kicker"><span class="dot"></span> Vienna • Watch Culture • Pop Art</div>
-<h1>Eleganz mit Kante.<br/>Zeit mit Stil.</h1>
+<h1>Elegance with an edge.<br/>Time with style.</h1>
 <p class="sub">
-          UrbanTimeVienna kuratiert Uhren mit Klasse — minimalistisch, hochwertig und mit einem Hauch Pop‑Art als Akzent.
+          UrbanTimeVienna curates timepieces with class — minimalist, high-quality, and finished with a touch of Pop Art.
         </p>
 <div class="cta-row">
-<a class="btn primary" href="#kollektion">Kollektion ansehen</a>
+<a class="btn primary" href="#kollektion">View collection</a>
 </div>
 </div>
 <div class="card hero-right">
-<a aria-label="Urban Time Vienna auf Instagram öffnen" class="ig-hero-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
+<a aria-label="Open Urban Time Vienna on Instagram" class="ig-hero-link" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
 <div class="ig-hero-rotator" id="igHeroRotator">
 <div aria-hidden="true" class="ig-micro-top">URBAN • TIME • VIENNA</div>
 <!-- Slide 1 -->
 <div aria-hidden="false" class="ig-slide ig-slide-1 is-active">
 <div aria-label="Urban Time Vienna" class="slide-brand">
-<img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
+<img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
 <div class="slide-brand-text">
 <div class="slide-brand-top">URBAN TIME</div>
 <div class="slide-brand-bottom">VIENNA</div>
 </div>
 </div>
-<div class="slide-text ig-tagline">Kuratiert · Veredelt · Stil mit Charakter</div>
+<div class="slide-text ig-tagline">Curated · Refined · Style with character</div>
 </div>
 <!-- Slide 2 -->
 <div aria-hidden="true" class="ig-slide ig-slide-2">
 <div aria-label="Urban Time Vienna" class="slide-brand">
-<img alt="" aria-hidden="true" class="slide-crown" src="assets/crown-logo.png"/>
+<img alt="" aria-hidden="true" class="slide-crown" src="../assets/crown-logo.png"/>
 <div class="slide-brand-text">
 <div class="slide-brand-top">URBAN TIME</div>
 <div class="slide-brand-bottom">VIENNA</div>
 </div>
 </div>
 <div class="ig-lines">
-          Weitere Varianten<br/>
-          mit Farbe und Design<br/>
-          einfach per Insta DM anfragen
+          More variants<br/>
+          in color &amp; design<br/>
+          just DM us on Instagram
         </div>
 <div aria-hidden="true" class="ig-btn">
 <span aria-hidden="true" class="ig-badge">
@@ -1770,113 +1983,113 @@
 <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-5 4.5A5.5 5.5 0 1 1 6.5 14 5.5 5.5 0 0 1 12 8.5zm0 2A3.5 3.5 0 1 0 15.5 14 3.5 3.5 0 0 0 12 10.5zM18 6.2a1.1 1.1 0 1 1-1.1 1.1A1.1 1.1 0 0 1 18 6.2z"></path>
 </svg>
 </span>
-<span>Instagram Nachricht</span>
+<span>Instagram message</span>
 </div>
 </div>
 </div>
 </a>
 </div></section>
-<section class="section about-section" id="ueber-uns">
+<section class="section about-section" id="about">
 <div class="card about-card">
 <div class="about-head">
-<img alt="" aria-hidden="true" class="about-crown" src="assets/crown-logo.png"/>
+<img alt="" aria-hidden="true" class="about-crown" src="../assets/crown-logo.png"/>
 <div class="about-title">
-<div class="about-eyebrow">Willkommen bei <span class="accent">Urban Time Vienna</span></div>
-<h2>Über uns</h2>
+<div class="about-eyebrow">Welcome to <span class="accent">Urban Time Vienna</span></div>
+<h2>About us</h2>
 </div>
 </div>
 <p class="about-text">
-      Seit Jahren arbeiten wir eng mit ausgewählten <span class="accent">Uhren‑Factorys</span> zusammen. Gemeinsam haben wir im Laufe der Zeit eigene
-      <span class="accent">Qualitätsstufen</span> entwickelt – mit Fokus auf exzellente <span class="accent">Materialien</span>, <span class="accent">Präzision</span>
-      und konsequente QC‑Kontrollen.
+      For years, we’ve worked closely with selected <span class="accent">watch factories</span>. Over time, we defined our own
+      <span class="accent">quality tiers</span> — focused on excellent <span class="accent">materials</span>, <span class="accent">precision</span>,
+      and consistent QC checks.
     </p>
 <p class="about-text">
-      Hier zählt <span class="accent">Qualität</span> vor Quantität: Wir führen ausschließlich kuratierte Modelle – detailverliebt, hochwertig und sauber geprüft.
+      Here, <span class="accent">quality</span> matters more than quantity: we offer curated pieces — detail‑driven, refined, and carefully checked.
     </p>
 <p class="about-text">
-      Jede Uhr wird selbstverständlich im <span class="accent">Fullset</span> geliefert und ist ein <span class="accent">SUPERCLONE</span> – inklusive Box, Modellkarte, Handbuch und Tragetasche (Sackerl).
+      Every watch is of course delivered as a <span class="accent">full set</span> and is <span class="accent">SUPERCLONE</span> – including box, model card, manual, and carrying bag.
     </p>
 </div>
 </section>
 <section class="section" id="kollektion">
 <div class="section-head">
 <div>
-<h2>Aktuell lagernd</h2>
-<p>Abholung oder Versand möglich – Details per Instagram DM.</p>
+<h2>In stock</h2>
+<p>Pickup or shipping available — details via Instagram DM.</p>
 </div>
 </div>
 <div class="grid">
-<article class="item product-card" data-images="royal-urban.jpg" data-variant-info='{"royal-urban.jpg":{"codename":"Royal Urban","desc":""}}' role="button" tabindex="0">
+<article class="item product-card" data-images="../royal-urban.jpg" data-variant-info='{"../royal-urban.jpg":{"codename":"Royal Urban","desc":""}}' role="button" tabindex="0">
 <div class="thumb">
-<img alt="Submarine Hulk" loading="lazy" src="royal-urban.jpg"/>
+<img alt="Submarine Hulk" loading="lazy" src="../royal-urban.jpg"/>
 </div>
-<span class="tag">Preis €580</span>
+<span class="tag">Price €580</span>
 <h3>Submarine "HULK"</h3>
-<p class="teaser">Die Submariner „Hulk“ verdankt ihren Namen ihrem intensiven grünen Zifferblatt und der grünen Lünette. Als moderne Interpretation einer Taucherlegende wurde sie schnell zum Kultobjekt – heute begehrt wie nie.</p>
+<p class="teaser">The Submariner “Hulk” earned its nickname from its intense green dial and matching green bezel. A modern take on a diving legend, it quickly became a cult icon — and is more sought-after than ever.</p>
 <ul class="keypoints">
-<li><b>Taucher‑Look:</b> grüne Lünette &amp; markantes Zifferblatt</li>
-<li><b>Alltagstauglich:</b> sportlich, robust, clean</li>
-<li><b>Sekundenstopp</b> fürs exakte Einstellen</li>
-<li><b>Genauigkeit:</b> −2/+2 s/Tag</li>
+<li><b>Diver look:</b> green bezel &amp; striking dial</li>
+<li><b>Everyday-ready:</b> sporty, robust, clean</li>
+<li><b>Hacking seconds</b> for precise setting</li>
+<li><b>Accuracy:</b> −2/+2 s/day</li>
 </ul>
 <details class="more">
-<summary>Technische Details anzeigen</summary>
+<summary>Show technical details</summary>
 <ul class="specs">
-<li>Chronergy‑Hemmung</li>
-<li>Nickel‑Phosphor‑Hemmung</li>
-<li>Blaue Parachrom‑Spirale</li>
-<li>Paraflex‑Stoßsicherung</li>
-<li>28.800 A/h • 40 Lagersteine • Ø ~33 mm</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
 </ul>
 </details>
 </article>
-<article class="item product-card" data-images="pop-art-chrono.jpg" role="button" tabindex="0">
+<article class="item product-card" data-images="../pop-art-chrono.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="Pop-Art Chrono" loading="lazy" src="pop-art-chrono.jpg"/>
+<img alt="Pop-Art Chrono" loading="lazy" src="../pop-art-chrono.jpg"/>
 </div>
-<span class="tag">Preis €830</span>
+<span class="tag">Price €800</span>
 <h3>GMT II Bruce Wayne</h3>
-<p class="teaser">GMT II Bruce Wayne – sportlich‑elegante GMT im „Stealth“-Look. Ideal für Reisen: zweite Zeitzone auf einen Blick.</p>
+<p class="teaser">GMT II Bruce Wayne — a sporty-elegant GMT in a “stealth” look. Perfect for travel: a second time zone at a glance.</p>
 <ul class="keypoints">
-<li><b>Traveller‑GMT:</b> Lokal‑Stundenzeiger springt in 1‑h Schritten</li>
-<li><b>24‑h GMT‑Zeiger</b> für Home‑/Referenzzeit</li>
-<li><b>Datum</b> an Lokalzeit gekoppelt (schneller Wechsel)</li>
-<li><b>Sekundenstopp</b> fürs exakte Einstellen</li>
+<li><b>Traveller GMT:</b> local hour hand jumps in 1-hour steps</li>
+<li><b>24-hour GMT hand</b> for home/reference time</li>
+<li><b>Date</b> linked to local time (quick change)</li>
+<li><b>Hacking seconds</b> for precise setting</li>
 </ul>
 <details class="more">
-<summary>Technische Details anzeigen</summary>
+<summary>Show technical details</summary>
 <ul class="specs">
-<li>Genauigkeit: −2/+2 s/Tag</li>
-<li>Chronergy‑Hemmung</li>
-<li>Nickel‑Phosphor‑Hemmung</li>
-<li>Blaue Parachrom‑Spirale</li>
-<li>Paraflex‑Stoßsicherung</li>
-<li>28.800 A/h • 40 Lagersteine • Ø ~33 mm</li>
+<li>Accuracy: −2/+2 s/day</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
 </ul>
 </details>
 </article>
-<article class="item product-card" data-images="stephans-stealth.jpg" role="button" tabindex="0">
+<article class="item product-card" data-images="../stephans-stealth.jpg" role="button" tabindex="0">
 <div class="thumb">
-<img alt="GMT II Bi‑Tone" loading="lazy" src="stephans-stealth.jpg"/>
+<img alt="GMT II Bi‑Tone" loading="lazy" src="../stephans-stealth.jpg"/>
 </div>
-<span class="tag">Preis €830</span>
+<span class="tag">Price €830</span>
 <h3>GMT II Bi‑Tone</h3>
-<p class="teaser">GMT II Bi‑Tone – die elegante GMT im Stahl/Gold‑Look. Klassisch, markant und ideal, wenn Sie zwischen zwei Zeitzonen unterwegs sind.</p>
+<p class="teaser">GMT II Bi‑Tone — the elegant GMT in a steel/gold look. Classic, bold, and ideal when you’re moving between two time zones.</p>
 <ul class="keypoints">
-<li><b>Bi‑Tone:</b> Edelstahl/Gold‑Optik mit starkem Wrist‑Presence</li>
-<li><b>Traveller‑GMT:</b> Lokal‑Stundenzeiger springt in 1‑h Schritten</li>
-<li><b>24‑h GMT‑Zeiger</b> für Home‑/Referenzzeit</li>
-<li><b>Datum</b> an Lokalzeit gekoppelt (schneller Wechsel)</li>
+<li><b>Bi-tone:</b> steel/gold look with strong wrist presence</li>
+<li><b>Traveller GMT:</b> local hour hand jumps in 1-hour steps</li>
+<li><b>24-hour GMT hand</b> for home/reference time</li>
+<li><b>Date</b> linked to local time (quick change)</li>
 </ul>
 <details class="more">
-<summary>Technische Details anzeigen</summary>
+<summary>Show technical details</summary>
 <ul class="specs">
-<li>Genauigkeit: −2/+2 s/Tag</li>
-<li>Chronergy‑Hemmung</li>
-<li>Nickel‑Phosphor‑Hemmung</li>
-<li>Blaue Parachrom‑Spirale</li>
-<li>Paraflex‑Stoßsicherung</li>
-<li>28.800 A/h • 40 Lagersteine • Ø ~33 mm</li>
+<li>Accuracy: −2/+2 s/day</li>
+<li>Chronergy escapement</li>
+<li>Nickel-phosphorus escapement</li>
+<li>Blue Parachrom hairspring</li>
+<li>Paraflex shock absorbers</li>
+<li>28.800 A/h • 40 jewels • Ø ~33 mm</li>
 </ul>
 </details>
 </article>
@@ -1884,196 +2097,208 @@
 <section class="section" id="bestellbar">
 <div class="section-head">
 <div>
-<h2>Auf Bestellung verfügbar</h2>
-<p>Vorauszahlung erforderlich · ca. 14 Werktage Lieferzeit</p><div class="section-updated">Zuletzt aktualisiert: <span id="catalogDate">heute</span></div>
+<h2>Available to order</h2>
+<p>Prepayment required · approx. 14 business days lead time</p>
 </div>
 </div>
 <div class="grid">
-<article class="item product-card" data-currency="EUR" data-images="urban_date_v1.jpg,urban_date_v2.jpg,urban_date_v3.jpg,urban_date_v4.jpg,urban_date_v5.jpg,urban_date_v6.jpg,urban_date_v7.jpg,urban_date_v8.jpg,urban_date_v9.jpg,urban_date_v10.jpg" data-movements='[{"code": "3186", "price": 750}, {"code": "3285", "price": 830}]' data-variant-info='{"urban_date_v1.jpg": {"desc": "Schwarzes Zifferblatt · Schwarz/Grau‑Lünette", "codename": "Bruce Wayne"}, "urban_date_v2.jpg": {"desc": "Schwarzes Zifferblatt · Schwarz/Grau‑Lünette", "codename": "Bruce Wayne"}, "urban_date_v3.jpg": {"desc": "Schwarzes Zifferblatt · Blau/Rot‑Lünette", "codename": "Pepsi"}, "urban_date_v4.jpg": {"desc": "Schwarzes Zifferblatt · Blau/Rot‑Lünette", "codename": "Pepsi"}, "urban_date_v5.jpg": {"desc": "Meteorite‑Zifferblatt · Blau/Rot‑Lünette", "codename": "Pepsi"}, "urban_date_v6.jpg": {"desc": "Meteorite‑Zifferblatt · Blau/Rot‑Lünette", "codename": "Pepsi"}, "urban_date_v7.jpg": {"desc": "Schwarzes Zifferblatt · Schwarze‑Lünette"}, "urban_date_v8.jpg": {"desc": "Schwarzes Zifferblatt · Schwarze‑Lünette"}, "urban_date_v9.jpg": {"desc": "Schwarzes Zifferblatt · Grüne Lünette", "codename": ""}, "urban_date_v10.jpg": {"desc": "Grünes Zifferblatt · Grüne Lünette", "codename": "Hulk"}}' data-watch-codename="" data-watch-desc="Diverse Varianten" data-watch-model="GMT II 40mm" role="button" tabindex="0">
-<div class="thumb"><img alt="Urban GMT – Edelstahl GMT" loading="lazy" src="order_1_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 750 €</span>
+<article class="item product-card" data-currency="EUR" data-images="../urban_date_v1.jpg,../urban_date_v2.jpg,../urban_date_v3.jpg,../urban_date_v4.jpg,../urban_date_v5.jpg,../urban_date_v6.jpg,../urban_date_v7.jpg,../urban_date_v8.jpg,../urban_date_v9.jpg,../urban_date_v10.jpg" data-movements='[{"code": "3186", "price": 750}, {"code": "3285", "price": 830}]' data-variant-info='{"urban_date_v1.jpg": {"desc": "Black dial · Black/Grey bezel", "codename": "Bruce Wayne"}, "urban_date_v2.jpg": {"desc": "Black dial · Black/Grey bezel", "codename": "Bruce Wayne"}, "urban_date_v3.jpg": {"desc": "Black dial · Blue/Red bezel", "codename": "Pepsi"}, "urban_date_v4.jpg": {"desc": "Black dial · Blue/Red bezel", "codename": "Pepsi"}, "urban_date_v5.jpg": {"desc": "Meteorite dial · Blue/Red bezel", "codename": "Pepsi"}, "urban_date_v6.jpg": {"desc": "Meteorite dial · Blue/Red bezel", "codename": "Pepsi"}, "urban_date_v7.jpg": {"desc": "Black dial · Black/Grey bezel", "codename": "Bruce Wayne"}, "urban_date_v8.jpg": {"desc": "Black dial · Black/Grey bezel", "codename": "Bruce Wayne"}, "urban_date_v9.jpg": {"desc": "Black dial · Green bezel", "codename": ""}, "urban_date_v10.jpg": {"desc": "Green dial · Green bezel", "codename": "Hulk"}}' data-watch-codename="" data-watch-desc="Diverse Varianten" data-watch-model="Rolex GMT II" role="button" tabindex="0">
+<div class="thumb"><img alt="Urban GMT – Stainless steel GMT" loading="lazy" src="../order_1_1.jpg"/></div>
+<span class="tag price-tag">From: €750</span>
 <h3>Urban GMT II</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="urban_daydate_v1.jpg,urban_daydate_v2.jpg,urban_daydate_v3.jpg,urban_daydate_v4.jpg,urban_daydate_v5.jpg,urban_daydate_v6.jpg" data-movements='[{"code": "2836", "price": 800}, {"code": "3235", "price": 920}]' data-variant-info='{"urban_daydate_v1.jpg": {"desc": "Blaues Zifferblatt · Fluted‑Lünette", "codename": ""}, "urban_daydate_v2.jpg": {"desc": "Grünes Zifferblatt · Fluted‑Lünette", "codename": ""}, "urban_daydate_v3.jpg": {"desc": "Ice‑Blue Zifferblatt · Fluted‑Lünette", "codename": ""}, "urban_daydate_v4.jpg": {"desc": "Schwarzes Zifferblatt · Fluted‑Lünette", "codename": ""}, "urban_daydate_v5.jpg": {"desc": "Meteorite‑Zifferblatt · Fluted‑Lünette", "codename": "Meteorite"}, "urban_daydate_v6.jpg": {"desc": "Weißes Zifferblatt · Fluted‑Lünette", "codename": ""}}' data-watch-codename="" data-watch-desc="Diverse Varianten" data-watch-model="Day-Date 40mm" role="button" tabindex="0">
-<div class="thumb"><img alt="Vienna DayDate – Gold Day-Date" loading="lazy" src="order_4_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 750 €</span>
+<article class="item product-card" data-currency="EUR" data-images="../urban_daydate_v1.jpg,../urban_daydate_v2.jpg,../urban_daydate_v3.jpg,../urban_daydate_v4.jpg,../urban_daydate_v5.jpg,../urban_daydate_v6.jpg" data-movements='[{"code": "2836", "price": 800}, {"code": "3235", "price": 920}]' data-variant-info='{"../urban_daydate_v1.jpg": {"desc": "Blue dial · Fluted bezel", "codename": ""}, "../urban_daydate_v2.jpg": {"desc": "Green dial · Fluted bezel", "codename": ""}, "../urban_daydate_v3.jpg": {"desc": "Ice‑blue dial · Fluted bezel", "codename": ""}, "../urban_daydate_v4.jpg": {"desc": "Black dial · Fluted bezel", "codename": ""}, "../urban_daydate_v5.jpg": {"desc": "Meteorite dial · Fluted bezel", "codename": "Meteorite"}, "../urban_daydate_v6.jpg": {"desc": "White dial · Fluted bezel", "codename": ""}}' data-watch-codename="" data-watch-desc="Diverse Varianten" data-watch-model="Rolex Day-Date" role="button" tabindex="0">
+<div class="thumb"><img alt="Vienna DayDate – Gold Day-Date" loading="lazy" src="../order_4_1.jpg"/></div>
+<span class="tag price-tag">From: €750</span>
 <h3>Urban Day-Date</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card more-models" data-currency="EUR" data-images="images/urban-daytona/deon_1.png,images/urban-daytona/deon_2.png,images/urban-daytona/deon_3.png,images/urban-daytona/deon_4.png,images/urban-daytona/deon_5.png,images/urban-daytona/deon_6.png,images/urban-daytona/deon_7.png,images/urban-daytona/deon_8.png" data-movements='[{"code": "7750", "price": 800}, {"code": "4131", "price": 920}]' data-watch-codename="" data-watch-desc="Diverse Varianten" data-watch-model="Daytona 40mm" role="button" tabindex="0">
-<div class="thumb"><img alt="Urban Chrono – Chronograph" loading="lazy" src="order_3_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 800 €</span>
+<article class="item product-card more-models" data-currency="EUR" data-images="../images/urban-daytona/deon_1.png,../images/urban-daytona/deon_2.png,../images/urban-daytona/deon_3.png,../images/urban-daytona/deon_4.png,../images/urban-daytona/deon_5.png,../images/urban-daytona/deon_6.png,../images/urban-daytona/deon_7.png,../images/urban-daytona/deon_8.png" data-movements='[{"code": "7750", "price": 800}, {"code": "4131", "price": 920}]' data-watch-codename="" data-watch-desc="Diverse Varianten" data-watch-model="Rolex Daytona" role="button" tabindex="0">
+<div class="thumb"><img alt="Urban Chrono – Chronograph" loading="lazy" src="../order_3_1.jpg"/></div>
+<span class="tag price-tag">From: €800</span>
 <h3>Urban Daytona</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="urban-date-glatt-01.png,urban-date-glatt-02.png,urban-date-glatt-03.png,urban-date-glatt-04.png,urban-date-glatt-05.png,urban-date-glatt-06.png,urban-date-glatt-07.png,urban-date-glatt-08.png,urban-date-glatt-09.png,urban-date-glatt-10.png" data-movements='[{"code": "2836", "price": 720}, {"code": "3255", "price": 800}]' data-watch-model="Datejust 41mm" role="button" tabindex="0">
-<div class="thumb"><img alt="Vienna Date – Blaues Date-Modell" loading="lazy" src="order_2_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 720 €</span>
-<h3>Urban Datejust Glatte</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<article class="item product-card" data-currency="EUR" data-images="../urban-date-glatt-01.png,../urban-date-glatt-02.png,../urban-date-glatt-03.png,../urban-date-glatt-04.png,../urban-date-glatt-05.png,../urban-date-glatt-06.png,../urban-date-glatt-07.png,../urban-date-glatt-08.png,../urban-date-glatt-09.png,../urban-date-glatt-10.png" data-movements='[{"code": "2836", "price": 720}, {"code": "3255", "price": 800}]' role="button" tabindex="0" data-watch-model="Rolex Datejust" data-watch-desc="Diverse Varianten">
+<div class="thumb"><img alt="Vienna Date – Blue date model" loading="lazy" src="../order_2_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
+<h3>Urban Date Smooth Bezel</h3>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="urban_classic_v1.jpg,urban_classic_v2.jpg,urban_classic_v3.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 800}]' data-watch-model="Yacht-Master 42mm" role="button" tabindex="0">
-<div class="thumb"><img alt="Stephans Diver – Grey Diver" loading="lazy" src="order_5_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 720 €</span>
+<article class="item product-card" data-currency="EUR" data-images="../urban_classic_v1.jpg,../urban_classic_v2.jpg,../urban_classic_v3.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 800}]' role="button" tabindex="0" data-watch-model="Rolex Yacht-Master" data-watch-desc="Diverse Varianten">
+<div class="thumb"><img alt="Stephans Diver – Grey Diver" loading="lazy" src="../order_5_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
 <h3>Urban Yacht-Master</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
-<article class="item product-card" data-currency="EUR" data-images="urban-date-griffel-01.jpg,urban-date-griffel-02.jpg,urban-date-griffel-03.jpg,urban-date-griffel-04.jpg,urban-date-griffel-05.jpg,urban-date-griffel-06.jpg,urban-date-griffel-07.jpg,urban-date-griffel-08.jpg,urban-date-griffel-09.jpg,urban-date-griffel-10.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 800}]' data-watch-model="Datejust 41mm" role="button" tabindex="0">
-<div class="thumb"><img alt="Royal Pink – Pink Dial" loading="lazy" src="order_6_1.jpg"/></div>
-<span class="tag price-tag">Preis ab: 720 €</span>
-<h3>Urban Datejust Geriffelte</h3>
-<p>Bestellbar auf Anfrage · Lieferzeit ca. 14 Werktage</p>
+<article class="item product-card" data-currency="EUR" data-images="../urban-date-griffel-01.jpg,../urban-date-griffel-02.jpg,../urban-date-griffel-03.jpg,../urban-date-griffel-04.jpg,../urban-date-griffel-05.jpg,../urban-date-griffel-06.jpg,../urban-date-griffel-07.jpg,../urban-date-griffel-08.jpg,../urban-date-griffel-09.jpg,../urban-date-griffel-10.jpg" data-movements='[{"code": "2836", "price": 720}, {"code": "3235", "price": 800}]' role="button" tabindex="0" data-watch-model="Rolex Datejust Geriffelt" data-watch-desc="Diverse Varianten">
+<div class="thumb"><img alt="Royal Pink – Pink Dial" loading="lazy" src="../order_6_1.jpg"/></div>
+<span class="tag price-tag">From: €720</span>
+<h3>Urban Date Fluted Bezel</h3>
+<p>Available on request · lead time approx. 14 business days</p>
 </article>
 </div>
 </section>
 <section class="section" id="highlights">
 <div class="section-head">
 <div>
-<h2>Highlights</h2>
-<p>Kuratiert, geprüft und ready für deinen Wrist-Game.</p>
+<h2>Payment methods</h2>
+<p>Curated, checked, and ready for your wrist game.</p>
 </div>
 </div>
 <div class="highlights">
 <div class="hl">
 <div class="icon">✓</div>
-<h3>Ausgewählt mit Geschmack</h3>
-<p>Klare Designs, starke Details — Uhren, die in Wien genauso passen wie überall.</p>
+<h3>Picked with taste</h3>
+<p>Clean designs, strong details — watches that fit Vienna just as well as anywhere.</p>
 </div>
 <div class="hl">
 <div class="icon">✦</div>
-<h3>Pop‑Art Akzente</h3>
-<p>Eleganz bleibt clean – aber mit einem modernen Edge in Cyan &amp; Neon.</p>
+<h3>Pop Art accents</h3>
+<p>Elegance stays clean — with a modern edge in cyan &amp; neon.</p>
 </div>
 <div class="hl">
 <div class="icon">↗</div>
-<h3>Immer live auf Instagram</h3>
-<p>Neue Drops, Wrist‑Shots und Reels: alles direkt auf @urbantimevienna.</p>
+<h3>Always live on Instagram</h3>
+<p>New drops, wrist shots and reels: everything straight from @urbantimevienna.</p>
 </div>
 </div>
 </section>
 <section class="section" id="kaufablauf">
 <div class="section-head">
 <div>
-<h2>So funktioniert der Kauf</h2>
-<p>Transparent, sicher und unkompliziert – in wenigen Schritten zu deiner Uhr.</p>
+<h2>How the purchase works</h2>
+<p>Transparent, safe and straightforward — your watch in just a few steps.</p>
 </div>
 </div>
 <div class="steps">
 <div class="step">
 <div class="step-num">1</div>
-<h3>Bestellanfrage senden</h3>
-<p>Wähle ein Modell aus und sende deine Anfrage über das Formular oder per Instagram.<br>Oder klicke <a href="#kontaktoptionen" class="terms-link open-contact-modal">hier</a> und du wirst automatisch zu meinem Telegram weitergeleitet.</p>
+<h3>Send an order request</h3>
+<p>Choose a model and send your request via the form or on Instagram.</p>
 </div>
 <div class="step">
 <div class="step-num">2</div>
-<h3>Angebot &amp; Bestätigung</h3>
-<p>Du bekommst den finalen Preis, die voraussichtliche Lieferzeit und alle Details zur Bestellung.</p>
+<h3>Offer &amp; confirmation</h3>
+<p>You’ll receive the final price, estimated lead time and all order details.</p>
 </div>
-
 
 <div class="step">
 <div class="step-num">3</div>
-<h3>Zahlungsabwicklung (sicher &amp; transparent)</h3>
-<p>Nach deiner verbindlichen Bestellbestätigung erfolgt die Zahlung bequem über die angebotenen Zahlungsarten. 
-Bei Zahlung mit <strong>PayPal (Käuferschutz)</strong> bist du zusätzlich abgesichert. 
-Sobald der Zahlungseingang bestätigt ist, wird deine Bestellung bearbeitet und für den Versand vorbereitet (ca. 14 Werktage).</p>
+<h3>Payment Processing (Advance Payment)</h3>
+<p>After your order confirmation, payment is made via one of the available methods. For payments with <strong>PayPal (Buyer Protection)</strong>, you are additionally protected. As soon as payment is confirmed, your order moves directly into processing. Processing and preparation usually take up to 14 business days.</p>
 </div>
 
 <div class="step">
 <div class="step-num">4</div>
-<h3>Versand & Übergabe</h3>
-<p>Der Versand erfolgt unmittelbar nach Zahlungseingang. Sie erhalten eine Versandbestätigung inklusive Sendungsverfolgung.</p>
+<h3>Shipping & Delivery</h3>
+<p>Shipping takes place immediately after payment confirmation. You will receive tracking information once dispatched.</p>
 </div>
 </div>
 
-<div class="card notice" style="border:1px solid rgba(45,226,255,0.4); background:rgba(45,226,255,0.05);">
-<h2 id="zahlungsarten">Mögliche Zahlungsarten</h2>
+<div id="zahlungsarten" class="card notice" style="border:1px solid rgba(45,226,255,0.4); background:rgba(45,226,255,0.05);">
+<h3 style="color:#2de2ff;">Available Payment Methods</h3>
 
 <ul style="list-style:none; padding-left:0; line-height:1.8;">
-<li><strong>Kreditkarte</strong></li>
-<li><strong>Banküberweisung</strong></li>
+<li><strong>Credit Card</strong></li>
+<li><strong>Bank Transfer</strong></li>
 <li><strong>Revolut</strong></li>
-<li><strong style="color:#2de2ff; white-space:nowrap;">PayPal mit&nbsp;Käuferschutz</strong></li>
+<li>
+<strong style="color:#2de2ff; white-space:nowrap; display:inline-block;">PayPal with Buyer Protection</strong>
+</li>
 </ul>
 
 <p style="margin-top:15px;">
-<strong>Wichtiger Hinweis:</strong> Alle Zahlungen erfolgen ausschließlich im Voraus. 
-Mit Abschluss der Zahlung akzeptieren Sie unsere Zahlungs- und Lieferbedingungen.
+<strong>Important Notice:</strong> All payments are processed in advance only. 
+By completing payment, you agree to our payment and delivery terms.
 </p>
 
 <p style="font-size:0.85em; opacity:0.75; margin-top:10px;">
-Rechtlicher Hinweis: Die angebotenen Produkte dienen ausschließlich privaten Sammler- und Dekorationszwecken. 
-Eine gewerbliche Weiterveräußerung ohne ausdrückliche Zustimmung ist nicht gestattet.
+Legal notice: Products are intended solely for private collection and decorative purposes. 
+Commercial resale without explicit permission is prohibited.
 </p>
 </div>
 
-
-
-<div class="kauf-cta-wrap">
-  <a class="btn secondary open-contact-modal" href="#kontaktoptionen">Kontakt & Beratung</a>
+</section>
+<section class="section" id="bestellformular">
+<div class="card" style="padding:24px;">
+<h2>Order request</h2>
+<p style="color:var(--muted); margin-top:8px;">
+      You can order directly via Instagram or use the form. If you open the form from a model, fields are auto-filled.
+    </p>
+<div class="form-actions-top">
+<a class="btn primary" href="https://ig.me/m/urbantimevienna" rel="noopener" target="_blank">Order: Instagram DM</a>
 </div>
-</div>
-<h3 id="bestellformular-title" class="order-form-heading">Bestellformular</h3>
 <form class="order-form" id="orderForm" novalidate="">
+<div aria-live="polite" class="variant-preview" id="selectedVariantPreview">
+<div class="variant-preview-inner">
+<img alt="" id="selectedVariantImg" loading="lazy" src=""/>
+<div class="vp-text">
+<b id="selectedVariantCaption">Selected variant</b><br/>
+<span>This image is automatically taken from your selection.</span>
+</div>
+</div>
+</div>
+<h3 id="bestellformular-title" class="order-form-heading">Order form</h3>
 <div class="form-grid">
 <div class="field field-full">
-<label for="of_model">Modell</label>
-<input id="of_model" name="model" placeholder="z.B. Urban Time Wayne – Variante 7" required="" type="text"/>
+<label for="of_model">Model</label>
+<input id="of_model" name="model" placeholder="e.g. Urban Time Wayne – Variant 7" required="" type="text"/>
 </div>
 <div class="field field-full">
-<label for="of_delivery">Lieferung oder Abholung</label>
+<label for="of_delivery">Delivery or pickup</label>
 <select id="of_delivery" name="deliveryMethod" required="">
-<option disabled="" selected="" value="">Bitte auswählen…</option>
-<option value="Versand">Versand</option>
-<option value="Abholung">Abholung</option>
+<option disabled="" selected="" value="">Please choose…</option>
+<option value="Shipping (cash on delivery)">Shipping (cash on delivery)</option>
+<option value="Pickup">Pickup</option>
 </select>
 </div>
 <div class="field field-full">
-<label for="of_payment">Zahlungsmethode</label>
+<label for="of_payment">Payment method</label>
 <select id="of_payment" name="paymentMethod" required="">
-<option disabled="" selected="" value="">Bitte auswählen…</option>
-<option value="Überweisung">Überweisung</option>
-<option value="PayPal (Käuferschutz)">PayPal (Käuferschutz)</option>
+<option disabled="" selected="" value="">Please choose…</option>
+<option value="Bank transfer">Bank transfer</option>
+<option value="PayPal (Buyer Protection)">PayPal (Buyer Protection)</option>
 <option value="Revolut">Revolut</option>
 </select>
 </div>
 <div class="field">
 <label for="of_name">Name</label>
-<input id="of_name" name="name" placeholder="Vor- und Nachname" required="" type="text"/>
+<input id="of_name" name="name" placeholder="First and last name" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_email">E‑Mail</label>
+<label for="of_email">Email</label>
 <input id="of_email" name="email" placeholder="name@email.com" required="" type="email"/>
 </div>
 <div class="field field-full">
-<label for="of_street">Straße &amp; Hausnummer</label>
-<input id="of_street" name="street" placeholder="Musterstraße 12" required="" type="text"/>
+<label for="of_street">Street &amp; house number</label>
+<input id="of_street" name="street" placeholder="Example Street 12" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_postal">PLZ</label>
+<label for="of_postal">Postal code</label>
 <input id="of_postal" name="postal" placeholder="1010" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_city">Ort</label>
-<input id="of_city" name="city" placeholder="Wien" required="" type="text"/>
+<label for="of_city">City</label>
+<input id="of_city" name="city" placeholder="Vienna" required="" type="text"/>
 </div>
 <div class="field">
-<label for="of_country">Land</label>
-<input id="of_country" name="country" placeholder="Österreich" required="" type="text"/>
+<label for="of_country">Country</label>
+<input id="of_country" name="country" placeholder="Austria" required="" type="text"/>
 </div>
 <div class="field">
 <label for="of_instagram">Instagram (optional)</label>
-<input id="of_instagram" name="instagram" placeholder="@deinname" type="text"/>
+<input id="of_instagram" name="instagram" placeholder="@yourname" type="text"/>
 </div>
 <div class="field field-full">
-<label for="of_phone">Telefon (optional)</label>
+<label for="of_phone">Phone (optional)</label>
 <input id="of_phone" name="phone" placeholder="+43 …" type="tel"/>
 </div>
 <div class="field field-full">
-<label for="of_message">Weitere Fragen (optional)</label>
-<textarea id="of_message" name="message" placeholder="Hast du noch weitere Fragen? Schreib sie hier rein." rows="5"></textarea>
-<p class="hint">Hinweis: Modell/Variante &amp; Bild werden automatisch als Referenz mitgesendet.</p>
+<label for="of_message">Any questions? (optional)</label>
+<textarea id="of_message" name="message" placeholder="Any questions? Write them here." rows="5"></textarea>
+<p class="hint">Note: model/variant &amp; image are automatically sent as reference.</p>
 </div>
 <div class="field field-full">
 <label class="check">
@@ -2085,60 +2310,25 @@ Eine gewerbliche Weiterveräußerung ohne ausdrückliche Zustimmung ist nicht ge
 <label class="check">
 
 <span><label style="font-size:0.95em; cursor:pointer;">
-    <input type="checkbox" required style="margin-right:8px;">
-    Ich habe die <a href="#" id="openPrivTerms" style="color:#2de2ff; font-weight:600;">Privatverkaufsbedingungen</a> gelesen und akzeptiere sie.
+      <input type="checkbox" required style="margin-right:8px;">
+      I have read and accept the <a href="#" id="openPrivTerms" style="color:#2de2ff; font-weight:600;">private sale terms</a>.
     </label></span>
 </label>
 </div>
 </div>
 <div class="form-buttons">
-<button class="btn primary" id="orderEmailBtn" type="submit">Anfrage per E‑Mail senden</button>
+<button class="btn primary" id="orderEmailBtn" type="submit">Send request by email</button>
 </div>
 <p class="form-note" id="formNote">
-        Hinweis: Die Anfrage wird direkt über das Formular gesendet (ohne E‑Mail‑Programm).
+        Note: Your request is sent directly via the form (no email app needed).
       </p>
-<div class="next-steps" id="nextStepsBox"><h4>Was passiert als Nächstes?</h4><ul><li>Du erhältst zeitnah eine Bestätigung per E‑Mail.</li><li>Nach bestätigtem Zahlungseingang startet die Bearbeitung deiner Bestellung.</li><li>Anschließend bekommst du eine Versandbestätigung mit Sendungsverfolgung.</li></ul></div>
-
-<div style="margin-top:15px;">
-  <label style="font-size:0.9em; cursor:pointer;">
-    
-  </label>
-</div>
-
 </form>
 </div>
 </section>
-
-
-<section class="section" id="vertrauen">
-  <div class="section-head">
-    <div>
-      <h2>Warum Urban Time Vienna</h2>
-      <p>Klare Abläufe, persönlicher Kontakt und transparente Kommunikation – vom ersten Klick bis zur Lieferung.</p>
-    </div>
-  </div>
-  <div class="highlights">
-    <article class="hl"><div class="icon">✓</div><h3>Persönlicher Support</h3><p>Direkter Kontakt per E‑Mail, Instagram oder Telegram – schnelle Rückmeldung und ehrliche Beratung.</p></article>
-    <article class="hl"><div class="icon">🛡</div><h3>Sichere Zahlungsoptionen</h3><p>Sie wählen die für Sie passende Methode. Mit PayPal (Käuferschutz) besteht zusätzlicher Schutz.</p></article>
-    <article class="hl"><div class="icon">📦</div><h3>Transparenter Ablauf</h3><p>Nach bestätigtem Zahlungseingang startet die Bearbeitung. Versand inkl. Tracking in der Regel innerhalb von ca. 14 Werktagen.</p></article>
-  </div>
-</section>
-
-
-<section class="section" id="faq">
-  <div class="section-head"><div><h2>Häufige Fragen</h2><p>Kurz und klar beantwortet – falls etwas offen bleibt, helfen wir Ihnen persönlich weiter.</p></div></div>
-  <div class="card about-card faq-card">
-    <details class="faq-item"><summary>Ist PayPal mit Käuferschutz möglich?</summary><p>Ja, PayPal (Käuferschutz) wird als Zahlungsart angeboten. Damit haben Sie zusätzlichen Schutz bei Ihrer Zahlung.</p></details>
-    <details class="faq-item"><summary>Wann startet die Bearbeitung meiner Bestellung?</summary><p>Sobald der vollständige Zahlungseingang bestätigt ist, wird Ihre Bestellung zur Bearbeitung freigegeben.</p></details>
-    <details class="faq-item"><summary>Wie lange dauert die Lieferung?</summary><p>Die Bearbeitung und Vorbereitung dauert in der Regel bis zu 14 Werktage. Danach erhalten Sie den Versand inkl. Tracking.</p></details>
-    <details class="faq-item"><summary>Welche Kontaktdaten sollte ich angeben?</summary><p>Bitte geben Sie Ihren Namen, eine erreichbare E‑Mail-Adresse und die vollständige Lieferadresse an. Optional auch Instagram/Telefon.</p></details>
-    <details class="faq-item"><summary>Kann ich vor der Bestellung Fragen stellen?</summary><p>Ja, jederzeit. Über den Kontakt-Button erreichen Sie uns direkt per E‑Mail, Instagram DM oder Telegram.</p></details>
-    <details class="faq-item"><summary>Bekomme ich eine Bestätigung?</summary><p>Ja. Nach Absenden erhalten Sie eine Bestätigung, und nach erfolgreicher Anfrage auch die Bestell-/Informationsmails.</p></details>
-  </div>
-</section>
 <footer>
-<div>© <span id="year"></span> Urban Time Vienna · Alle Rechte vorbehalten</div>
-<div class="footer-links"><a href="#vertrauen">Warum uns</a> · <a href="#kaufablauf">Kaufablauf</a> · <a href="#faq">FAQ</a> · <a class="open-contact-modal" href="#kontaktoptionen">Kontakt</a></div></footer>
+<div>© <span id="year"></span> Urban Time Vienna · All rights reserved</div>
+<div class="footer-note">Private sale: no returns, no warranty/guarantee.</div>
+</footer>
 </main>
 <div aria-hidden="true" class="modal" id="galleryModal">
 <div aria-labelledby="galleryTitle" aria-modal="true" class="card modal-card" role="dialog">
@@ -2257,6 +2447,7 @@ Eine gewerbliche Weiterveräußerung ohne ausdrückliche Zustimmung ist nicht ge
   }, intervalMs);
 })();
 
+
 // ===== Privatverkaufsbedingungen (Popup) =====
 document.addEventListener("DOMContentLoaded", () => {
   const privTermsModal = document.getElementById("privTermsModal");
@@ -2302,8 +2493,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtn = document.getElementById("galleryNext");
     const orderPrimaryBtn = document.getElementById("orderPrimaryBtn");
     const orderInstaBtn = document.getElementById("orderInstaBtn");
-    const orderFormBtn = document.getElementById("orderFormBtn");
     const orderTelegramBtn = document.getElementById("orderTelegramBtn");
+    const orderFormBtn = document.getElementById("orderFormBtn");
     const orderNote = document.getElementById("orderNote");
 
     // New UI bits (status/price/qty)
@@ -2326,7 +2517,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function syncQtyUI(){
       if(qtyVal) qtyVal.textContent = String(orderQty);
-      // also reflect in hint text if needed
     }
     if(qtyDec) qtyDec.addEventListener("click", () => { orderQty = Math.max(1, orderQty - 1); syncQtyUI(); updateOrderText(); });
     if(qtyInc) qtyInc.addEventListener("click", () => { orderQty = Math.min(99, orderQty + 1); syncQtyUI(); updateOrderText(); });
@@ -2414,7 +2604,7 @@ function updateMovementDescription(){
 
       movementPicker.style.display = "";
       const sel = getSelectedMovement();
-      const titleText = "Uhrwerk wählen";
+      const titleText = "Select movement";
       const title = `<div class="mp-title">${titleText}</div>`;
 
       const items = currentMovements.map((m, idx) => {
@@ -2473,17 +2663,17 @@ function updateMovementDescription(){
       const hasVariants = (currentImages.length || 0) > 1;
 
       const mv = getSelectedMovement();
-      const mvTxt = mv ? ` – Uhrwerk ${mv.code} – ${mv.price} €` : ``;
-      const qtyTxt = orderQty && orderQty > 1 ? ` – Menge ${orderQty}` : ``;
-      const statusTxt = currentStatus === "in_stock" ? " – Lagernd" : (currentStatus === "preorder" ? " – Bestellung" : "");
-      const modelText = hasVariants ? `${currentTitle} – Variante ${variantNo}${mvTxt}${qtyTxt}${statusTxt}` : `${currentTitle}${mvTxt}${qtyTxt}${statusTxt}`;
+      const mvTxt = mv ? ` – Movement ${mv.code} – ${mv.price} €` : ``;
+      const qtyTxt = orderQty && orderQty > 1 ? ` – Qty ${orderQty}` : ``;
+      const statusTxt = currentStatus === "in_stock" ? " – In stock" : (currentStatus === "preorder" ? " – Preorder" : "");
+      const modelText = hasVariants ? `${currentTitle} – Variant ${variantNo}${mvTxt}${qtyTxt}${statusTxt}` : `${currentTitle}${mvTxt}${qtyTxt}${statusTxt}`;
       if(modelEl) modelEl.value = modelText;
 
-      const deliveryLine = currentDelivery ? `Lieferzeit (Info): ${currentDelivery}\n\n` : "";
       const defaultMsg =
-`Bitte Preis, Lieferzeit und Verfügbarkeit senden.
+`Please send the price, delivery time and availability.
 
-${deliveryLine}Hast du noch weitere Fragen? Schreibe sie hier rein.`;
+If possible, I would also like a detailed video or additional photos.
+Thank you!`;
 
       // Nachricht bleibt clean: Referenzen (Modell/Variante/Bild) werden separat mitgesendet.
       if(msgEl && !msgEl.value.trim()){
@@ -2509,12 +2699,12 @@ ${deliveryLine}Hast du noch weitere Fragen? Schreibe sie hier rein.`;
       const hasVariants = (currentImages.length || 0) > 1;
 
       img.src = src;
-      img.alt = hasVariants ? `${currentTitle} – Variante ${variantNo}` : `${currentTitle}`;
+      img.alt = hasVariants ? `${currentTitle} – Variant ${variantNo}` : `${currentTitle}`;
 
       if(cap){
         const mv = getSelectedMovement();
         const mvCap = mv ? ` · ${mv.code} · ${mv.price} €` : ``;
-        cap.textContent = hasVariants ? `${currentTitle} · Variante ${variantNo}${mvCap}` : `${currentTitle}${mvCap}`;
+        cap.textContent = hasVariants ? `${currentTitle} · Variant ${variantNo}${mvCap}` : `${currentTitle}${mvCap}`;
       }
 
       wrap.style.display = "block";
@@ -2522,7 +2712,7 @@ ${deliveryLine}Hast du noch weitere Fragen? Schreibe sie hier rein.`;
 
 let currentImages = [];
     let currentIndex = 0;
-    let currentTitle = "Uhr";
+    let currentTitle = "Watch";
 
     function basename(path){
       return (path || "").split("?")[0].split("#")[0].split("/").pop();
@@ -2607,78 +2797,69 @@ let currentImages = [];
       const variantNo = currentIndex + 1;
       const hasVariants = (currentImages.length || 0) > 1;
 
-      const qtyLine = `Menge: ${orderQty}`;
-
+      const qtyLine = `Qty: ${orderQty}`;
       const statusLine = currentStatus === "in_stock"
-        ? "Status: Aktuell lagernd"
-        : (currentStatus === "preorder" ? "Status: Auf Bestellung verfügbar" : "");
-      const deliveryLine = currentDelivery ? `Lieferzeit: ${currentDelivery}` : "";
+        ? "Status: In stock"
+        : (currentStatus === "preorder" ? "Status: Preorder" : "");
+      const deliveryLine = currentDelivery ? `Delivery: ${currentDelivery}` : "";
 
-            const mv = getSelectedMovement();
-      const mvLine = mv ? `Uhrwerk: ${mv.code}` : "";
-      const unitPrice = (mv && typeof mv.price === "number" && mv.price > 0) ? mv.price : currentBasePrice;
-      const totalPrice = (unitPrice && orderQty) ? (unitPrice * orderQty) : null;
+      const mv = getSelectedMovement();
+      const mvLine = mv ? `Movement: ${mv.code}` : "";
+      const unitPrice = mv && typeof mv.price === "number" && mv.price > 0 ? mv.price : currentBasePrice;
+      const totalPrice = (typeof unitPrice === "number" && unitPrice > 0) ? (unitPrice * orderQty) : null;
+      const priceLine = totalPrice ? `Price: ${totalPrice} €` : "";
 
-      const priceLine = unitPrice ? `Preis/Stück: ${unitPrice} €` : "";
-      const totalLine = totalPrice ? `Gesamt: ${totalPrice} €` : "";
-
-      const msg = `Bestellanfrage: ${currentTitle}
-Variante: ${hasVariants ? variantNo : "-"}
-Bild: ${file}
+      const msg = `Order request: ${currentTitle}
+Variant: ${hasVariants ? variantNo : "-"}
+Image: ${file}
 ${qtyLine}
 ${mvLine}
 ${priceLine}
-${totalLine}
 ${statusLine}
 ${deliveryLine}
 
-Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
+Please send the price, delivery time and availability.`;
 
       // Keep modal summary in sync
       if(modalPrice){
-        if(totalPrice){
-          modalPrice.textContent = `${totalPrice} €`;
-        }else if(unitPrice){
-          modalPrice.textContent = `${unitPrice} €`;
-        }else{
-          modalPrice.textContent = "Auf Anfrage";
-        }
+        modalPrice.textContent = totalPrice ? `${totalPrice} €` : "On request";
       }
       if(modalPriceHint){
         modalPriceHint.textContent = (currentStatus === "in_stock")
-          ? "Abholung oder Versand möglich"
-          : "Vorauszahlung · Lieferzeit ca. 14 Werktage";
-
-        if(unitPrice && orderQty && orderQty > 1){
-          modalPriceHint.textContent += ` · ${orderQty}× ${unitPrice} €`;
-        }
-      }
-
-      if(orderPrimaryBtn){
-        orderPrimaryBtn.href = "#bestellformular-title";
-        orderPrimaryBtn.setAttribute("aria-label", `Jetzt bestellen – zum Formular – ${currentTitle}`);
-        orderPrimaryBtn.textContent = "Jetzt bestellen";
+          ? "Pickup or shipping available"
+          : "Prepayment · ~14 business days";
       }
 
       orderInstaBtn.href = IG_DM_LINK;
-      orderInstaBtn.setAttribute("aria-label", `Instagram öffnen – ${currentTitle}`);
-      orderInstaBtn.textContent = "Instagram";
+      orderInstaBtn.setAttribute("aria-label", `Open Instagram DM — ${currentTitle}`);
+      orderInstaBtn.textContent = "Order: Instagram DM";
 
       if(orderTelegramBtn){
         orderTelegramBtn.href = TG_LINK;
-        orderTelegramBtn.setAttribute("aria-label", `Telegram öffnen – ${currentTitle}`);
+        orderTelegramBtn.setAttribute("aria-label", `Open Telegram — ${currentTitle}`);
         orderTelegramBtn.textContent = "Telegram";
       }
 
-      if(orderFormBtn){
-        orderFormBtn.setAttribute("aria-label", `Anfrage per Formular – ${currentTitle}`);
+      if(orderPrimaryBtn){
+        orderPrimaryBtn.setAttribute("aria-label", `Order now — ${currentTitle}`);
+        orderPrimaryBtn.textContent = "Order now";
       }
 
-      orderNote.textContent = "Beim Klick öffnet sich direkt der Chat.";
+
+      if(orderFormBtn){
+        orderFormBtn.setAttribute("aria-label", `Go to form — ${currentTitle}`);
+      }
+
+      orderNote.textContent = "Click opens chat directly.";
+
+      // keep movement info in sync
+      updateMovementDescription();
 
       
-      const goToForm = (e) => {
-          if(e) e.preventDefault();
+      if(orderPrimaryBtn){
+        orderPrimaryBtn.onclick = (e) => {
+          // Close modal and jump to order form (same behavior as DE)
+          e.preventDefault();
           fillOrderFormFromSelection();
           closeGallery();
           const sec = document.getElementById("bestellformular-title") || document.getElementById("bestellformular") || document.getElementById("orderForm") || document.querySelector("form#orderForm, .form-wrap form, .form-grid")?.closest("section, .form-wrap") || document.querySelector("form");
@@ -2688,31 +2869,18 @@ Bitte Preis, Lieferzeit und Verfügbarkeit senden.`;
               const f = document.getElementById("of_name") || document.getElementById("of_email");
               if(f) f.focus({preventScroll:true});
             }, 500);
+          }else{
+            // fallback: update hash
+            location.hash = "#bestellformular";
           }
         };
+      }
 
-// keep movement info in sync
-      updateMovementDescription();
-
-      orderInstaBtn.onclick = (e) => {
+orderInstaBtn.onclick = (e) => {
         e.preventDefault();
         closeGallery();
         openInNewTab(IG_DM_LINK);
       };
-
-      if(orderPrimaryBtn){
-        orderPrimaryBtn.onclick = goToForm;
-      }
-
-
-
-      if(orderTelegramBtn){
-        orderTelegramBtn.onclick = (e) => {
-          e.preventDefault();
-          closeGallery();
-          openInNewTab(TG_LINK);
-        };
-      }
 
       if(orderFormBtn){
         orderFormBtn.onclick = (e) => {
@@ -2801,7 +2969,7 @@ function setIndex(i){
       if(!currentImages.length) return;
       currentIndex = (i + currentImages.length) % currentImages.length;
       mainImg.src = currentImages[currentIndex];
-      mainImg.alt = `${currentTitle} – Bild ${currentIndex + 1}`;
+      mainImg.alt = `${currentTitle} – Image ${currentIndex + 1}`;
       // Active Thumb
       [...thumbsEl.children].forEach((btn, idx) => {
         btn.classList.toggle("active", idx === currentIndex);
@@ -2816,7 +2984,7 @@ function setIndex(i){
       const section = card.closest("section");
       const secId = section ? section.id : "";
       currentStatus = (secId === "kollektion") ? "in_stock" : (secId === "bestellbar" ? "preorder" : "");
-      currentDelivery = (secId === "kollektion") ? "Sofort / nach Absprache" : (secId === "bestellbar" ? "ca. 14 Werktage" : "");
+      currentDelivery = (secId === "kollektion") ? "Available now" : (secId === "bestellbar" ? "~14 business days" : "");
 
       // Reset qty each time a product is opened
       orderQty = 1;
@@ -2844,10 +3012,10 @@ function setIndex(i){
       }
       renderMovementPicker();
 
-      const title = (card.querySelector("h3")?.textContent || "Uhr").trim();
+      const title = (card.querySelector("h3")?.textContent || "Watch").trim();
       const meta = (card.querySelector(".tag")?.textContent || "").trim();
 
-      // Base price from tag (e.g. "Preis €580" or "Preis ab: 750 €")
+      // Base price from tag
       currentBasePrice = null;
       const pm = meta.match(/(\d+[\.,]?\d*)/);
       if(pm){
@@ -2884,11 +3052,11 @@ function setIndex(i){
       // Badges
       if(modalStatus){
         if(currentStatus === "in_stock"){
-          modalStatus.textContent = "🟢 Aktuell lagernd";
+          modalStatus.textContent = "🟢 In stock";
           modalStatus.classList.remove("warn");
           modalStatus.classList.add("good");
         }else if(currentStatus === "preorder"){
-          modalStatus.textContent = "🟡 Auf Bestellung";
+          modalStatus.textContent = "🟡 Preorder";
           modalStatus.classList.remove("good");
           modalStatus.classList.add("warn");
         }else{
@@ -2905,11 +3073,11 @@ function setIndex(i){
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "thumb-btn";
-        btn.setAttribute("aria-label", `Bild ${idx + 1} anzeigen`);
+        btn.setAttribute("aria-label", `Show image ${idx + 1}`);
 
         const img = document.createElement("img");
         img.src = src;
-        img.alt = `${title} – Bild ${idx + 1}`;
+        img.alt = `${title} – Image ${idx + 1}`;
         img.loading = "lazy";
 
         btn.appendChild(img);
@@ -2926,7 +3094,7 @@ function setIndex(i){
 
     // ===== Öffnen des Varianten/Bestell-Popups =====
     // Klick auf Karte oder Bild öffnet die Gallery/Bestell-Ansicht
-
+    
     // Add small status badges on cards (UX)
     function addBadgeToCard(card, text, cls){
       const thumb = card.querySelector(".thumb");
@@ -2936,8 +3104,8 @@ function setIndex(i){
       b.textContent = text;
       thumb.appendChild(b);
     }
-    document.querySelectorAll("#kollektion .product-card").forEach(c => addBadgeToCard(c, "🟢 Lagernd", "good"));
-    document.querySelectorAll("#bestellbar .product-card").forEach(c => addBadgeToCard(c, "🟡 Bestellung", "warn"));
+    document.querySelectorAll("#kollektion .product-card").forEach(c => addBadgeToCard(c, "🟢 In stock", "good"));
+    document.querySelectorAll("#bestellbar .product-card").forEach(c => addBadgeToCard(c, "🟡 Preorder", "warn"));
 
     document.querySelectorAll(".product-card").forEach((card) => {
       // Bild/Thumbnail
@@ -3012,7 +3180,6 @@ function setIndex(i){
     }
 
 // ===== Language Dropdown (DE / EN) =====
-
 
     (function () {
       try {
@@ -3095,30 +3262,11 @@ function setIndex(i){
   }
 
   function getSelectedMeta(){
-    const capEl = document.getElementById("selectedVariantCaption");
-
-    // 1) prefer selected variant preview (if present in markup)
     const imgEl = document.getElementById("selectedVariantImg");
-    let imgSrc = imgEl ? (imgEl.getAttribute("data-fullsrc") || imgEl.getAttribute("src") || "") : "";
-
-    // 2) fallback: current modal main image
-    if(!imgSrc){
-      const modalImg = document.getElementById("galleryMain");
-      imgSrc = modalImg ? (modalImg.getAttribute("src") || "") : "";
-    }
-
-    let imageUrl = safeAbsUrl(imgSrc);
-
-    // prevent accidentally sending logo/placeholder as product image
-    if(/logo(\.|-|_)/i.test(imageUrl) || /utv-logo/i.test(imageUrl)){
-      imageUrl = "";
-    }
-
-    let imageLabel = capEl ? String(capEl.textContent || "").trim() : "";
-    if(!imageLabel){
-      imageLabel = v("of_model");
-    }
-
+    const capEl = document.getElementById("selectedVariantCaption");
+    const imgSrc = imgEl ? (imgEl.getAttribute("src") || "") : "";
+    const imageUrl = safeAbsUrl(imgSrc);
+    const imageLabel = capEl ? String(capEl.textContent || "").trim() : "";
     return { imageUrl, imageLabel };
   }
 
@@ -3128,7 +3276,7 @@ function setIndex(i){
     lines.push("");
     if(payload.model) lines.push((isEN ? "Model: " : "Modell: ") + payload.model);
     if(payload.deliveryMethod) lines.push((isEN ? "Delivery/Pickup: " : "Lieferung/Abholung: ") + payload.deliveryMethod);
-    if(payload.paymentMethod) lines.push((isEN ? "Payment: " : "Zahlung: ") + payload.paymentMethod);
+    if(payload.paymentMethod) lines.push((isEN ? "Payment method: " : "Zahlungsmethode: ") + payload.paymentMethod);
     if(payload.imageLabel) lines.push((isEN ? "Selected: " : "Auswahl: ") + payload.imageLabel);
     if(payload.imageUrl) lines.push((isEN ? "Image URL: " : "Bild-URL: ") + payload.imageUrl);
     lines.push("");
@@ -3242,21 +3390,22 @@ function setIndex(i){
 <div aria-hidden="true" class="modal terms-modal" id="privTermsModal">
 <div class="modal-card">
 <div class="modal-top">
-<h3>Privatverkaufsbedingungen</h3>
-<button aria-label="Schließen" class="icon-btn" id="closePrivTerms" type="button">×</button>
+<h3>Private sale terms</h3>
+<button aria-label="Close" class="icon-btn" id="closePrivTerms" type="button">×</button>
 </div>
 <div class="modal-body">
 <div class="terms-content">
-<p><strong>Wichtiger Hinweis:</strong> Urban Time Vienna verkauft als <strong>Privatverkäufer</strong> (kein gewerblicher Händler).</p>
+<p><strong>Important notice:</strong> Urban Time Vienna sells as a <strong>private seller</strong> (not a commercial dealer).</p>
 <ul>
-<li><strong>Privatverkauf:</strong> Keine Rücknahme, kein Umtausch.</li>
-<li><strong>Keine Garantie/Gewährleistung:</strong> Verkauf erfolgt „wie gesehen“ / „wie beschrieben“, soweit gesetzlich zulässig.</li>
-<li><strong>Zahlung:</strong> Die vollständige Zahlung muss vorab erfolgen. Erst nach bestätigtem Zahlungseingang wird die Bestellung bearbeitet (ca. 14 Werktage).</li>
-<li><strong>Lieferung/Abholung:</strong> Versand per  oder persönliche Abholung (nach Absprache).</li>
-<li><strong>Produktdetails:</strong> Modell/Variante/Bilder dienen als Referenz; Details können je nach Verfügbarkeit leicht abweichen.</li>
-<li><strong>Kaufabschluss:</strong> Der Kauf kommt erst nach Bestätigung der Bestellung/Anfrage zustande.</li>
+<li><strong>Private sale:</strong> No returns, no exchanges.</li>
+<li><strong>No warranty/guarantee:</strong> Sold “as seen” / “as described”, to the extent permitted by law.</li>
+<li><strong>Prepayment:</strong> Full payment is required in advance (bank transfer, PayPal, or Revolut).</li>
+          <li><strong>Processing time:</strong> Your order is processed after full payment is received; production/shipping takes up to 14 business days.</li>
+<li><strong>Delivery/pickup:</strong> Cash on delivery shipment or personal pickup (by arrangement).</li>
+<li><strong>Product details:</strong> Model/variant/photos are for reference; details may vary slightly depending on availability.</li>
+<li><strong>Conclusion of sale:</strong> The sale is only concluded after confirmation of the order/request.</li>
 </ul>
-<p>Mit dem Häkchen bestätigst du, dass du diese Bedingungen gelesen hast und akzeptierst.</p>
+<p>By ticking the box, you confirm that you have read and accept these terms.</p>
 </div>
 </div>
 </div>
@@ -3264,13 +3413,13 @@ function setIndex(i){
 <!-- Floating Contact Buttons -->
 <div class="utv-float">
 <!-- Telegram -->
-<a aria-label="Telegram öffnen" class="utv-float-btn utv-tg" href="https://t.me/urbantimevienna" rel="noopener" target="_blank">
+<a aria-label="Open Telegram" class="utv-float-btn utv-tg" href="https://t.me/urbantimevienna" rel="noopener" target="_blank">
 <svg aria-hidden="true" viewbox="0 0 24 24">
 <path d="M22.8 3.2c-.3-.3-.8-.4-1.2-.2L2.9 10.2c-.6.2-1 .8-.9 1.4 0 .6.4 1.1 1 1.3l4.6 1.8 1.8 5.7c.2.5.6.9 1.1 1 .1 0 .2.1.3.1.4 0 .8-.2 1.1-.5l2.5-2.6 4.7 3.5c.3.2.6.3.9.3.2 0 .4 0 .6-.1.5-.2.9-.7 1-1.2l3-17.7c.1-.5 0-1-.4-1.4zM9.6 14.6l8.9-8.2-10.9 6.9-3.6-1.4L19.9 5.7 9.6 14.6zm.7 1.6l-.3 2.9-.9-2.9 9.9-9.1-8.7 9.1zM19.5 19l-5.1-3.8 7.9-8.1-2.8 11.9z"></path>
 </svg>
 </a>
 <!-- Instagram -->
-<a aria-label="Instagram öffnen" class="utv-float-btn utv-ig" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
+<a aria-label="Open Instagram" class="utv-float-btn utv-ig" href="https://www.instagram.com/urbantimevienna/" rel="noopener" target="_blank">
 <svg aria-hidden="true" viewbox="0 0 24 24">
 <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm10 2H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3z"></path>
 <path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"></path>
@@ -3364,23 +3513,21 @@ document.addEventListener("click", function(e){
 </script>
 
 
-<!-- Kontaktmöglichkeiten Modal -->
-<div aria-hidden="true" class="modal contact-modal" id="contactModal" role="dialog">
-  <div class="card modal-card">
-    <div class="modal-top">
-      <div>
-        <h3 id="contactModalTitle">Kontakt & Beratung</h3>
-        <p class="meta">Wählen Sie Ihren bevorzugten Kontaktweg – wir antworten schnell und persönlich.</p>
-      </div>
-      <button aria-label="Schließen" class="icon-btn" id="contactModalClose" type="button">×</button>
+
+<div id="contactModalBackdrop" class="contact-modal-backdrop" aria-hidden="true">
+  <div class="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contactModalTitle">
+    <div class="contact-modal-head">
+      <h3 id="contactModalTitle" class="contact-modal-title">Contact &amp; Support</h3>
+      <button type="button" class="contact-modal-close" id="contactModalClose" aria-label="Close">×</button>
     </div>
-    <div class="modal-body">
+    <div class="contact-modal-body">
+      <p class="contact-modal-text">Questions about model, size, shipping or payment? Choose your preferred contact channel:</p>
       <div class="contact-grid">
-        <a class="contact-opt" href="mailto:urbantimevienna@gmail.com">E-Mail</a>
-        <a class="contact-opt" href="https://ig.me/m/urbantimevienna" target="_blank" rel="noopener">Instagram DM</a>
-        <a class="contact-opt" href="https://t.me/urbantimevienna" target="_blank" rel="noopener">Telegram</a>
+        <a class="contact-btn" href="mailto:urbantimevienna@gmail.com">Email</a>
+        <a class="contact-btn" href="https://ig.me/m/urbantimevienna" target="_blank" rel="noopener">Instagram DM</a>
+        <a class="contact-btn" href="https://t.me/urbantimevienna" target="_blank" rel="noopener">Telegram</a>
       </div>
-      <p class="contact-help">Hinweis: Bei Zahlung mit <strong>PayPal (Käuferschutz)</strong> sind Sie zusätzlich abgesichert.</p>
+      <div class="contact-note">PayPal Buyer Protection is available for additional security.</div>
     </div>
   </div>
 </div>
@@ -3388,55 +3535,32 @@ document.addEventListener("click", function(e){
 
 <script>
 (function(){
-  const modal = document.getElementById('contactModal');
-  if(!modal) return;
+  const backdrop = document.getElementById('contactModalBackdrop');
   const closeBtn = document.getElementById('contactModalClose');
-  const openers = document.querySelectorAll('.open-contact-modal');
-  function openModal(e){ if(e) e.preventDefault(); modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); }
-  function closeModal(){ modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
-  openers.forEach(el=>el.addEventListener('click', openModal));
-  if(closeBtn) closeBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
-  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
-})();
-</script>
+  if(!backdrop) return;
 
-
-<script>
-(function(){
-  // catalog date (human friendly, local)
-  try{
-    var d=new Date(document.lastModified||Date.now());
-    var el=document.getElementById('catalogDate');
-    if(el){ el.textContent=d.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit',year:'numeric'}); }
-  }catch(e){}
-
-  // smoother jump offset so heading is visible below sticky header
-  function smartScrollTo(el){
-    if(!el) return;
-    var y=el.getBoundingClientRect().top + window.pageYOffset - 90;
-    window.scrollTo({top:y, behavior:'smooth'});
+  function openModal(e){
+    if(e) e.preventDefault();
+    backdrop.classList.add('show');
+    backdrop.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeModal(){
+    backdrop.classList.remove('show');
+    backdrop.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
   }
 
-  var jump=document.getElementById('jumpToOrderFromFlow');
-  if(jump){
-    jump.addEventListener('click', function(e){
-      e.preventDefault();
-      smartScrollTo(document.getElementById('bestellformular-title'));
-    });
-  }
-
-  // form success helper message (best effort)
-  var form=document.getElementById('orderForm');
-  var box=document.getElementById('nextStepsBox');
-  if(form && box){
-    form.addEventListener('submit', function(){
-      setTimeout(function(){
-        box.style.display='block';
-        smartScrollTo(box);
-      }, 450);
-    });
-  }
+  document.querySelectorAll('[data-open-contact-modal="1"]').forEach(el=>{
+    el.addEventListener('click', openModal);
+  });
+  closeBtn && closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function(e){
+    if(e.target === backdrop) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeModal();
+  });
 })();
 </script>
 
