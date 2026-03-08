@@ -2582,7 +2582,7 @@ body{ font-family: var(--luxury-sans); }
 }
 </style>
 
-<style id="hero-motion-fix-step2b">
+<style id="hero-motion-fix-step3">
 .hero-video{
   transition: transform .7s cubic-bezier(.22,.61,.36,1);
   will-change: transform;
@@ -2596,9 +2596,17 @@ body{ font-family: var(--luxury-sans); }
   -webkit-transform: translateZ(0);
 }
 @media (max-width: 980px), (hover: none) and (pointer: coarse){
-  .hero-video{
-    transform: translate3d(0,0,0) scale(1) !important;
+  .hero-cinematic.reveal,
+  .hero-copy[data-reveal]{
+    opacity: 1 !important;
+    transform: none !important;
     transition: none !important;
+  }
+  .hero-video-wrap{
+    background: #050608 url('hero.jpg') center center / cover no-repeat !important;
+  }
+  .hero-video{
+    display: none !important;
   }
   .hero-copy,
   .watch-stage{
