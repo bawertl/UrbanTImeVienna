@@ -4561,6 +4561,18 @@ body{ font-family: var(--luxury-sans); }
     gap: 16px;
   }
   .story-visual{ min-height: auto; padding: 12px 0; }
+  .story-copy-stack{ width:100%; max-width:100%; gap: 20px; }
+  .story-panel{
+    width:100%;
+    max-width:100%;
+    margin:0;
+    transform: translateY(22px) scale(.985);
+    opacity: .62;
+  }
+  .story-panel.is-active{
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
 }
 @media (max-width: 640px){
   .hero-cinematic{ border-radius: 24px; min-height: auto; }
@@ -4568,6 +4580,9 @@ body{ font-family: var(--luxury-sans); }
   .hero-copy{ padding: 34px 16px 10px; }
   .cinematic-title{ font-size: clamp(42px, 15vw, 72px); }
   .cinematic-sub{ font-size: 15px; }
+  .story-showcase{ border-radius: 26px; }
+  .story-sticky{ padding: 0 12px 30px; gap: 14px; }
+  .story-copy-stack{ gap: 16px; }
   .story-display{ font-size: clamp(40px, 13vw, 66px); }
   .story-panel{ padding: 20px; border-radius: 22px; }
   .story-panel-copy h2{ font-size: 38px; }
@@ -4851,9 +4866,30 @@ document.addEventListener("click", function(e){
     if (storySection && storyPanels.length) {
       if (window.innerWidth <= 980) {
         storySection.style.setProperty('--story-progress', '0');
-        storyPanels.forEach((panel) => panel.classList.add('is-active'));
-        if (storyWatch) storyWatch.style.transform = 'rotate(-8deg) translateY(0) scale(1)';
-        if (storyVisual) storyVisual.style.transform = 'none';
+        const viewportFocus = window.innerHeight * 0.56;
+        let activeIndex = 0;
+        let bestDistance = Number.POSITIVE_INFINITY;
+        storyPanels.forEach((panel, idx) => {
+          const panelRect = panel.getBoundingClientRect();
+          const panelCenter = panelRect.top + (panelRect.height / 2);
+          const distance = Math.abs(panelCenter - viewportFocus);
+          if (distance < bestDistance) {
+            bestDistance = distance;
+            activeIndex = idx;
+          }
+        });
+        storyPanels.forEach((panel, idx) => panel.classList.toggle('is-active', idx === activeIndex));
+        if (storyWatch) {
+          const mobileProgress = storyPanels.length > 1 ? activeIndex / (storyPanels.length - 1) : 0;
+          const rotate = -8 + mobileProgress * 10;
+          const lift = -12 * mobileProgress;
+          const scale = 1 + mobileProgress * 0.04;
+          storyWatch.style.transform = `rotate(${rotate}deg) translateY(${lift}px) scale(${scale})`;
+        }
+        if (storyVisual) {
+          const mobileShift = activeIndex * 10;
+          storyVisual.style.transform = `translate3d(0, ${-mobileShift}px, 0)`;
+        }
       } else {
         const rect = storySection.getBoundingClientRect();
         const total = rect.height - window.innerHeight;
