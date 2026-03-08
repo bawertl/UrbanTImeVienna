@@ -1730,12 +1730,8 @@
     .hero-video-wrap{ overflow:hidden; }
     .hero-video{
       width:100%; height:100%; object-fit:cover;
-      transform: translate3d(0,0,0) scale(1.03);
+      transform:scale(1.06);
       filter: saturate(1.02) contrast(1.06) brightness(.58);
-      will-change: transform;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      transform-origin: center center;
     }
     .hero-cinematic::before{
       content:"";
@@ -2538,22 +2534,76 @@ body{ font-family: var(--luxury-sans); }
 .hero-visual, .watch-stage, .watch-card, .watch-glow, .watch-shadow, .watch-ring, .watch-halo, .floating-note{display:none !important;}
 .hero-cinematic::before{background:linear-gradient(180deg, rgba(0,0,0,.14), rgba(0,0,0,.58)), radial-gradient(900px 520px at 18% 24%, rgba(255,255,255,.07), transparent 62%), radial-gradient(980px 520px at 78% 34%, rgba(45,226,255,.10), transparent 58%) !important;}
 .hero-video{object-position:center center !important;}
-@media (max-width: 980px), (hover: none) and (pointer: coarse){
-  .hero-video{
-    transform: translate3d(0,0,0) scale(1.01) !important;
-    transition: none !important;
-  }
-  .hero-copy,
-  .watch-stage{
-    transform: none !important;
-  }
-}
 @media (min-width: 980px){
   .hero-copy{padding-top:72px !important; padding-bottom:86px !important;}
 }
 @media (max-width: 760px){
   .hero-copy{padding:34px 10px 72px 10px !important;}
   .hero-stats{grid-template-columns:1fr !important;}
+}
+</style>
+
+<style id="mobile-fullwidth-fix">
+@media (max-width: 760px){
+  html, body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+  main.container{
+    max-width:100% !important;
+    width:100% !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+  .header-inner{
+    max-width:100% !important;
+  }
+  .hero-cinematic,
+  .section,
+  .product-story-section,
+  .section-updated,
+  .about-card,
+  .payment-card,
+  .trust-card,
+  .step,
+  .faq-item,
+  .grid,
+  .grid .item{
+    width:100% !important;
+    max-width:100% !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+  .hero-cinematic{
+    border-radius:0 !important;
+    margin-top:0 !important;
+  }
+}
+</style>
+
+<style id="hero-motion-fix-step2b">
+.hero-video{
+  transition: transform .7s cubic-bezier(.22,.61,.36,1);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0,0,0) scale(1.02);
+}
+.hero-cinematic,
+.hero-video-wrap{
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+@media (max-width: 980px), (hover: none) and (pointer: coarse){
+  .hero-video{
+    transform: translate3d(0,0,0) scale(1) !important;
+    transition: none !important;
+  }
+  .hero-copy,
+  .watch-stage{
+    transform: none !important;
+  }
 }
 </style>
 </head>
@@ -4842,7 +4892,6 @@ document.addEventListener("click", function(e){
   const storyVisual = document.getElementById('storyVisual');
 
   const clamp = (num, min, max) => Math.min(Math.max(num, min), max);
-
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const isCoarsePointer = window.matchMedia('(hover: none) and (pointer: coarse)');
   const isCompactViewport = () => window.innerWidth <= 980;
@@ -4855,29 +4904,29 @@ document.addEventListener("click", function(e){
       const visual = hero.querySelector('.watch-stage');
       const reduceHeroMotion = shouldMinimizeHeroMotion();
 
-      hero.style.setProperty('--hero-shift', reduceHeroMotion ? '0px' : `${scrolled * 0.04}px`);
+      hero.style.setProperty('--hero-shift', reduceHeroMotion ? '0px' : `${scrolled * 0.03}px`);
 
       if (copy) {
         copy.style.transform = reduceHeroMotion
           ? 'translate3d(0,0,0)'
-          : `translate3d(0, ${Math.min(scrolled * 0.04, 18)}px, 0)`;
+          : `translate3d(0, ${Math.min(scrolled * 0.03, 14)}px, 0)`;
       }
 
       if (visual) {
         if (reduceHeroMotion) {
           visual.style.transform = 'translate3d(0,0,0)';
         } else {
-          const tiltX = Math.min(scrolled * 0.008, 3);
-          visual.style.transform = `translate3d(0, ${Math.min(scrolled * 0.025, 12)}px, 0) rotateX(${tiltX}deg)`;
+          const tiltX = Math.min(scrolled * 0.006, 2);
+          visual.style.transform = `translate3d(0, ${Math.min(scrolled * 0.02, 10)}px, 0) rotateX(${tiltX}deg)`;
         }
       }
 
       if (heroVideo) {
         if (reduceHeroMotion) {
-          heroVideo.style.transform = 'translate3d(0,0,0) scale(1.01)';
+          heroVideo.style.transform = 'translate3d(0,0,0) scale(1)';
         } else {
-          const scale = 1.03 + Math.min(scrolled / 18000, 0.02);
-          const shiftY = Math.min(scrolled * 0.012, 10);
+          const scale = 1.02 + Math.min(scrolled / 24000, 0.01);
+          const shiftY = Math.min(scrolled * 0.008, 6);
           heroVideo.style.transform = `translate3d(0, ${shiftY}px, 0) scale(${scale})`;
         }
       }
