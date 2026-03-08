@@ -2605,6 +2605,15 @@ body{ font-family: var(--luxury-sans); }
   .hero-video-wrap{
     background: #050608 url('hero.jpg') center center / cover no-repeat !important;
   }
+  .hero-cinematic::before{
+    background:
+      linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,.58) 34%, rgba(0,0,0,.72) 100%),
+      radial-gradient(900px 520px at 18% 24%, rgba(255,255,255,.04), transparent 62%),
+      radial-gradient(980px 520px at 78% 34%, rgba(45,226,255,.08), transparent 58%) !important;
+  }
+  .hero-copy{
+    text-shadow: 0 2px 18px rgba(0,0,0,.38);
+  }
   .hero-video{
     display: none !important;
   }
