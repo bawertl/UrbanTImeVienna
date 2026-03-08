@@ -2414,14 +2414,6 @@ body{ font-family: var(--luxury-sans); }
     gap: 16px;
   }
   .story-visual{ min-height: auto; padding: 12px 0; }
-  .story-copy-stack{ gap: 18px; }
-  .story-panel,
-  .story-panel.is-active{
-    transform: none;
-    opacity: 1;
-    background: rgba(255,255,255,.07);
-    border-color: rgba(255,255,255,.10);
-  }
 }
 @media (max-width: 640px){
   .hero-cinematic{ border-radius: 24px; min-height: auto; }
@@ -4849,28 +4841,21 @@ document.addEventListener("click", function(e){
     }
 
     if (storySection && storyPanels.length) {
-      if (window.innerWidth <= 980) {
-        storySection.style.setProperty('--story-progress', '0');
-        storyPanels.forEach((panel) => panel.classList.add('is-active'));
-        if (storyWatch) storyWatch.style.transform = 'rotate(-8deg) translateY(0) scale(1)';
-        if (storyVisual) storyVisual.style.transform = 'none';
-      } else {
-        const rect = storySection.getBoundingClientRect();
-        const total = rect.height - window.innerHeight;
-        const progress = total > 0 ? clamp((-rect.top) / total, 0, 1) : 0;
-        storySection.style.setProperty('--story-progress', progress.toFixed(4));
-        const activeIndex = clamp(Math.round(progress * (storyPanels.length - 1)), 0, storyPanels.length - 1);
-        storyPanels.forEach((panel, idx) => panel.classList.toggle('is-active', idx === activeIndex));
-        if (storyWatch) {
-          const rotate = -8 + progress * 16;
-          const lift = -26 * progress;
-          const scale = 1 + progress * 0.08;
-          storyWatch.style.transform = `rotate(${rotate}deg) translateY(${lift}px) scale(${scale})`;
-        }
-        if (storyVisual) {
-          const shift = progress * 34;
-          storyVisual.style.transform = `translate3d(0, ${-shift}px, 0)`;
-        }
+      const rect = storySection.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      const progress = total > 0 ? clamp((-rect.top) / total, 0, 1) : 0;
+      storySection.style.setProperty('--story-progress', progress.toFixed(4));
+      const activeIndex = clamp(Math.round(progress * (storyPanels.length - 1)), 0, storyPanels.length - 1);
+      storyPanels.forEach((panel, idx) => panel.classList.toggle('is-active', idx === activeIndex));
+      if (storyWatch) {
+        const rotate = -8 + progress * 16;
+        const lift = -26 * progress;
+        const scale = 1 + progress * 0.08;
+        storyWatch.style.transform = `rotate(${rotate}deg) translateY(${lift}px) scale(${scale})`;
+      }
+      if (storyVisual) {
+        const shift = progress * 34;
+        storyVisual.style.transform = `translate3d(0, ${-shift}px, 0)`;
       }
     }
   };
